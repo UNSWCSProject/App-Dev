@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Hello, World</title>
+    <title>Cubs Australia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="jquery-mobile/styles/jquery.mobile-1.3.1.min.css" rel="stylesheet" />
     <link href="styles/main.css" rel="stylesheet" />
@@ -10,127 +11,314 @@
     <script src="cordova.js" type="text/javascript"></script>
     <script src="jquery-mobile/js/jquery-1.9.1.min.js" type="text/javascript"></script>
     <script src="jquery-mobile/js/jquery.mobile-1.3.1.min.js" type="text/javascript"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
-
-    <script src="scripts/login.js" type="text/javascript"></script>
-    <script src="scripts/location.js" type="text/javascript"></script>
+    <script src="jquery-mobile/js/main.js"></script>
+	<!--<scipt>
+        $function() {
+        $( "input[type=submit], a, button")
+        	.button
+        .click(function( event ) {
+        	event.preventDefault();
+        });
+        });
+    </scipt>-->
 </head>
 <body>
 
     <!--Home-->
-    <div id="page-home" data-role="page">
-
+    <div id="home" data-role="page">
         <!--Header-->
         <div data-role="header" data-position="fixed">
-            <h1>Home!</h1>
+            <h1>Home</h1>
         </div>
-
-        <!--Content-->
-        <div data-role="content">
-            <h1>Welcome to Telerik AppBuilder!</h1>
-            <p>
-                Telerik AppBuilder&trade; enables you to build cross-platform device applications regardless of your
-                    development platform by combining the convenience of a local development toolset with the
-                    power and flexibility of the cloud.
-            </p>
-        </div>
-        <div class="nav">
-            <ul data-role="listview">
-                <li>
-                    <a href="#page-ui-interaction" data-transition="slide">UI Interaction Example</a>
-                </li>
-                <li>
-                    <a href="#page-location" data-transition="slide">Location Example</a>
-                </li>
-            </ul>
-        </div>
-
+        	<!--Content-->
+        	<article data-role="content">
+            	<h1>Cub Scouts Australia</h1>
+            	<img src="styles/images/search_active2x.png" alt=""/>  
+            	<ul data-role="listview">
+                	<li>
+                    	<a href="#NominalRoll" data-transition="slide">Nominal Roll</a>
+                	</li>
+                	<li>
+                    	<a href="#Calendar" data-transition="slide">Calendar</a>
+                	</li>
+                	<li>
+                    	<a href="#Activities" data-transition="slide">Activities</a>
+                	</li>
+                	<li>
+                    	<a href="#contact-list" data-transition="slide">Cubs</a>
+                	</li>
+           		</ul>
+        	</article>        
         <!--Footer-->
-        <div data-role="footer" data-position="fixed" data-id="oneFooter">
-            <span class="footerText">Built with Telerik AppBuilder&trade;</span>
-        </div>
+        <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>   
+    </div> <!--page>
+ 
 
-    </div>
-
-    <!--UI interaction-->
-    <div id="page-ui-interaction" data-role="page" data-add-back-btn="true">
-
-        <!--Header-->
-        <div data-role="header" data-position="fixed">
-            <h1>Login</h1>
-        </div>
-
-        <!--Content-->
-        <div data-role="content">
-            <div id="login-wrap">
-                <form data-ajax="false" id="login-form">
-                    <h3 id="login-text">Enter your credentials:</h3>
+    <!--Nominal Roll-->
+    <div id="NominalRoll" data-role="page" data-add-back-btn="true">
+		<!--Header-->
+        	<div data-role="header" data-position="fixed">
+            	<h1>Nominal Roll</h1>
+        	</div>
+        	<!--Content-->
+        	<div data-role="content">
+            	<h1 id="RollHeader">Cubs in attendance:</h1>
+            		<ul id="cubsList" data-role="listview" data-inset="true" data-filter="true">
+                	<li>
+                        Jill Smith <input class="rollCheck" type="checkbox">
+                	</li>
+  					<li>
+                		Eve Jackson <input class="rollCheck" type="checkbox">
+                	</li>
+                	<li>
+                        John Doe <input class="rollCheck" type="checkbox">
+                	</li>
+            </ul>  
+            	<div class="buttons ui-bar">
                     <div>
-                        <input id="login-username" type="text" placeholder="Username" />
-                        <input id="login-password" type="password" placeholder="Password" />
-                    </div>
-
-                    <div class="buttons ui-bar">
-                        <div>
-                            <div class="left">
-                                <input type="submit" id="login" data-icon="check" data-inline="true" class="left" value="Login" />
-                            </div>
-                            <div class="right">
-                                <button id="login-reset" data-icon="delete" data-inline="true" class="right">Reset</button>
-                            </div>
-                            <div class="clear"></div>
+                        <div class="left">
+                            <input type="submit" id="SubmitRoll" data-icon="check" data-inline="true" class="left" value="Submit" />
                         </div>
+                        <div class="clear"></div>
                     </div>
-                </form>
-            </div>
-
-            <div id="logout-wrap">
-                <div>
-                    <h1 class="welcome">Welcome, <span id="logout-username"></span>!
-                    </h1>
-                </div>
-
-                <div class="buttons">
-                    <div data-role="controlgroup" data-type="horizontal">
-                        <button id="logout" data-icon="back">Logout</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+            </div> 
+        	</div>    
         <!--Footer-->
-        <div data-role="footer" data-position="fixed" data-id="oneFooter">
-            <span class="footerText">Built with Telerik AppBuilder&trade;</span>
-        </div>
+        <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>
+	</div>
+    
 
-    </div>
+    <!--Calendar-->
+    <div data-role="page" id="Calendar" data-add-back-btn="true">
 
-    <!--Location-->
-    <div id="page-location" data-role="page" data-add-back-btn="true">
-
-        <!--Header-->
-        <div id="page-location-header" data-role="header" data-position="fixed">
-            <h1>Location</h1>
+    	<div data-role="header" data-position="fixed">
+            <h1>Calendar</h1>
         </div>
 
         <!--Content-->
-        <div id="page-location-content" data-role="content">
-            <div id="map-search-wrap">
-                <a id="map-navigate-home"></a>
-                <form data-ajax="false" onsubmit="return false;">
-                    <input id="map-address" type="search" data-role="none" placeholder="Address" />
-                    <input id="map-search" type="submit" value="" data-role="none" />
-                </form>
+        <div data-role="content">
+            <h1 id="Calendar">Calendar</h1>
+            	<table border="1" style="width:300px">
+                    <tr id="TopRow">
+                      <td>First Name</td>
+                      <td>Last Name</td>
+                      <td>Present</td>  
+                    </tr>
+                    <tr>
+                      <td>Jill</td>
+                      <td>Smith</td>		
+                      <td><input type="checkbox"></td>
+                      </tr>
+                    <tr>
+                      <td>Eve</td>
+                      <td>Jackson</td>		
+                      <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                      <td>John</td>
+                      <td>Doe</td>		
+                      <td><input type="checkbox"></td>
+                    </tr>
+                </table>
+            
+            <div class="buttons ui-bar">
+            	<div>
+                    <div class="left">
+                        <input type="submit" id="SubmitRoll" data-icon="check" data-inline="true" class="left" value="Submit" />
+                    </div>
+                </div>
             </div>
-            <div id="map-canvas"></div>
         </div>
-
         <!--Footer-->
-        <div id="page-location-footer" data-role="footer" data-position="fixed" data-id="oneFooter">
-            <span class="footerText">Built with Telerik AppBuilder&trade;</span>
+        <div data-role="footer" data-position="fixed" data-id="oneFooter">
+        </div>    
+    
+    </div><!--Page-->
+    
+    <!--Activities-->
+    <div data-role="page" id="Activities" data-add-back-btn="true">
+
+    	<div data-role="header" data-position="fixed">
+            <h1>Activities</h1>
         </div>
 
+        <!--Content-->
+        <div data-role="content">   
+            <div class="left" data-role="controlgroup" data-type="horizontal">
+                <a href="#" data-role="button">Bronze</a>
+                <a href="#" data-role="button">Silver</a>
+                <a href="#" data-role="button">Gold</a>
+            </div>
+            
+            <h1> Select Activity</h1>
+            
+           <div data-role="collapsible-set" data-theme="a" data-inset="false">
+    		<div data-role="collapsible">
+    			<h2>Mailbox</h2>
+        			<ul data-role="listview">
+            			<li><a href="index.html">Inbox <span class="ui-li-count">12</span></a></li>
+                        <li><a href="index.html">Outbox <span class="ui-li-count">0</span></a></li>
+            			<li><a href="index.html">Drafts <span class="ui-li-count">4</span></a></li>
+            			<li><a href="index.html">Sent <span class="ui-li-count">328</span></a></li>
+            			<li><a href="index.html">Trash <span class="ui-li-count">62</span></a></li>
+        			</ul>
+                </div>
+                <div data-role="collapsible">
+                <h2>Calendar</h2>
+                    <ul data-role="listview" data-theme="a" data-divider-theme="b">
+                        <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
+                        <li><a href="index.html">
+                                <h3>Stephen Weber</h3>
+                            <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
+                            <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+                                <p class="ui-li-aside"><strong>6:24</strong>PM</p>
+                        </a></li>
+                        <li><a href="index.html">
+                            <h3>jQuery Team</h3>
+                        <p><strong>Boston Conference Planning</strong></p>
+                        <p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
+                            <p class="ui-li-aside"><strong>9:18</strong>AM</p>
+                        </a></li>
+                        <li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
+                        <li><a href="index.html">
+                            <h3>Avery Walker</h3>
+                        <p><strong>Re: Dinner Tonight</strong></p>
+                        <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait! </p>
+                            <p class="ui-li-aside"><strong>4:48</strong>PM</p>
+                        </a></li>
+                        <li data-role="list-divider">Wednesday, October 6, 2010 <span class="ui-li-count">3</span></li>
+                        <li><a href="index.html">
+                            <h3>Amazon.com</h3>
+                        <p><strong>4-for-3 Books for Kids</strong></p>
+                        <p>As someone who has purchased children's books from our 4-for-3 Store, you may be interested in these featured books.</p>
+                            <p class="ui-li-aside"><strong>12:47</strong>PM</p>
+                        </a></li>
+                    </ul>
+                </div>
+                <div data-role="collapsible">
+                <h2>Contacts</h2>
+                    <ul data-role="listview" data-autodividers="true" data-theme="a" data-divider-theme="b">
+                        <li><a href="index.html">Adam Kinkaid</a></li>
+                        <li><a href="index.html">Alex Wickerham</a></li>
+                        <li><a href="index.html">Avery Johnson</a></li>
+                        <li><a href="index.html">Bob Cabot</a></li>
+                        <li><a href="index.html">Caleb Booth</a></li>
+                        <li><a href="index.html">Christopher Adams</a></li>
+                        <li><a href="index.html">Culver James</a></li>
+                    </ul>
+                </div>
+            </div> 
+                        
+                   
+        </div>
+        
+        
+        <!--Footer-->
+        <div data-role="footer" data-position="fixed" data-id="oneFooter">
+        </div>    
+    
+    </div><!--Page-->
+    
+    <!--Cubs-->
+    <div data-role="page" id="contact-list">
+        <div data-role="header">
+            <a href="#home" dara-rel="back" data-icon="arrow-l">Back</a>
+            <h1>All Contacts</h1>
+            <a href="#new-cub" data-icon="plus" data-role="button"  >Add</a>
+        </div>
+        <div data-role="content">
+            <ul id="main-contact-list" data-role="listview" data-autodividers="true" data-filter="true" data-inset="false" class="ui-icon-alt">
+            </ul>
+            <div data-role="content" id="details">
+            <span>name</span>
+            <div class="name">
+                Mitesh Patel
+            </div>
+
+            <span>email</span>
+            <div class="email">
+                mitesh.patel@raavel.com
+            </div>
+
+            <span>telephone</span>
+            <div class="phone">
+                234-422-2332
+            </div>
+        </div>
+        </div>
+        <!--Footer-->
+        <div data-role="footer" data-position="fixed" data-id="oneFooter">
+        </div>    
+    </div><!--Page-->
+    
+
+   
+            
+   
+	<!--New Cub-->
+    <div data-role="page" id="new-cub" data-add-back-btn="true">
+        <div data-role="header">
+            <h1>Add Cub</h1>
+        </div>
+        <div data-role="content">
+            <div data-role="content" id="add-details">
+                <span>first name</span>
+                <input type="text" id="add-fname" />
+
+                <span>last name</span>
+                <input type="text" id="add-lname" />
+
+                <span>email</span>
+                <input type="email" id="add-email" />
+
+                <span>telephone</span>
+                <input type="tel" id="add-phone" />
+
+                <div class="add-save">
+                   <!--<input-type="submit" value="Add Cub">-->
+                    <button>Add Cub</button>
+                </div>   
+            </div>
+        </div>
+        <!--Footer-->
+    	<div data-role="footer" data-position="fixed" data-id="oneFooter">    
+   		</div><!--Page-->
     </div>
+    
+	<!-- Edit Cub-->
+    <div data-role="page" id="edit-contact">
+        <div data-role="header">
+            <a class="header-icon" data-rel="back">
+                <img src="/contacts/content/images/back.png" />
+            </a>
+            <h1>Edit Contact</h1>
+        </div>
+        <div data-role="content">
+            <div data-role="content" id="edit-details">
+                <span>first name</span>
+                <input type="text" id="edit-fname" />
+
+                <span>last name</span>
+                <input type="text" id="edit-lname" />
+
+                <span>email</span>
+                <input type="email" id="edit-email" />
+
+                <span>telephone</span>
+                <input type="tel" id="edit-phone" />
+
+                <div class="edit-save">
+                    Update
+                </div>
+            </div>
+        </div>
+        <!--Footer-->
+    	<div data-role="footer" data-position="fixed" data-id="oneFooter">    
+    	</div>
+    </div><!--Page-->
+ 
+    
+    
     <script type="text/javascript">
         document.addEventListener('deviceready', function () {
             navigator.splashscreen.hide();
