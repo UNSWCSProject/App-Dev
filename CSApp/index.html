@@ -65,7 +65,7 @@
             
         </div>
         	<!--Content-->
-        	<article data-role="content">
+        	<div data-role="content">
             	<img src="styles/images/search_active2x.png" alt=""/>  
             	<ul data-role="listview">
                 	<li>
@@ -80,8 +80,11 @@
                 	<li>
                     	<a href="#contact-list" data-transition="slide">Cubs</a>
                 	</li>
-           		</ul>
-        	</article>        
+                    <li>
+                    	<a href="#new-cub" data-transition="slide">Add Cub</a>
+                	</li>
+           		</ul>      
+        </div>
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>   
     </div> <!--page-->
@@ -104,7 +107,37 @@
                                 <input id="SelectedSensors_0__Id" name="SelectedSensors[0].Id" type="hidden" value="16" />                                
                                 <label for="SelectedSensors_0__Value" style="border-top-width: 0px;margin-top: 0px;border-bottom-width: 0px;margin-bottom: 0px;border-left-width: 0px;border-right-width: 0px;">
                                     <label>
-                                        <h3>First Last</h3>
+                                        <h3>Little Bo-Peep</h3>
+                                    </label>
+                                </label>
+                            </fieldset>
+                        </label>
+                        </a><a href="#new-cub" data-transition="slide" data-icon="arrow-r"></a>
+                    </li>
+                     
+                    <li><a href="#" style="padding-top: 0px;padding-bottom: 0px;padding-right: 42px;padding-left: 0px;">
+                        <label style="border-top-width: 0px;margin-top: 0px;border-bottom-width: 0px;margin-bottom: 0px;border-left-width: 0px;border-right-width: 0px;" data-corners="false">
+                            <fieldset data-role="controlgroup" >
+                                <input id="SelectedSensors_0__Value" name="SelectedSensors[0].Value" type="checkbox" value="true" />
+                                <input id="SelectedSensors_0__Id" name="SelectedSensors[0].Id" type="hidden" value="16" />                                
+                                <label for="SelectedSensors_0__Value" style="border-top-width: 0px;margin-top: 0px;border-bottom-width: 0px;margin-bottom: 0px;border-left-width: 0px;border-right-width: 0px;">
+                                    <label>
+                                        <h3>Timmy Turner</h3>
+                                    </label>
+                                </label>
+                            </fieldset>
+                        </label>
+                        </a><a href="#new-cub" data-transition="slide" data-icon="arrow-r"></a>
+                    </li>
+                     
+                    <li><a href="#" style="padding-top: 0px;padding-bottom: 0px;padding-right: 42px;padding-left: 0px;">
+                        <label style="border-top-width: 0px;margin-top: 0px;border-bottom-width: 0px;margin-bottom: 0px;border-left-width: 0px;border-right-width: 0px;" data-corners="false">
+                            <fieldset data-role="controlgroup" >
+                                <input id="SelectedSensors_0__Value" name="SelectedSensors[0].Value" type="checkbox" value="true" />
+                                <input id="SelectedSensors_0__Id" name="SelectedSensors[0].Id" type="hidden" value="16" />                                
+                                <label for="SelectedSensors_0__Value" style="border-top-width: 0px;margin-top: 0px;border-bottom-width: 0px;margin-bottom: 0px;border-left-width: 0px;border-right-width: 0px;">
+                                    <label>
+                                        <h3>Jose Gonzales</h3>
                                     </label>
                                 </label>
                             </fieldset>
@@ -239,12 +272,13 @@
             </ul> 
         </div>
             <a href="#new-cub" data-transition="slide" data-role="button">Add Cub</a>
-        </div>
+        
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter">
             
-        </div>    
-    </div><!--Page-->
+        </div>  
+     </div>
+    <!--Page-->
     
 
    
@@ -255,26 +289,56 @@
         <div data-role="header">
             <h1>Add Cub</h1>
         </div>
+        
         <div data-role="content">
-            <div data-role="content" id="add-details">
-                <span>first name</span>
-                <input type="text" id="add-fname" />
-
-                <span>last name</span>
-                <input type="text" id="add-lname" />
-
-                <span>email</span>
-                <input type="email" id="add-email" />
-
-                <span>telephone</span>
-                <input type="tel" id="add-phone" />
-
-                <div class="add-save">
-                   <!--<input-type="submit" value="Add Cub">-->
-                    <button>Add Cub</button>
-                </div>   
-            </div>
+	
+                        <ul id="cubsList" data-role="listview">
+                	<li>
+                        <label>
+                            <label for="first-name">First Name</label>
+                            <input type="text" name="first-name" id="first-name"/>
+                        </label>
+                	</li>
+  					<li>
+                        <label>
+                            <label for="first-name">Last Name</label>
+                            <input type="text" name="last-name" id="last-name"/>
+                        </label>
+                	</li>
+                    <li>
+                        <label for="dob">Date of Birth</label>
+	         			<input type="date" name="dob" id="dob"/>
+                    </li>
+                	<li>
+                        <label>
+                            <label for="address">Address</label>
+                            <input type="text" name="address" id="address"/>
+                        </label>
+                	</li>
+                            <li>
+                            <label for="cub-level" class="select">Cub Level</label>
+                            <select name="cub-level" id="cub-level">
+                                <option>Bronze</option>
+                                <option>Silver</option>
+                                <option>Gold</option>
+                            </select>
+                            </li>
+                    <li>
+                        <label for="six-status">Six Status</label>
+                        <div id="six-status" data-role="controlgroup" data-type="horizontal">
+                <input type="radio" name="radio-view" id="radio-view-a" value="head"  />
+	         	<label for="radio-view-a">Head</label>
+	         	<input type="radio" name="radio-view" id="radio-view-b" value="second"  />
+	         	<label for="radio-view-b">Second</label>
+	         	<input type="radio" name="radio-view" id="radio-view-c" value="none"  />
+	         	<label for="radio-view-c">None</label>
+         
+                              </div>
+                    </li>
+            </ul> 
+            
         </div>
+
         <!--Footer-->
     	<div data-role="footer" data-position="fixed" data-id="oneFooter">    
    		</div><!--Page-->
