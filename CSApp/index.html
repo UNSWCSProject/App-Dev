@@ -12,27 +12,60 @@
     <script src="jquery-mobile/js/jquery-1.9.1.min.js" type="text/javascript"></script>
     <script src="jquery-mobile/js/jquery.mobile-1.3.1.min.js" type="text/javascript"></script>
     <script src="jquery-mobile/js/main.js"></script>
-	<!--<scipt>
-        $function() {
-        $( "input[type=submit], a, button")
-        	.button
-        .click(function( event ) {
-        	event.preventDefault();
-        });
-        });
-    </scipt>-->
+
 </head>
 <body>
+    
+    <!--Login-->
+    <div id="login" data-role="page" data-add-back-btn="true">
+
+        <!--Header-->
+        <div data-role="header" data-position="fixed">
+            <h1>Login</h1>
+        </div>
+
+        <!--Content-->
+        <div data-role="content">
+            <div id="login-wrap">
+                <form data-ajax="false" id="login-form" method="post">
+                    <h3 id="login-text">Enter your credentials:</h3>
+                    <div>
+                        <input id="login-username" type="text" placeholder="Username" />
+                        <input id="login-password" type="password" placeholder="Password" />
+                    </div>
+
+                    <div class="buttons ui-bar">
+                        <div>
+                            <div class="left">
+                                <a href="#home" data-role="button">Submit</a>
+                            </div>
+                            <div class="right">
+                                <button id="login-reset" data-icon="delete" data-inline="true" class="right">Reset</button>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+            
+
+        <!--Footer-->
+        <div data-role="footer" data-position="fixed" data-id="oneFooter">
+    	</div>
+    </div>
+    <!--Page-->
 
     <!--Home-->
     <div id="home" data-role="page">
         <!--Header-->
         <div data-role="header" data-position="fixed">
-            <h1>Home</h1>
+            <a href="#login" dara-rel="back" data-transition="slide" data-icon="minus">Logout</a>
+            <h1>Track My Cub</h1>
+            
         </div>
         	<!--Content-->
         	<article data-role="content">
-            	<h1>Cub Scouts Australia</h1>
             	<img src="styles/images/search_active2x.png" alt=""/>  
             	<ul data-role="listview">
                 	<li>
@@ -51,7 +84,7 @@
         	</article>        
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>   
-    </div> <!--page>
+    </div> <!--page-->
  
 
     <!--Nominal Roll-->
@@ -62,29 +95,38 @@
         	</div>
         	<!--Content-->
         	<div data-role="content">
-            	<h1 id="RollHeader">Cubs in attendance:</h1>
-            		<ul id="cubsList" data-role="listview" data-inset="true" data-filter="true">
-                	<li>
-                        Jill Smith <input class="rollCheck" type="checkbox">
-                	</li>
-  					<li>
-                		Eve Jackson <input class="rollCheck" type="checkbox">
-                	</li>
-                	<li>
-                        John Doe <input class="rollCheck" type="checkbox">
-                	</li>
-            </ul>  
-            	<div class="buttons ui-bar">
-                    <div>
-                        <div class="left">
-                            <input type="submit" id="SubmitRoll" data-icon="check" data-inline="true" class="left" value="Submit" />
-                        </div>
-                        <div class="clear"></div>
-                    </div>
+            		
+                 <ul data-role="listview" data-filter="true">    
+                    <li><a href="#" style="padding-top: 0px;padding-bottom: 0px;padding-right: 42px;padding-left: 0px;">
+                        <label style="border-top-width: 0px;margin-top: 0px;border-bottom-width: 0px;margin-bottom: 0px;border-left-width: 0px;border-right-width: 0px;" data-corners="false">
+                            <fieldset data-role="controlgroup" >
+                                <input id="SelectedSensors_0__Value" name="SelectedSensors[0].Value" type="checkbox" value="true" />
+                                <input id="SelectedSensors_0__Id" name="SelectedSensors[0].Id" type="hidden" value="16" />                                
+                                <label for="SelectedSensors_0__Value" style="border-top-width: 0px;margin-top: 0px;border-bottom-width: 0px;margin-bottom: 0px;border-left-width: 0px;border-right-width: 0px;">
+                                    <label>
+                                        <h3>First Last</h3>
+                                    </label>
+                                </label>
+                            </fieldset>
+                        </label>
+                        </a><a href="#new-cub" data-transition="slide" data-icon="arrow-r"></a>
+                    </li>
+                    
+                </ul>
+                
+                 
+            </div>
+        
+        		<a href="#confirmRoll" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button">Submit</a>
+               	<div data-role="popup" id="confirmRoll" data-theme="d" data-overlay-theme="b" class="ui-content" style="max-width:340px;">
+                <h3>Confirm Changes</h3>
+                <a href="index.html" data-role="button" data-rel="back" data-theme="b" data-icon="check" data-inline="true" data-mini="true">Confirm</a>
+                <a href="index.html" data-role="button" data-rel="back" data-inline="true" data-mini="true">Cancel</a>    
             </div> 
-        	</div>    
+        
         <!--Footer-->
-        <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>
+        <div data-role="footer" data-position="fixed" data-id="oneFooter">
+        </div>
 	</div>
     
 
@@ -98,28 +140,7 @@
         <!--Content-->
         <div data-role="content">
             <h1 id="Calendar">Calendar</h1>
-            	<table border="1" style="width:300px">
-                    <tr id="TopRow">
-                      <td>First Name</td>
-                      <td>Last Name</td>
-                      <td>Present</td>  
-                    </tr>
-                    <tr>
-                      <td>Jill</td>
-                      <td>Smith</td>		
-                      <td><input type="checkbox"></td>
-                      </tr>
-                    <tr>
-                      <td>Eve</td>
-                      <td>Jackson</td>		
-                      <td><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                      <td>John</td>
-                      <td>Doe</td>		
-                      <td><input type="checkbox"></td>
-                    </tr>
-                </table>
+            	
             
             <div class="buttons ui-bar">
             	<div>
@@ -143,68 +164,47 @@
         </div>
 
         <!--Content-->
-        <div data-role="content">   
-            <div class="left" data-role="controlgroup" data-type="horizontal">
-                <a href="#" data-role="button">Bronze</a>
-                <a href="#" data-role="button">Silver</a>
-                <a href="#" data-role="button">Gold</a>
-            </div>
-            
-            <h1> Select Activity</h1>
+        <div data-role="content"> 
+                <h1> Select Bronze Activity</h1>
+                      
+            <div data-role="navbar">
+            <ul>
+                <li><a href="#" data-role="button" class="ui-btn-active ui-state-persist">Bronze</a></li>
+                <li><a href="#" data-role="button" class="ui-state-persist">Silver</a></li>
+                <li><a href="#" data-role="button" class="ui-state-persist">Gold</a></li>
+            </ul>
+        </div>
+        
             
            <div data-role="collapsible-set" data-theme="a" data-inset="false">
     		<div data-role="collapsible">
     			<h2>Mailbox</h2>
         			<ul data-role="listview">
-            			<li><a href="index.html">Inbox <span class="ui-li-count">12</span></a></li>
-                        <li><a href="index.html">Outbox <span class="ui-li-count">0</span></a></li>
-            			<li><a href="index.html">Drafts <span class="ui-li-count">4</span></a></li>
-            			<li><a href="index.html">Sent <span class="ui-li-count">328</span></a></li>
-            			<li><a href="index.html">Trash <span class="ui-li-count">62</span></a></li>
+            			<li>Inbox <span class="ui-li-count">12</span></li>
+                        <li>Outbox <span class="ui-li-count">0</span></li>
+            			<li>Drafts <span class="ui-li-count">4</span></li>
+            			<li>Sent <span class="ui-li-count">328</span></li>
+            			<li>Trash <span class="ui-li-count">62</span></li>
         			</ul>
                 </div>
                 <div data-role="collapsible">
                 <h2>Calendar</h2>
-                    <ul data-role="listview" data-theme="a" data-divider-theme="b">
-                        <li data-role="list-divider">Friday, October 8, 2010 <span class="ui-li-count">2</span></li>
-                        <li><a href="index.html">
-                                <h3>Stephen Weber</h3>
-                            <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-                            <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-                                <p class="ui-li-aside"><strong>6:24</strong>PM</p>
-                        </a></li>
-                        <li><a href="index.html">
-                            <h3>jQuery Team</h3>
-                        <p><strong>Boston Conference Planning</strong></p>
-                        <p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
-                            <p class="ui-li-aside"><strong>9:18</strong>AM</p>
-                        </a></li>
-                        <li data-role="list-divider">Thursday, October 7, 2010 <span class="ui-li-count">1</span></li>
-                        <li><a href="index.html">
-                            <h3>Avery Walker</h3>
-                        <p><strong>Re: Dinner Tonight</strong></p>
-                        <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait! </p>
-                            <p class="ui-li-aside"><strong>4:48</strong>PM</p>
-                        </a></li>
-                        <li data-role="list-divider">Wednesday, October 6, 2010 <span class="ui-li-count">3</span></li>
-                        <li><a href="index.html">
-                            <h3>Amazon.com</h3>
-                        <p><strong>4-for-3 Books for Kids</strong></p>
-                        <p>As someone who has purchased children's books from our 4-for-3 Store, you may be interested in these featured books.</p>
-                            <p class="ui-li-aside"><strong>12:47</strong>PM</p>
-                        </a></li>
+                    <ul data-role="listview">
+                        <li>Inbox <span class="ui-li-count">12</span></li>
+                        <li>Outbox <span class="ui-li-count">0</span></li>
+            			<li>Drafts <span class="ui-li-count">4</span></li>
+            			<li>Sent <span class="ui-li-count">328</span></li>
+            			<li>Trash <span class="ui-li-count">62</span></li>
                     </ul>
                 </div>
                 <div data-role="collapsible">
                 <h2>Contacts</h2>
-                    <ul data-role="listview" data-autodividers="true" data-theme="a" data-divider-theme="b">
-                        <li><a href="index.html">Adam Kinkaid</a></li>
-                        <li><a href="index.html">Alex Wickerham</a></li>
-                        <li><a href="index.html">Avery Johnson</a></li>
-                        <li><a href="index.html">Bob Cabot</a></li>
-                        <li><a href="index.html">Caleb Booth</a></li>
-                        <li><a href="index.html">Christopher Adams</a></li>
-                        <li><a href="index.html">Culver James</a></li>
+                    <ul data-role="listview">
+                        <li>Inbox <span class="ui-li-count">12</span></li>
+                        <li>Outbox <span class="ui-li-count">0</span></li>
+            			<li>Drafts <span class="ui-li-count">4</span></li>
+            			<li>Sent <span class="ui-li-count">328</span></li>
+            			<li>Trash <span class="ui-li-count">62</span></li>
                     </ul>
                 </div>
             </div> 
@@ -220,34 +220,29 @@
     </div><!--Page-->
     
     <!--Cubs-->
-    <div data-role="page" id="contact-list">
+    <div data-role="page" id="contact-list" data-add-back-btn="true">
         <div data-role="header">
-            <a href="#home" dara-rel="back" data-icon="arrow-l">Back</a>
-            <h1>All Contacts</h1>
-            <a href="#new-cub" data-icon="plus" data-role="button"  >Add</a>
+            <h1>All Cubs</h1>           
         </div>
+     
         <div data-role="content">
-            <ul id="main-contact-list" data-role="listview" data-autodividers="true" data-filter="true" data-inset="false" class="ui-icon-alt">
-            </ul>
-            <div data-role="content" id="details">
-            <span>name</span>
-            <div class="name">
-                Mitesh Patel
-            </div>
-
-            <span>email</span>
-            <div class="email">
-                mitesh.patel@raavel.com
-            </div>
-
-            <span>telephone</span>
-            <div class="phone">
-                234-422-2332
-            </div>
+            <ul id="cubsList" data-role="listview" data-inset="true" data-filter="true">
+                	<li>
+                        Jill Smith 
+                	</li>
+  					<li>
+                		Eve Jackson 
+                	</li>
+                	<li>
+                        John Doe 
+                	</li>
+            </ul> 
         </div>
+            <a href="#new-cub" data-transition="slide" data-role="button">Add Cub</a>
         </div>
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter">
+            
         </div>    
     </div><!--Page-->
     
