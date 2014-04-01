@@ -31,17 +31,17 @@ app.createTable = function() {
         tx.executeSql("CREATE TABLE IF NOT EXISTS cubActivity(cubID INTEGER, activityID INTEGER, date DATE, FOREIGN KEY (cubID) REFERENCES cub(cubID), FOREIGN KEY (activityID) REFERENCES activity(activityID))", []);
         tx.executeSql("CREATE TABLE IF NOT EXISTS cubBadge(cubID INTEGER, badgeID INTEGER, dateCompleted DATE, completed TINYINT DEFAULT 0, FOREIGN KEY (cubID) REFERENCES cub(cubID), FOREIGN KEY (badgeID) REFERENCES badge(badgeID), PRIMARY KEY(cubID, badgeID))", []);
         tx.executeSql("CREATE TABLE IF NOT EXISTS cubSectionCategory(cubID INTEGER, sectionID INTEGER, categoryID INTEGER, FOREIGN KEY (cubID) REFERENCES cub(cubID), FOREIGN KEY (sectionID) REFERENCES section(sectionID), FOREIGN KEY (categoryID) REFERENCES category(categoryID) PRIMARY KEY(cubID, sectionID, categoryID))", []);
-        tx.executeSql("CREATE TABLE IF NOT EXISTS sectionAchievement(sectionID INTEGER, achievementID INTEGER, FOREIGN KEY (sectionID) REFERENCES section(sectionID), FOREIGN KEY (achievementID) REFERENCES achievement(achievementID), PRIMARY KEY(sectionID, achievementID))", []);
+        tx.executeSql("CREATE TABLE IF NOT EXISTS sectionActivity(sectionID INTEGER, activityID INTEGER, FOREIGN KEY (sectionID) REFERENCES section(sectionID), FOREIGN KEY (achievementID) REFERENCES achievement(achievementID), PRIMARY KEY(sectionID, achievementID))", []);
         tx.executeSql("CREATE TABLE IF NOT EXISTS meetActivity(meetID INTEGER, activityID INTEGER, FOREIGN KEY (meetID) REFERENCES meet(meetID), FOREIGN KEY (activityID) REFERENCES activity(activityID), PRIMARY KEY(meetID, activityID))", []);
         tx.executeSql("CREATE TABLE IF NOT EXISTS cubActivity(cubID INTEGER, activityID INTEGER, dateCompleted DATETIME, FOREIGN KEY (cubID) REFERENCES cub(cubID), FOREIGN KEY (activityID) REFERENCES activity(activityID), PRIMARY KEY(cubID, activityID))", []);   
     });
 }
       
-app.addTodo = function(todoText) {
+app.addCub = function(todoText) {
 	var db = cubDb.db;
 	db.transaction(function(tx) {
 		var addedOn = new Date();
-		tx.executeSql("INSERT INTO todo(todo, added_on) VALUES (?,?)",
+		tx.executeSql("INSERT INTO cub(surname, firstName, dob) VALUES (?,?,?)",
 					  [todoText, addedOn],
 					  app.onSuccess,
 					  app.onError);
@@ -59,7 +59,7 @@ app.onSuccess = function(tx, r) {
 app.deleteTodo = function(id) {
 	var db = cubDb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("DELETE FROM todo WHERE ID=?", [id],
+		tx.executeSql("DELETE FROM cub WHERE ID=?", [id],
 					  app.onSuccess,
 					  app.onError);
 	});
