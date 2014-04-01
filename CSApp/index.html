@@ -323,59 +323,35 @@
             <h1>Add Cub</h1>
         </div>
         
-        <div data-role="content">
-	
-                        <ul id="cubsList" data-role="listview">
-                	<li>
-                        <label>
-                            <label for="first-name">First Name</label>
-                            <input type="text" name="first-name" id="firstName"/>
-                        </label>
-                	</li>
-  					<li>
-                        <label>
-                            <label for="first-name">Last Name</label>
-                            <input type="text" name="last-name" id="surname"/>
-                        </label>
-                	</li>
-                    <li>
-                        <label for="dob">Date of Birth</label>
-	         			<input type="date" name="dob" id="dob"/>
-                    </li>
-                	<li>
-                        <label>
-                            <label for="address">Address</label>
-                            <input type="text" name="address" id="address"/>
-                        </label>
-                	</li>
-                            <li>
-                            <label for="cub-level" class="select">Cub Level</label>
-                            <select name="cub-level" id="cub-level">
-                                <option>Bronze</option>
-                                <option>Silver</option>
-                                <option>Gold</option>
-                            </select>
-                            </li>
-                    <li>
-                        <label for="six-status">Six Status</label>
-                        <div id="six-status" data-role="controlgroup" data-type="horizontal">
-                <input type="radio" name="radio-view" id="radio-view-a" value="head"  />
-	         	<label for="radio-view-a">Head</label>
-	         	<input type="radio" name="radio-view" id="radio-view-b" value="second"  />
-	         	<label for="radio-view-b">Second</label>
-	         	<input type="radio" name="radio-view" id="radio-view-c" value="none"  />
-	         	<label for="radio-view-c">None</label>
-         
-                              </div>
-                    </li>
-            </ul> 
+        <div class="content">
+            <div class="input-area ch30">
+                <input class="inputBox" type="VARCHAR" id="firstName" placeholder="First Name" />
+                <input class="inputBox" type="VARCHAR" id="surname" placeholder="Surname" />
+                <input class="inputBox" type="DATE" id="dob" placeholder="Date of Birth" />
+                <input class="inputBox" type="VARCHAR" id="guardian1" placeholder="Guardian 1" />
+                <input class="inputBox" type="VARCHAR" id="guardian2" placeholder="Guardian 2" />
+                <input class="inputBox" type="VARCHAR" id="phone1" placeholder="Phone 1" />
+                <input class="inputBox" type="VARCHAR" id="phone2" placeholder="Phone 2" />
+                <input class="inputBox" type="DATETIME" id="dateJoined" placeholder="Date Joined" />
+                <button class="button" id="addCub" onclick="addCub(); return false;">Submit</button>
+			</div>
+            <div class="result-area ch70">
+                <div class="results">
+                    <div class="desc"></div>
+                    <ul id="cubNames"></ul>
+                </div>
+                <div class="separator"></div>
+            </div> 
+		</div>
+        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+        <script type="text/javascript" charset="utf-8" src="scripts/main.js"></script>
             
-        </div>
+    </div>
 
         <!--Footer-->
     	<div data-role="footer" data-position="fixed" data-id="oneFooter">    
    		</div><!--Page-->
-    </div>
+   
     
 	<!-- Edit Cub-->
     <div data-role="page" id="edit-contact">

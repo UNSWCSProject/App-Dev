@@ -5,7 +5,7 @@ document.addEventListener("deviceready", init, false);
 document.addEventListener("touchstart", function() {}, false);
 
 var app = {};
-app.db = null;
+cubDb.db = null;
       
 app.openDb = function() {
    if (window.navigator.simulator === true) {
@@ -37,12 +37,12 @@ app.createTable = function() {
     });
 }
       
-app.addCub = function(todoText) {
+app.addCub = function(addCub) {
 	var db = cubDb.db;
 	db.transaction(function(tx) {
 		//var dob = new Date();
-		tx.executeSql("INSERT INTO cub(surname, firstName, dob) VALUES (?,?,?)",
-					  [surname, firstName, dob],
+		tx.executeSql("INSERT INTO cub(firstName, surname, dob, guardian1, guardian2, phone1, phone2, dateJoined) VALUES (?,?,?,?,?,?,?,?)",
+					  [firstName, surname, dob, guardian1, guardian2, phone1, phone2, dateJoined],
 					  app.onSuccess,
 					  app.onError);
 	});
@@ -56,7 +56,7 @@ app.onSuccess = function(tx, r) {
 	app.refresh();
 }
       
-app.deleteTodo = function(id) {
+app.deleteCub = function(id) {
 	var db = cubDb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("DELETE FROM cub WHERE ID=?", [id],
@@ -82,7 +82,7 @@ app.refresh = function() {
     
 	var db = cubDb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("SELECT * FROM todo", [], 
+		tx.executeSql("SELECT * FROM cub", [], 
 					  render, 
 					  app.onError);
 	});
@@ -95,8 +95,8 @@ function init() {
 	app.refresh();
 }
       
-function addTodo() {
-	var todo = document.getElementById("todo");
-	app.addTodo(todo.value);
-	todo.value = "";
+function addCub() {
+	var cub = document.getElementById("cub");
+	app.addCub(cub.value);
+	cub.value = "";
 }
