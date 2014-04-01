@@ -323,28 +323,41 @@
             <h1>Add Cub</h1>
         </div>
         
-        <div class="content">
-            <div class="input-area ch30">
-                <input class="inputBox" type="VARCHAR" id="firstName" placeholder="First Name" />
-                <input class="inputBox" type="VARCHAR" id="surname" placeholder="Surname" />
-                <input class="inputBox" type="DATE" id="dob" placeholder="Date of Birth" />
-                <input class="inputBox" type="VARCHAR" id="guardian1" placeholder="Guardian 1" />
-                <input class="inputBox" type="VARCHAR" id="guardian2" placeholder="Guardian 2" />
-                <input class="inputBox" type="VARCHAR" id="phone1" placeholder="Phone 1" />
-                <input class="inputBox" type="VARCHAR" id="phone2" placeholder="Phone 2" />
-                <input class="inputBox" type="DATETIME" id="dateJoined" placeholder="Date Joined" />
-                <button class="button" id="addCub" onclick="addCub(); return false;">Submit</button>
-			</div>
-            <div class="result-area ch70">
-                <div class="results">
-                    <div class="desc"></div>
-                    <ul id="cubNames"></ul>
-                </div>
-                <div class="separator"></div>
-            </div> 
-		</div>
-        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-        <script type="text/javascript" charset="utf-8" src="scripts/main.js"></script>
+        <fieldset>
+ 
+                           <legend>Cub details</legend>
+ 
+                           <ol>
+ 
+                                  <li>
+ 
+                                         <label for="firstName">First Name</label>
+ 
+                                         <input id="firstName" type="text" placeholder="First Name" required autofocus pattern=" ">
+ 
+                        <input type="hidden" id="id"/>
+ 
+                                  </li>
+ 
+                                  <li>
+ 
+                                         <label for="surname">Surname</label>
+ 
+                                         <input id="surname" type="text" placeholder="surname" required pattern=" ">
+ 
+                                  </li>
+ 
+                           </ol>
+ 
+                     </fieldset>
+ 
+                <button id="btnReset" type=submit>Reset</button>
+ 
+                 <button id="submitButton" type="submit">Save</button>
+ 
+               
+ 
+       
             
     </div>
 

@@ -5,9 +5,16 @@ document.addEventListener("deviceready", init, false);
 document.addEventListener("touchstart", function() {}, false);
 
 var app = {};
+var createCub = "INSERT INTO cub(surname, firstName, phone1, phone2, dob, dateJoined, colourSix, headOfSix, secondOfSix, dateInvested, guardian1, guardian2) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+var selectCubNames = "SELECT (firstName, surname) FROM Contacts"; 
+var updateCub = "UPDATE cub SET surname = ?, firstname = ?, phone1 = ?, phone2 = ?, dob = ?, dateJoined = ?, colourSix = ?, headOfSix = ?, secondOfSix = ?, dateInvested = ?, guardian1 = ?, guardian2 = ? WHERE id=?"; 
+var deletecub = "DELETE FROM cub WHERE id=?"; 
+var dropStatement = "DROP TABLE cub";
+
 cubDb.db = null;
       
-app.openDb = function() {
+app.openDb = function() 
+{
    if (window.navigator.simulator === true) {
         // For debugin in simulator fallback to native SQL Lite
         console.log("Use built in SQL Lite");
@@ -37,7 +44,8 @@ app.createTable = function() {
     });
 }
       
-app.addCub = function(addCub) {
+app.createCub = function(createCub) 
+{
 	var db = cubDb.db;
 	db.transaction(function(tx) {
 		//var dob = new Date();
@@ -47,56 +55,18 @@ app.addCub = function(addCub) {
 					  app.onError);
 	});
 }
-      
-app.onError = function(tx, e) {
-	console.log("Error: " + e.message);
-} 
-      
-app.onSuccess = function(tx, r) {
-	app.refresh();
-}
-      
-app.deleteCub = function(id) {
-	var db = cubDb.db;
-	db.transaction(function(tx) {
-		tx.executeSql("DELETE FROM cub WHERE ID=?", [id],
-					  app.onSuccess,
-					  app.onError);
-	});
+            
+function createCub() 
+{
+    var cubFirstNameTemp = $('input:text[id=firstName]').val();
+    var cubSurnameTemp = $('input:text[id=surname]').val();
+    db.transation(function (tx) {tx.executeSql(insertStatement, [cubFirstNameTemp, cubSurnameTemp], loadAndReset, on Error); });
 }
 
-app.refresh = function() {
-	var renderTodo = function (row) {
-		return "<li>" + "<div class='todo-check'></div>" + row.todo + "<a class='button delete' href='javascript:void(0);'  onclick='app.deleteTodo(" + row.ID + ");'><p class='todo-delete'></p></a>" + "<div class='clear'></div>" + "</li>";
-	}
-    
-	var render = function (tx, rs) {
-		var rowOutput = "";
-		var todoItems = document.getElementById("todoItems");
-		for (var i = 0; i < rs.rows.length; i++) {
-			rowOutput += renderTodo(rs.rows.item(i));
-		}
-      
-		todoItems.innerHTML = rowOutput;
-	}
-    
-	var db = cubDb.db;
-	db.transaction(function(tx) {
-		tx.executeSql("SELECT * FROM cub", [], 
-					  render, 
-					  app.onError);
-	});
-}
-      
-function init() {
-    navigator.splashscreen.hide();
-	app.openDb();
-	app.createTable();
-	app.refresh();
-}
-      
-function addCub() {
-	var cub = document.getElementById("cub");
-	app.addCub(cub.value);
-	cub.value = "";
+function loadCub(i) // Function for display records which are retrived from database.
+{ 
+    var item = dataset.item(i);
+    $("#firstName").val((item['firstName']).toString()); 
+    $("#surname").val((item['surname']).toString()); 
+    $("#cubID").val((item['cubID']).toString()); 
 }
