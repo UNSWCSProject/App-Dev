@@ -40,9 +40,9 @@ app.createTable = function() {
 app.addCub = function(todoText) {
 	var db = cubDb.db;
 	db.transaction(function(tx) {
-		var addedOn = new Date();
+		//var dob = new Date();
 		tx.executeSql("INSERT INTO cub(surname, firstName, dob) VALUES (?,?,?)",
-					  [todoText, addedOn],
+					  [surname, firstName, dob],
 					  app.onSuccess,
 					  app.onError);
 	});
