@@ -16,7 +16,7 @@
 </head>
 <body>
     
-    <!--Login-->
+  <!--Login-->
     <div id="login" data-role="page" data-add-back-btn="true">
 
         <!--Header-->
@@ -80,7 +80,7 @@
         <div data-role="footer" data-position="fixed" data-id="oneFooter">
     	</div>
     </div>
-    <!--Page-->
+    <!--Page-->  
 
     <!--Home-->
     <div id="home" data-role="page">
@@ -190,93 +190,81 @@
 
         <!--Content-->
         <div data-role="content"> 
-              <p></p>
+            <div class="spacer"></div>
+            <div class="spacer"></div>
             <!--navbar-->          
-            <div data-role="navbar">
+            <div id="activity-bar" class="ui-navbar" data-role="navbar">
 				<ul>
-					<li><a href="#activity-bronze" class="ui-btn-active ui-state-persist">Bronze</a></li>
-					<li><a href="#activity-silver">Silver</a></li>
-                    <li><a href="#activity-gold">Gold</a></li>
+					<li><a href="#" class="ui-btn ui-btn-inline ui-btn-up-c ui-btn-active ">Bronze</a></li>
+					<li><a href="#" class="ui-btn ui-btn-inline ui-btn-up-c">Silver</a></li>
+                    <li><a href="#" class="ui-btn ui-btn-inline ui-btn-up-c">Gold</a></li>
 				</ul>
 			</div><!-- /navbar -->
             <div class="spacer"></div>
-            <div id="activity-bronze" name="activity-bronze">
-                <ul data-role="listview" data-theme="c" data-dividertheme="d">
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="al-01" id="al-01"/>
-                        </div>
-                        <h3 class="pushRight">word1</h3>
-                    </li>
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="al-02" id="al-02"/>
-                        </div>
-                        <h3 class="pushRight">word2</h3>
-                    </li>
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="al-03" id="al-03"/>
-                        </div>
-                        <h3 class="pushRight">word3</h3>
-                    </li>
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="al-04" id="al-04"/>
-                        </div>
-                        <h3 class="pushRight">word4</h3>
-                    </li>
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="al-05" id="al-05"/>
-                        </div>
-                        <h3 class="pushRight">word5</h3>
-                    </li>
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="al-06" id="al-06"/>
-                        </div>
-                        <h3 class="pushRight">word6</h3>
-                    </li>
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="al-07" id="al-07"/>
-                        </div>
-                        <h3 class="pushRight">word7</h3>
-                    </li>
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="al-08" id="al-08"/>
-                        </div>
-                        <h3 class="pushRight">word8</h3>
-                    </li>
-            	</ul>
+            <div class="container">
+                <div id="activity-bronze" name="activity-bronze">
+                    <ul data-role="listview" data-theme="c" data-dividertheme="d">
+                        <li>
+                                            <div class="checkBoxLeft">
+                                                <input type="checkbox" name="alb-01" id="alb-01"/>
+                                            </div>
+                                            <h3 class="pushRight">Bronze</h3>
+                                </li>
+                                <li>
+                                			<div class="checkBoxLeft">
+                                                <input type="checkbox" name="alb-02" id="alb-02"/>
+                                            </div>
+                                            <h3 class="pushRight">Bronze</h3>
+                                </li>
+                        <li>
+                            <div class="checkBoxLeft">
+                                <input type="checkbox" name="alb-03" id="alb-03"/>
+                            </div>
+                            <h3 class="pushRight">Bronze2</h3>
+                        </li>
+                    </ul>
+                </div>
                 <div class="spacer"></div>
+                <div id="activity-silver" name="activity-silver">
+                    <ul data-role="listview" data-theme="c" data-dividertheme="d">
+                        <li>
+                            <div class="checkBoxLeft">
+                                <input type="checkbox" name="als-01" id="als-01"/>
+                            </div>
+                            <h3 class="pushRight">Silver</h3>
+                        </li>
+                        <li>
+                            <div class="checkBoxLeft">
+                                <input type="checkbox" name="als-02" id="als-02"/>
+                            </div>
+                            <h3 class="pushRight">Silver2</h3>
+                        </li>
+                        <li>
+                            <div class="checkBoxLeft">
+                                <input type="checkbox" name="als-03" id="als-03"/>
+                            </div>
+                            <h3 class="pushRight">Silver3</h3>
+                        </li>
+                    </ul>
+                </div>
+    			<div class="spacer"></div>
+                <div id="activity-gold" name="activity-gold">
+                    <ul data-role="listview" data-theme="c" data-dividertheme="d">
+                        <li>
+                            <div class="checkBoxLeft">
+                                <input type="checkbox" name="alg-01" id="alg-01"/>
+                            </div>
+                            <h3 class="pushRight">Gold</h3>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div id="activity-silver" name="activity-silver">
-                <ul data-role="listview" data-theme="c" data-dividertheme="d">
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="al-01" id="al-01"/>
-                        </div>
-                        <h3 class="pushRight">word1</h3>
-                    </li>
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="al-02" id="al-02"/>
-                        </div>
-                        <h3 class="pushRight">word2</h3>
-                    </li>
-            	</ul>
-            </div>
-        </div>
-        
+           
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter">
         </div>    
-    
-    </div><!--Page-->
-    
+    </div><!--Page-->    
+         
     <!--Cubs-->
     <div data-role="page" id="contact-list" data-add-back-btn="true">
         <div data-role="header">
