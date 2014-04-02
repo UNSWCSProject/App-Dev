@@ -290,24 +290,12 @@
     
     <!--Cub List-->
     <div data-role="page" id="cub-list" data-add-back-btn="true">
-        <div data-role="header">
-            <h1>Cub List</h1>           
-        </div>
-     
-        <div data-role="content">
-            <ul id="cubsList" data-role="listview" data-inset="true" data-filter="true">
-                	<li>
-                        Jill Smith 
-                	</li>
-  					<li>
-                		Eve Jackson 
-                	</li>
-                	<li>
-                        John Doe 
-                	</li>
-            </ul> 
-        </div>
-            <a href="#new-cub" data-transition="slide" data-role="button">Add Cub</a>
+                <div class="cub">
+                    <div class="cub"><h1>Cub List:</h1></div>
+                    <ul id="item"></ul>
+                </div>
+                <div class="separator"></div>
+            </div> 
         
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter">
@@ -321,44 +309,23 @@
     <div data-role="page" id="new-cub" data-add-back-btn="true" >
         <div data-role="header" data-position="fixed">
             <h1>Add Cub</h1>
-        </div>
-        
-        <fieldset>
- 
-                           <legend>Cub details</legend>
- 
+        </div> 
+        <fieldset> 
+                           <legend>Cub details</legend> 
                            <ol>
- 
                                   <li>
- 
-                                         <label for="firstName">First Name</label>
- 
-                                         <input id="firstName" type="text" placeholder="First Name" required autofocus pattern=" ">
- 
-                        <input type="hidden" id="id"/>
- 
-                                  </li>
- 
-                                  <li>
- 
-                                         <label for="surname">Surname</label>
- 
-                                         <input id="surname" type="text" placeholder="surname" required pattern=" ">
- 
-                                  </li>
- 
-                           </ol>
- 
-                     </fieldset>
- 
-                <button id="btnReset" type=submit>Reset</button>
- 
-                 <button id="submitButton" type="submit">Save</button>
- 
-               
- 
-       
-            
+                                         <label for="firstName">First Name</label> 
+                                         <input id="firstName" type="text" placeholder="First Name" required autofocus pattern=" "> 
+                        <input type="hidden" id="id"/> 
+                                  </li> 
+                                  <li> 
+                                         <label for="surname">Surname</label> 
+                                         <input id="surname" type="text" placeholder="surname" required pattern=" "> 
+                                  </li> 
+                           </ol> 
+                     </fieldset> 
+                <button id="btnReset" type=submit>Reset</button> 
+                <button id="submitButton" type="submit" onclick="createCub(); return false;">Save</button>                                
     </div>
 
         <!--Footer-->

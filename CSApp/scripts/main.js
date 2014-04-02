@@ -10,6 +10,7 @@ var selectCubNames = "SELECT (firstName, surname) FROM Contacts";
 var updateCub = "UPDATE cub SET surname = ?, firstname = ?, phone1 = ?, phone2 = ?, dob = ?, dateJoined = ?, colourSix = ?, headOfSix = ?, secondOfSix = ?, dateInvested = ?, guardian1 = ?, guardian2 = ? WHERE id=?"; 
 var deletecub = "DELETE FROM cub WHERE id=?"; 
 var dropStatement = "DROP TABLE cub";
+var db = openDatabase("cubDb", "1.0", "cubDb", 200000);  // Open SQLite Database
 
 cubDb.db = null;
       
@@ -70,3 +71,31 @@ function loadCub(i) // Function for display records which are retrived from data
     $("#surname").val((item['surname']).toString()); 
     $("#cubID").val((item['cubID']).toString()); 
 }
+
+function showRecords() // Function For Retrive data from Database Display records as list 
+{ 
+    $("#results").html('') 
+    db.transaction(function (tx) { 
+        tx.executeSql(selectAllStatement, [], function (tx, result) { 
+            dataset = result.rows; 
+            for (var i = 0, item = null; i < dataset.length; i++) { 
+                item = dataset.item(i); 
+                var linkeditdelete = '<li>' + item['firstName'] + ' , ' + item['surname'] + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
+                                            '<a href="#" onclick="deleteRecord(' + item['id'] + ');">delete</a></li>';
+                $("#results").append(linkeditdelete); 
+            } 
+        }); 
+    }); 
+}
+
+$(document).ready(function () // Call function when page is ready for load.. 
+{
+;
+    $("body").fadeIn(2000); // Fede In Effect when Page Load.. 
+    initDatabase(); 
+    $("#submitButton").click(createCub);  // Register Event Listener when button click. 
+    $("#btnUpdate").click(updateCub);
+    $("#btnReset").click(deleteCub); 
+    $("#btnDrop").click(dropTable);
+ 
+});
