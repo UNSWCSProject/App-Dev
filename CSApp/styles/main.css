@@ -1,3 +1,36 @@
+/*
+ *List fix checkbox layout
+ */
+.spacer{
+    height: 28px;
+}
+
+.ui-checkbox input {
+position: absolute;
+left: 10px;
+top: 50%;
+width: 20px;
+height: 20px;
+margin: -5px 0 0 0;
+outline: 0!important;
+z-index: 1;
+}
+
+.checkBoxLeft{
+    position: absolute; 
+    left: 1px; 
+    top: 45%;
+}
+
+h3.pushRight{
+    padding-left: 28px;
+}
+
+a.pushRight{
+    padding-left: 28px;
+}
+/*end fix*/
+
 .ui-footer {
     text-align: center;
     padding: 0.3em;
