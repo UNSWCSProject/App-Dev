@@ -4,6 +4,7 @@ document.addEventListener("deviceready", init, false);
 //Activate :active state on device
 document.addEventListener("touchstart", function() {}, false);
 
+//declaring the variables for the functions
 var app = {};
 var createCub = "INSERT INTO cub(surname, firstName, phone1, phone2, dob, dateJoined, colourSix, headOfSix, secondOfSix, dateInvested, guardian1, guardian2) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 var selectCubNames = "SELECT (firstName, surname) FROM Contacts"; 
@@ -13,8 +14,8 @@ var dropStatement = "DROP TABLE cub";
 var db = openDatabase("cubDb", "1.0", "cubDb", 200000);  // Open SQLite Database
 var dataset;
 
-cubDb.db = null;
-      
+
+//opens up the database on initialisation
 app.openDb = function() 
 {
    if (window.navigator.simulator === true) {
@@ -26,7 +27,8 @@ app.openDb = function()
         cubDb.db = window.sqlitePlugin.openDatabase("cubDb");
     }
 }
-      
+
+//creates the tables of the database if the tables don't already exist
 app.createTable = function() {
 	var db = cubDb.db;
 	db.transaction(function(tx) {
@@ -45,7 +47,8 @@ app.createTable = function() {
         tx.executeSql("CREATE TABLE IF NOT EXISTS cubActivity(cubID INTEGER, activityID INTEGER, dateCompleted DATETIME, FOREIGN KEY (cubID) REFERENCES cub(cubID), FOREIGN KEY (activityID) REFERENCES activity(activityID), PRIMARY KEY(cubID, activityID))", []);   
     });
 }
-      
+
+//function for the app to create a cub, inputting values into the specified columns in the cub table
 app.createCub = function(createCub) 
 {
 	var db = cubDb.db;
@@ -57,7 +60,10 @@ app.createCub = function(createCub)
 					  app.onError);
 	});
 }
-            
+
+//this should be taking the inputs from the index file (referenced as variables such as cubFirstNameTemp). 
+//the index.html used to have the cubFirstNameTemp in the input field on the add cub page, but it's been removed
+//for the presentation for kathryn
 function createCub() 
 {
     var cubFirstNameTemp = $('input:text[id=firstName]').val();
@@ -65,14 +71,17 @@ function createCub()
     db.transation(function (tx) {tx.executeSql(insertStatement, [cubFirstNameTemp, cubSurnameTemp], loadAndReset, on Error); });
 }
 
+//This should grab specified columns of the cub table and insert them into a string
 function loadCub(i) // Function for display records which are retrived from database.
 { 
-    var item = dataset.item(i);
+    var item = cub.item(i);
     $("#firstName").val((item['firstName']).toString()); 
     $("#surname").val((item['surname']).toString()); 
     $("#cubID").val((item['cubID']).toString()); 
 }
 
+//This is meant to display all the information from a given table
+//I haven't done much to this as I've been trying to get other stuff to work
 function showRecords() // Function For Retrive data from Database Display records as list 
 { 
     $("#results").html('') 
@@ -89,6 +98,7 @@ function showRecords() // Function For Retrive data from Database Display record
     }); 
 }
 
+//This function is designed to designate the buttons on the index.html to interact with database
 $(document).ready(function () // Call function when page is ready for load.. 
 {
 ;
