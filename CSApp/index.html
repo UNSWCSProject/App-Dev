@@ -15,8 +15,7 @@
     
 </head>
 <body>
- 	   
-  <!--Login-->
+ 	 <!--Login-->
     <div id="login" data-role="page" data-add-back-btn="true">
 
         <!--Header-->
@@ -80,8 +79,8 @@
         <div data-role="footer" data-position="fixed" data-id="oneFooter">
     	</div>
     </div>
-    <!--Page-->  
-
+    <!--Page-->   
+    
     <!--Home-->
     <div id="home" data-role="page">
         <!--Header-->
@@ -92,10 +91,15 @@
         </div>
         	<!--Content-->
         	<div data-role="content" class="front-content">
-                <div class="banner">
-                  <img src="styles/images/boomrng.png" alt=""/>  
-                  <h1>CSMA</h1>
+                <div id="banner">
+                    <div class="box-l">
+                        <img src="styles/images/boomrng.png" alt=""/>  
+                    </div>
+                    <div class="box-r">
+                        <h1>CSMA</h1>
+                    </div>
                 </div>
+                <div class="spacer"></div>
                 <div class="front-list">
                     <ul data-role="listview">
                         <li>
@@ -112,9 +116,6 @@
                         </li>
                         <li>
                             <a href="#new-cub" data-transition="slide">Add Cub</a>
-                        </li>
-                        <li>
-                            <a href="#edit-contact" data-transition="slide">Edit Contact</a>
                         </li>
                     </ul>    
                 </div>
@@ -138,29 +139,33 @@
                         <div class="checkBoxLeft">
                             <input type="checkbox" name="nr-01" id="nr-01"/>
                         </div>
-                         <a href="#new-cub" data-transition="slide"><h3 class="pushRight">word1</h3></a>
+                         <a href="#new-cub" data-transition="slide"><h3 class="pushRight">Timmy Turner</h3></a>
                     </li>
                     <li>
                         <div class="checkBoxLeft">
                             <input type="checkbox" name="nr-02" id="nr-02"/>
                         </div>
-                        <a href="#new-cub" data-transition="slide"><h3 class="pushRight">word2</h3></a>
+                        <a href="#new-cub" data-transition="slide"><h3 class="pushRight">Joe Bloggs</h3></a>
+                    </li>
+                    <li>
+                        <div class="checkBoxLeft">
+                            <input type="checkbox" name="nr-03" id="nr-03"/>
+                        </div>
+                        <a href="#new-cub" data-transition="slide"><h3 class="pushRight">Jack Tar</h3></a>
                     </li>
             	</ul>
                                   
-            </div>
-        
-        		<a href="#confirmRoll" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button">Submit</a>
-               	<div data-role="popup" id="confirmRoll" data-theme="d" data-overlay-theme="b" class="ui-content" style="max-width:340px;">
-                <h3>Confirm Changes</h3>
-                <a href="index.html" data-role="button" data-rel="back" data-theme="b" data-icon="check" data-inline="true" data-mini="true">Confirm</a>
-                <a href="index.html" data-role="button" data-rel="back" data-inline="true" data-mini="true">Cancel</a>    
-            </div> 
-        
+            </div>        
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter">
+            <a href="#confirmRoll" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button">Submit</a>
+            <div data-role="popup" id="confirmRoll" data-theme="d" data-overlay-theme="b" class="ui-content" style="max-width:340px;">
+                <h3>Confirm Changes</h3>
+                <a href="index.html" data-role="button" data-rel="back" data-theme="b" data-icon="check" data-inline="true" data-mini="true">Confirm</a>
+                <a href="index.html" data-role="button" data-rel="back" data-inline="true" data-mini="true">Cancel</a>
+            </div>
         </div>
-	</div>
+	</div><!--page-->
     
 
     <!--Calendar-->
@@ -172,16 +177,7 @@
 
         <!--Content-->
         <div data-role="content">
-            <h1 id="Calendar">Calendar</h1>
-            	
-            
-            <div class="buttons ui-bar">
-            	<div>
-                    <div class="left">
-                        <input type="submit" id="SubmitRoll" data-icon="check" data-inline="true" class="left" value="Submit" />
-                    </div>
-                </div>
-            </div>
+          
         </div>
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter">
@@ -198,17 +194,6 @@
 
         <!--Content-->
         <div data-role="content"> 
-            <div class="spacer"></div>
-            <div class="spacer"></div>
-            <!--navbar-->          
-            <div id="activity-bar" class="ui-navbar" data-role="navbar">
-				<ul>
-					<li><a href="#" class="ui-btn ui-btn-inline ui-btn-up-c ui-btn-active ">Bronze</a></li>
-					<li><a href="#" class="ui-btn ui-btn-inline ui-btn-up-c">Silver</a></li>
-                    <li><a href="#" class="ui-btn ui-btn-inline ui-btn-up-c">Gold</a></li>
-				</ul>
-			</div><!-- /navbar -->
-            <div class="spacer"></div>
             <div class="container">
                 <div id="activity-bronze" name="activity-bronze">
                     <ul data-role="listview" data-theme="c" data-dividertheme="d">
@@ -270,6 +255,14 @@
         </div>
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter">
+			<!--navbar-->          
+            <div id="activity-bar" class="ui-navbar" data-role="navbar" data-theme="a">
+				<ul>
+					<li><a href="#" class="ui-btn-active ">Bronze</a></li>
+					<li><a href="#">Silver</a></li>
+                    <li><a href="#">Gold</a></li>
+				</ul>
+			</div><!-- /navbar -->
         </div>    
     </div><!--Page-->    
          
@@ -280,23 +273,23 @@
         </div>
      
         <div data-role="content">
-            <ul id="cubsList" data-role="listview" data-inset="true" data-filter="true">
+            <ul id="cubsList" data-role="listview" data-inset="false" data-filter="true">
                 	<li>
-                        Jill Smith 
+                       <a href="#new-cub" data-transition="slide"><h3 class="pushRight">Timmy Turner</h3></a>
                 	</li>
   					<li>
-                		Eve Jackson 
+                		<a href="#new-cub" data-transition="slide"><h3 class="pushRight">Joe Bloggs</h3></a>
                 	</li>
                 	<li>
-                        John Doe 
+                        <a href="#new-cub" data-transition="slide"><h3 class="pushRight">Jack Tar</h3></a>
                 	</li>
             </ul> 
         </div>
-            <a href="#new-cub" data-transition="slide" data-role="button">Add Cub</a>
+            
         
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter">
-            
+            <a href="#new-cub" data-transition="slide" data-role="button">Add Cub</a>
         </div>  
      </div>
     <!--Page-->
@@ -313,7 +306,7 @@
         
         <div data-role="content">
 	
-                        <ul id="cubsList" data-role="listview">
+        		<ul id="cubsList" data-role="listview">
                 	<li>
                         <label>
                             <label for="first-name">First Name</label>
@@ -330,74 +323,86 @@
                         <label for="dob">Date of Birth</label>
 	         			<input type="date" name="dob" id="dob"/>
                     </li>
+               		<li>
+                        <label>
+                            <label for="guardian1">Guardian</label>
+                            <input type="text" name="guardian1" id="guardian1"/>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <label for="phone1">Phone</label>
+                        <input type="tel" id="phone1" />
+                        </label>
+                    </li>
+                	<li>
+                        <label>
+                            <label for="guardian2">Guardian 2</label>
+                            <input type="text" name="guardian2" id="guardian2"/>
+                        </label>
+                    </li>
+                       <li>
+                        <label>
+                            <label for="phone2">Phone 2</label>
+                        <input type="tel" id="phone2" />
+                        </label>
+                    </li>
                 	<li>
                         <label>
                             <label for="address">Address</label>
                             <input type="text" name="address" id="address"/>
                         </label>
                 	</li>
-                            <li>
-                            <label for="cub-level" class="select">Cub Level</label>
-                            <select name="cub-level" id="cub-level">
-                                <option>Bronze</option>
-                                <option>Silver</option>
-                                <option>Gold</option>
-                            </select>
-                            </li>
-                            <li>
-                                     <div class="list-centre"> 
-                                         <fieldset data-role="controlgroup" data-type="horizontal"> 
-                                             <input type="radio" name="radio-choice-1" id="spent_money_1" value="choice-1" checked="checked" />
-                                             <label for="spent_money_1" white-space="normal"> NA </label>
-                                             <input type="radio" name="radio-choice-1" id="made_money_2" value="choice-2" />
-                                             <label for="made_money_2" white-space="normal">HEAD</label> 
-                                             <input type="radio" name="radio-choice-1" id="made_money_3" value="choice-3"/>
-                                             <label for="made_money_3" white-space="normal">2IC </label> 
-                                         </fieldset>
-                                     </div>
-                            </li>
+                    <li>
+                    	<label for="cub-level" class="select">Cub Level</label>
+                        <select name="cub-level" id="cub-level">
+                            <option>Bronze</option>
+                            <option>Silver</option>
+                            <option>Gold</option>
+                        </select>
+                  	</li>
+                    <li>	
+                    	<label for="cub-status" class="select">Cub Status</label>
+                        <select name="cub-status" id="cub-status">
+                        	<option>NA</option>
+                            <option>HEAD</option>
+                            <option>2IC</option>
+                     	</select>
+                     </li>
+           			 <li>
+                        <label for="cub-color" class="select">Colour</label>
+                        <select name="cub-color" id="cub-color">
+                        	<option>Red</option>
+                            <option>Green</option>
+                            <option>Blue</option>
+                            <option>White</option>
+                            <option>Black</option>
+                            <option>Yellow</option>
+                        </select>
+                    </li>
+                     <li>
+                        <label for="date-joined">Date Joined</label>
+	         			<input type="date" name="date-joined" id="date-joined"/>
+                    </li>
+                     <li>
+                        <label for="date-invested">Date Invested</label>
+	         			<input type="date" name="date-invested" id="date-invested"/>
+                    </li>
+                    
+                          
             </ul> 
             
         </div>
 
         <!--Footer-->
-    	<div data-role="footer" data-position="fixed" data-id="oneFooter">    
+    	<div data-role="footer" data-position="fixed" data-id="oneFooter">
+            <a href="#confirm-add" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button">Submit</a>
+               	<div data-role="popup" id="confirm-add" data-theme="d" data-overlay-theme="b" class="ui-content" style="max-width:340px;">
+                <h3>Confirm Changes</h3>
+                <a href="index.html" data-role="button" data-rel="back" data-theme="b" data-icon="check" data-inline="true" data-mini="true">Confirm</a>
+                <a href="index.html" data-role="button" data-rel="back" data-inline="true" data-mini="true">Cancel</a>
    		</div><!--Page-->
-    </div>
-    
-	<!-- Edit Cub-->
-    <div data-role="page" id="edit-contact">
-        <div data-role="header">
-            <a class="header-icon" data-rel="back">
-                <img src="/contacts/content/images/back.png" />
-            </a>
-            <h1>Edit Contact</h1>
-        </div>
-        <div data-role="content">
-            <div data-role="content" id="edit-details">
-                <span>first name</span>
-                <input type="text" id="edit-fname" />
-
-                <span>last name</span>
-                <input type="text" id="edit-lname" />
-
-                <span>email</span>
-                <input type="email" id="edit-email" />
-
-                <span>telephone</span>
-                <input type="tel" id="edit-phone" />
-
-                <div class="edit-save">
-                    Update
-                </div>
-            </div>
-        </div>
-        <!--Footer-->
-    	<div data-role="footer" data-position="fixed" data-id="oneFooter">    
-    	</div>
-    </div><!--Page-->
- 
-    
+    </div>   
     
     <script type="text/javascript">
         document.addEventListener('deviceready', function () {

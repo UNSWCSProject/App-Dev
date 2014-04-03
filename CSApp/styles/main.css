@@ -7,8 +7,8 @@
 position: absolute;
 left: 10px;
 top: 50%;
-width: 20px;
-height: 20px;
+width: 40px;
+height: 40px;
 margin: -5px 0 0 0;
 outline: 0!important;
 z-index: 1;
@@ -17,15 +17,15 @@ z-index: 1;
 .checkBoxLeft{
     position: absolute; 
     left: 1px; 
-    top: 45%;
+    top: 25%;
 }
 
 h3.pushRight{
-    padding-left: 28px;
+    padding-left: 25%;
 }
 
 a.pushRight{
-    padding-left: 28px;
+    padding-left: 25%;
 }
 /*end fix -holmes*/
 
@@ -39,46 +39,40 @@ a.pushRight{
 /*end styling -holmes */
 
 /*Banner -holmes*/
-
-.banner{
-    position:relative;
-    top: 0%;
-    left:0%;
-    width: 110%;
-    height: 100%;
+#banner{
+    overflow:hidden;
+	text-align: left;
+	margin: 0px auto;
+	padding: 0px;
+	border:0;
+    padding-left: -10%;
+	width: 100%;
+    height:100px;
+}
+.box-l{
+    float: left;
+	width: 35%;
+    height:100%;
+	background-color:#FFFF00;
+}
+.box-l img{
+    padding-top:10%;
+    padding-left: 15%;
+	height: 80%;    
+}
+.box-r{
+    margin: 0;
+	float: left;
+	width: 65%;
+    height:100%;
+	background-color:#FFFF00;
 }
 
-.banner img {
-	position: absolute;
-    top:0%;
-    max-width:30%;
+.box-r h1{
+    padding-top:8%;
 }
-
-.banner h1 {
-    position: absolute;
-    left: 35%;
-    top: 8%;
-    font-size:48px;
-}
-
-.front-content{
-    
-    background-color: #FFFF00;
-}
-.front-list{
-    padding-top:55%;
-}
-    
-
-
 /*end Banner -holmes*/
 
-/*add-cub Cub Status -holmes*/
-.list-centre{
-    width: 80%;
-    margin:auto;
-}
-/*end*/
 
 .ui-footer {
     text-align: center;
