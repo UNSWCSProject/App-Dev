@@ -15,7 +15,7 @@
     
 </head>
 <body>
-    
+ 	   
   <!--Login-->
     <div id="login" data-role="page" data-add-back-btn="true">
 
@@ -25,7 +25,7 @@
         </div>
 
         <!--Content-->
-        <div data-role="content">
+        <div data-role="content" class="login">
             <div id="login-wrap">
                 <form data-ajax="false" id="login-form" method="post">
                     <h3 id="login-text">Enter your credentials:</h3>
@@ -87,29 +87,37 @@
         <!--Header-->
         <div data-role="header" data-position="fixed">
             <a href="#login" dara-rel="back" data-transition="slide" data-icon="minus">Logout</a>
-            <h1>Track My Cub</h1>
+            <h1>CSMA</h1>
             
         </div>
         	<!--Content-->
-        	<div data-role="content">
-            	<img src="styles/images/search_active2x.png" alt=""/>  
-            	<ul data-role="listview">
-                	<li>
-                    	<a href="#NominalRoll" data-transition="slide">Nominal Roll</a>
-                	</li>
-                	<li>
-                    	<a href="#Calendar" data-transition="slide">Calendar</a>
-                	</li>
-                	<li>
-                    	<a href="#Activities" data-transition="slide">Activities</a>
-                	</li>
-                	<li>
-                    	<a href="#contact-list" data-transition="slide">Cubs</a>
-                	</li>
-                    <li>
-                    	<a href="#new-cub" data-transition="slide">Add Cub</a>
-                	</li>
-           		</ul>      
+        	<div data-role="content" class="front-content">
+                <div class="banner">
+                  <img src="styles/images/boomrng.png" alt=""/>  
+                  <h1>CSMA</h1>
+                </div>
+                <div class="front-list">
+                    <ul data-role="listview">
+                        <li>
+                            <a href="#nominal-roll" data-transition="slide">Nominal Roll</a>
+                        </li>
+                        <li>
+                            <a href="#calendar" data-transition="slide">Calendar</a>
+                        </li>
+                        <li>
+                            <a href="#activities" data-transition="slide">Activities</a>
+                        </li>
+                        <li>
+                            <a href="#contact-list" data-transition="slide">Cubs</a>
+                        </li>
+                        <li>
+                            <a href="#new-cub" data-transition="slide">Add Cub</a>
+                        </li>
+                        <li>
+                            <a href="#edit-contact" data-transition="slide">Edit Contact</a>
+                        </li>
+                    </ul>    
+                </div>
         </div>
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>   
@@ -117,7 +125,7 @@
  
 
     <!--Nominal Roll-->
-    <div id="NominalRoll" data-role="page" data-add-back-btn="true">
+    <div id="nominal-roll" data-role="page" data-add-back-btn="true">
 		<!--Header-->
         	<div data-role="header" data-position="fixed">
             	<h1>Nominal Roll</h1>
@@ -125,18 +133,18 @@
         	<!--Content-->
         	<div data-role="content">
             		
-                <ul data-role="listview" data-theme="c" data-dividertheme="d">
+                <ul data-role="listview" data-theme="c" data-dividertheme="d" data-filter="true">
                     <li>
                         <div class="checkBoxLeft">
                             <input type="checkbox" name="nr-01" id="nr-01"/>
                         </div>
-                        <a href="#new-cub"><h3 class="pushRight">word1</h3></a>
+                         <a href="#new-cub" data-transition="slide"><h3 class="pushRight">word1</h3></a>
                     </li>
                     <li>
                         <div class="checkBoxLeft">
                             <input type="checkbox" name="nr-02" id="nr-02"/>
                         </div>
-                        <a href="#new-cub"><h3 class="pushRight">word2</h3></a>
+                        <a href="#new-cub" data-transition="slide"><h3 class="pushRight">word2</h3></a>
                     </li>
             	</ul>
                                   
@@ -156,7 +164,7 @@
     
 
     <!--Calendar-->
-    <div data-role="page" id="Calendar" data-add-back-btn="true">
+    <div data-role="page" id="calendar" data-add-back-btn="true">
 
     	<div data-role="header" data-position="fixed">
             <h1>Calendar</h1>
@@ -182,7 +190,7 @@
     </div><!--Page-->
     
     <!--Activities-->
-    <div data-role="page" id="Activities" data-add-back-btn="true">
+    <div data-role="page" id="activities" data-add-back-btn="true">
 
     	<div data-role="header" data-position="fixed">
             <h1>Activities</h1>
@@ -259,7 +267,7 @@
                     </ul>
                 </div>
             </div>
-           
+        </div>
         <!--Footer-->
         <div data-role="footer" data-position="fixed" data-id="oneFooter">
         </div>    
@@ -336,18 +344,18 @@
                                 <option>Gold</option>
                             </select>
                             </li>
-                    <li>
-                        <label for="six-status">Six Status</label>
-                        <div id="six-status" data-role="controlgroup" data-type="horizontal">
-                <input type="radio" name="radio-view" id="radio-view-a" value="head"  />
-	         	<label for="radio-view-a">Head</label>
-	         	<input type="radio" name="radio-view" id="radio-view-b" value="second"  />
-	         	<label for="radio-view-b">Second</label>
-	         	<input type="radio" name="radio-view" id="radio-view-c" value="none"  />
-	         	<label for="radio-view-c">None</label>
-         
-                              </div>
-                    </li>
+                            <li>
+                                     <div class="list-centre"> 
+                                         <fieldset data-role="controlgroup" data-type="horizontal"> 
+                                             <input type="radio" name="radio-choice-1" id="spent_money_1" value="choice-1" checked="checked" />
+                                             <label for="spent_money_1" white-space="normal"> NA </label>
+                                             <input type="radio" name="radio-choice-1" id="made_money_2" value="choice-2" />
+                                             <label for="made_money_2" white-space="normal">HEAD</label> 
+                                             <input type="radio" name="radio-choice-1" id="made_money_3" value="choice-3"/>
+                                             <label for="made_money_3" white-space="normal">2IC </label> 
+                                         </fieldset>
+                                     </div>
+                            </li>
             </ul> 
             
         </div>

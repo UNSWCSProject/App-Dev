@@ -1,6 +1,4 @@
-/*
- *List fix checkbox layout
- */
+/*List fix checkbox layout -holmes*/
 .spacer{
     height: 28px;
 }
@@ -29,7 +27,58 @@ h3.pushRight{
 a.pushRight{
     padding-left: 28px;
 }
-/*end fix*/
+/*end fix -holmes*/
+
+/*login styling -holmes*/
+
+.login{
+    background-color: #FFFF00;
+    height:100%;
+}
+
+/*end styling -holmes */
+
+/*Banner -holmes*/
+
+.banner{
+    position:relative;
+    top: 0%;
+    left:0%;
+    width: 110%;
+    height: 100%;
+}
+
+.banner img {
+	position: absolute;
+    top:0%;
+    max-width:30%;
+}
+
+.banner h1 {
+    position: absolute;
+    left: 35%;
+    top: 8%;
+    font-size:48px;
+}
+
+.front-content{
+    
+    background-color: #FFFF00;
+}
+.front-list{
+    padding-top:55%;
+}
+    
+
+
+/*end Banner -holmes*/
+
+/*add-cub Cub Status -holmes*/
+.list-centre{
+    width: 80%;
+    margin:auto;
+}
+/*end*/
 
 .ui-footer {
     text-align: center;
