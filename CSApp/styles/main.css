@@ -1,3 +1,79 @@
+/*List fix checkbox layout -holmes*/
+.spacer{
+    height: 28px;
+}
+
+.ui-checkbox input {
+position: absolute;
+left: 10px;
+top: 50%;
+width: 40px;
+height: 40px;
+margin: -5px 0 0 0;
+outline: 0!important;
+z-index: 1;
+}
+
+.checkBoxLeft{
+    position: absolute; 
+    left: 1px; 
+    top: 25%;
+}
+
+h3.pushRight{
+    padding-left: 25%;
+}
+
+a.pushRight{
+    padding-left: 25%;
+}
+/*end fix -holmes*/
+
+/*login styling -holmes*/
+
+.login{
+    background-color: #FFFF00;
+    height:100%;
+}
+
+/*end styling -holmes */
+
+/*Banner -holmes*/
+#banner{
+    overflow:hidden;
+	text-align: left;
+	margin: 0px auto;
+	padding: 0px;
+	border:0;
+    padding-left: -10%;
+	width: 100%;
+    height:100px;
+}
+.box-l{
+    float: left;
+	width: 35%;
+    height:100%;
+	background-color:#FFFF00;
+}
+.box-l img{
+    padding-top:10%;
+    padding-left: 15%;
+	height: 80%;    
+}
+.box-r{
+    margin: 0;
+	float: left;
+	width: 65%;
+    height:100%;
+	background-color:#FFFF00;
+}
+
+.box-r h1{
+    padding-top:8%;
+}
+/*end Banner -holmes*/
+
+
 .ui-footer {
     text-align: center;
     padding: 0.3em;
