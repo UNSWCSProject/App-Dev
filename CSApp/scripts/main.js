@@ -101,9 +101,7 @@ function showRecords() // Function For Retrive data from Database Display record
 //This function is designed to designate the buttons on the index.html to interact with database
 $(document).ready(function () // Call function when page is ready for load.. 
 {
-;
-    $("body").fadeIn(2000); // Fede In Effect when Page Load.. 
-    initDatabase(); 
+   // initDatabase(); 
     $("#submitButton").click(createCub);  // Register Event Listener when button click. 
     $("#btnUpdate").click(updateCub);
     $("#btnReset").click(deleteCub); 

@@ -1,4 +1,4 @@
-(function (global) {
+/*(function (global) {
     var $loginWrap,
         $logoutWrap,
         $username,
@@ -69,4 +69,4 @@
             login();
         }
     }
-})(window);
+})(window);*/
