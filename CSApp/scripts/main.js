@@ -89,6 +89,19 @@ app.createTable = function() {
 	window.alert("Tables created");
 }
 
+
+
+//A test to add cub data straight to the database
+app.addTest = function(addTest) {
+  var db = cubDb.db;
+  db.transaction(function(tx) {
+    tx.executeSql("INSERT INTO cub (surname, firstName, phone1, phone2) VALUES (john, smith, 04419333, 3993388,", [], app.onSuccess, app.onError);
+  });
+}
+
+
+
+
 //function for the app to create a cub, inputting values into the specified columns in the cub table
 app.createCub = function(createCub) 
 {
