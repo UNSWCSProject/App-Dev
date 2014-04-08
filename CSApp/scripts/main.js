@@ -1,8 +1,16 @@
-//Based on http://www.html5rocks.com/en/tutorials/webdatabase/todo/
+<!--
 
+//Test the connection from index.html to the main.js file
+
+
+//Based on http://www.html5rocks.com/en/tutorials/webdatabase/todo/
+window.alert("About to declare event Listeners");
 document.addEventListener("deviceready", init, false);
+window.alert("Event Listener 1/2 enabled");
 //Activate :active state on device
 document.addEventListener("touchstart", function() {}, false);
+window.alert("Event Listener 2/2 enabled");
+
 
 //declaring the variables for the functions
 var app = {};
@@ -13,6 +21,8 @@ var deletecub = "DELETE FROM cub WHERE id=?";
 var dropStatement = "DROP TABLE cub";
 var db = openDatabase("cubDb", "1.0", "cubDb", 200000);  // Open SQLite Database
 var dataset;
+
+window.alert("Variables declared");
 
 
 //opens up the database on initialisation
@@ -26,6 +36,8 @@ app.openDb = function()
     else {
         cubDb.db = window.sqlitePlugin.openDatabase("cubDb");
     }
+	
+	window.alert("Database opened");
 }
 
 //creates the tables of the database if the tables don't already exist
@@ -46,6 +58,7 @@ app.createTable = function() {
         tx.executeSql("CREATE TABLE IF NOT EXISTS meetActivity(meetID INTEGER, activityID INTEGER, FOREIGN KEY (meetID) REFERENCES meet(meetID), FOREIGN KEY (activityID) REFERENCES activity(activityID), PRIMARY KEY(meetID, activityID))", []);
         tx.executeSql("CREATE TABLE IF NOT EXISTS cubActivity(cubID INTEGER, activityID INTEGER, dateCompleted DATETIME, FOREIGN KEY (cubID) REFERENCES cub(cubID), FOREIGN KEY (activityID) REFERENCES activity(activityID), PRIMARY KEY(cubID, activityID))", []);   
     });
+	window.alert("Tables created");
 }
 
 //function for the app to create a cub, inputting values into the specified columns in the cub table
@@ -59,17 +72,29 @@ app.createCub = function(createCub)
 					  app.onSuccess,
 					  app.onError);
 	});
+	window.alert("Cub created");
 }
+
+//*****The below function needs to be properly defined as it crashes the 
+//main.js file*****
 
 //this should be taking the inputs from the index file (referenced as variables such as cubFirstNameTemp). 
 //the index.html used to have the cubFirstNameTemp in the input field on the add cub page, but it's been removed
 //for the presentation for kathryn
+/*
 function createCub() 
 {
     var cubFirstNameTemp = $('input:text[id=firstName]').val();
     var cubSurnameTemp = $('input:text[id=surname]').val();
-    db.transation(function (tx) {tx.executeSql(insertStatement, [cubFirstNameTemp, cubSurnameTemp], loadAndReset, on Error); });
+	
+	//THIS LINE IS CAUSING THE JS FILE TO CORRUPT
+    db.transaction(function (tx) {
+		tx.executeSql(insertStatement, 
+						[cubFirstNameTemp, cubSurnameTemp], 
+						loadAndReset, on Error); 
+	});
 }
+*/
 
 //This should grab specified columns of the cub table and insert them into a string
 function loadCub(i) // Function for display records which are retrived from database.
@@ -78,6 +103,7 @@ function loadCub(i) // Function for display records which are retrived from data
     $("#firstName").val((item['firstName']).toString()); 
     $("#surname").val((item['surname']).toString()); 
     $("#cubID").val((item['cubID']).toString()); 
+	window.alert("Cub loaded");
 }
 
 //This is meant to display all the information from a given table
@@ -96,6 +122,7 @@ function showRecords() // Function For Retrive data from Database Display record
             } 
         }); 
     }); 
+	window.alert("Records retrieved");
 }
 
 //This function is designed to designate the buttons on the index.html to interact with database
@@ -107,4 +134,7 @@ $(document).ready(function () // Call function when page is ready for load..
     $("#btnReset").click(deleteCub); 
     $("#btnDrop").click(dropTable);
  
+	window.alert("Waiting for events...");
 });
+
+-->
