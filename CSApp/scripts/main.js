@@ -1,15 +1,15 @@
 <!--
 
 //Test the connection from index.html to the main.js file
-window.alert("Connected to main.js");
+//window.alert("Connected to main.js");
 
 //Based on http://www.html5rocks.com/en/tutorials/webdatabase/todo/
-window.alert("About to declare event Listeners");
+//window.alert("About to declare event Listeners");
 document.addEventListener("deviceready", onDeviceReady, false);
-window.alert("Event Listener 1/2 enabled");
+//window.alert("Event Listener 1/2 enabled");
 //Activate :active state on device
 document.addEventListener("touchstart", function() {}, false);
-window.alert("Event Listener 2/2 enabled");
+//window.alert("Event Listener 2/2 enabled");
 
 
 //declaring the variables for the functions
@@ -22,16 +22,18 @@ var dropStatement = "DROP TABLE cub";
 var cubDb = openDatabase("cubDb", "1.0", "Cordova", 200000);  // Open SQLite Database
 var dataset;
 
-window.alert("Variables declared");
+//window.alert("Variables declared");
 
 //device ready test
 function onDeviceReady()
 {
-    window.alert("onDeviceReady() being called");
+    //window.alert("onDeviceReady() being called");
     app.openDb();
     app.createTable();
     app.createCub(createCub);
     showRecords();
+    //loadCub();
+    displayCubs();
     //WRITE APP.REFRESH
     //app.refresh();
 }
@@ -48,15 +50,17 @@ app.openDb = function()
         app.db = window.sqlitePlugin.openDatabase("cubDb");
     }
 	
-	window.alert("Database opened");
+	//window.alert("Database opened");
 }
 
 //creates the tables of the database if the tables don't already exist
-app.createTable = function() {
-    window.alert("createTable() has been called");
+app.createTable = function() 
+{
+    //window.alert("createTable() has been called");
 	var cubDb = app.db;
-    window.alert("createTable() variables have been declared");
-	cubDb.transaction(function(tx) {
+    //window.alert("createTable() variables have been declared");
+	cubDb.transaction(function(tx) 
+    {
         //window.alert("transaction opened");
 		tx.executeSql("CREATE TABLE IF NOT EXISTS cubUser(userID INTEGER PRIMARY KEY AUTOINCREMENT, username VARCHAR(150), password VARCHAR(150), verified TINYINT DEFAULT 0, dateJoined DATETIME)", []);
         //window.alert("1 SQL command");
@@ -85,21 +89,24 @@ app.createTable = function() {
         //Possibly delete this next call - confirm it is a copy of the one above
         tx.executeSql("CREATE TABLE IF NOT EXISTS cubActivity(cubID INTEGER, activityID INTEGER, dateCompleted DATETIME, FOREIGN KEY (cubID) REFERENCES cub(cubID), FOREIGN KEY (activityID) REFERENCES activity(activityID), PRIMARY KEY(cubID, activityID))", []);   
     	//window.alert("13 SQL command");
+        
+        //insert into cub table
+        tx.executeSql("INSERT INTO cub(surname, firstName) VALUES (smith, john)");
+        //window.alert("cub inserted");
     });
-	window.alert("Tables created");
+	//window.alert("Tables created");
 }
 
 
 
 //A test to add cub data straight to the database
-app.addTest = function(addTest) {
+app.addTest = function(addTest) 
+{
   var db = cubDb.db;
   db.transaction(function(tx) {
     tx.executeSql("INSERT INTO cub (surname, firstName, phone1, phone2) VALUES (john, smith, 04419333, 3993388,", [], app.onSuccess, app.onError);
   });
 }
-
-
 
 
 //function for the app to create a cub, inputting values into the specified columns in the cub table
@@ -113,8 +120,98 @@ app.createCub = function(createCub)
 					  app.onSuccess,
 					  app.onError);
 	});
-	window.alert("Cub created");
+	//window.alert("Cub created");
 }
+
+function showRecords() // Function For Retrive data from Database Display records as list 
+{ 
+    $("#results").html('') 
+    cubDb.transaction(function (tx) { 
+        tx.executeSql(selectAllStatement, [], function (tx, result) { 
+            dataset = result.rows;
+            for (var i = 0, item = null; i < dataset.length; i++) { 
+                item = dataset.item(i); 
+                var linkeditdelete = '<li>' + item['firstName'] + ' , ' + item['surname'] + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
+                                            '<a href="#" onclick="deleteRecord(' + item['id'] + ');">delete</a></li>';
+                $("#results").append(linkeditdelete); 
+            } 
+        }); 
+    }); 
+	//window.alert("Records retrieved");
+}
+
+function displayCubs()
+{
+    var displayCub = function(row) 
+    {
+    	return "<li>" + "<div class='cub-list'></div>" + row.cub + "<a class='button delete' href='javascript:void(0);'  onclick='app.deleteCub(" + row.cubID + ");'><p class='cub-delete'></p></a>" + "<div class='clear'></div>" + "</li>";
+
+    }
+    
+    var disp = function (tx, rs) 
+    {
+        //window.alert("disp function called");
+        var rowOutput = "";
+        var cubsList = document.getElementById("cubsList");        
+       
+        for (var i = 0; i < dataset.length; i++) //error unless table populated
+        {
+       		//window.alert("disp function called3");
+            rowOutput += displayCub(rs.rows.item(i));
+            //window.alert("disp function called4");
+        }
+        cubsList.innerHTML = rowOutput;
+        //window.alert("disp function completed");
+    }
+    
+    //window.alert("displayCubs called");
+    var cubDb = app.db;
+    cubDb.transaction(function(tx) { 
+        tx.executeSql("SELECT firstName, surname FROM cub", [],
+                      disp(),
+                      app.onError)
+    //window.alert("cubs are displayed");
+    });                       
+}
+
+app.onError = function(tx, e)
+{
+    console.log("Error: " + e.message);
+}
+
+
+
+
+
+/*
+function loadCub(i) // Function for display records which are retrived from database.
+{ 
+    window.alert("loadCub Called")
+    var cubItem = cub.item(i);
+    $("#firstName").val((item['firstName']).toString()); 
+    $("#surname").val((item['surname']).toString()); 
+    $("#cubID").val((item['cubID']).toString()); 
+	window.alert("Cub loaded");
+}
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 //*****The below function needs to be properly defined as it crashes the 
 //main.js file*****
@@ -136,7 +233,7 @@ function createCub()
 	});
 }
 */
-
+/*
 //This should grab specified columns of the cub table and insert them into a string
 function loadCub(i) // Function for display records which are retrived from database.
 { 
@@ -190,5 +287,5 @@ $(document).ready(function () // Call function when page is ready for load..
  
 	window.alert("Waiting for events...");
 });
-
+*/
 -->
