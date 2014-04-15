@@ -27,13 +27,14 @@ var dataset;
 //device ready test
 function onDeviceReady()
 {
-    //window.alert("onDeviceReady() being called");
+    window.alert("onDeviceReady() being called");
     app.openDb();
     app.createTable();
     app.createCub(createCub);
     showRecords();
     //loadCub();
     displayCubs();
+    
     //WRITE APP.REFRESH
     //app.refresh();
 }
@@ -150,27 +151,27 @@ function displayCubs()
     
     var disp = function (tx, rs) 
     {
-        //window.alert("disp function called");
+        window.alert("disp function called");
         var rowOutput = "";
         var cubsList = document.getElementById("cubsList");        
        
         for (var i = 0; i < dataset.length; i++) //error unless table populated
         {
-       		//window.alert("disp function called3");
+       		window.alert("disp function called3");
             rowOutput += displayCub(rs.rows.item(i));
-            //window.alert("disp function called4");
+            window.alert("disp function called4");
         }
         cubsList.innerHTML = rowOutput;
         //window.alert("disp function completed");
     }
     
-    //window.alert("displayCubs called");
+    window.alert("displayCubs called");
     var cubDb = app.db;
     cubDb.transaction(function(tx) { 
         tx.executeSql("SELECT firstName, surname FROM cub", [],
-                      disp(),
+                      disp,
                       app.onError)
-    //window.alert("cubs are displayed");
+    window.alert("cubs are displayed");
     });                       
 }
 
@@ -178,8 +179,6 @@ app.onError = function(tx, e)
 {
     console.log("Error: " + e.message);
 }
-
-
 
 
 
