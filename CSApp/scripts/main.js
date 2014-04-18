@@ -3,6 +3,8 @@
 //Test the connection from index.html to the main.js file
 //window.alert("Connected to main.js");
 
+    
+    
 //Based on http://www.html5rocks.com/en/tutorials/webdatabase/todo/
 //window.alert("About to declare event Listeners");
 document.addEventListener("deviceready", onDeviceReady, false);
@@ -13,13 +15,14 @@ document.addEventListener("touchstart", function() {}, false);
 
 
 //declaring the variables for the functions
-var app = {};
+var cubDb = {};
+cubDb.db = null;
 var createCub = "INSERT INTO cub(surname, firstName, phone1, phone2, dob, dateJoined, colourSix, headOfSix, secondOfSix, dateInvested, guardian1, guardian2) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 var selectCubNames = "SELECT (firstName, surname) FROM Contacts"; 
 var updateCub = "UPDATE cub SET surname = ?, firstname = ?, phone1 = ?, phone2 = ?, dob = ?, dateJoined = ?, colourSix = ?, headOfSix = ?, secondOfSix = ?, dateInvested = ?, guardian1 = ?, guardian2 = ? WHERE id=?"; 
 var deletecub = "DELETE FROM cub WHERE id=?"; 
 var dropStatement = "DROP TABLE cub";
-var cubDb = openDatabase("cubDb", "1.0", "Cordova", 200000);  // Open SQLite Database
+//var cubDb = openDatabase("cubDb", "1.0", "Cordova", 200000);  // Open SQLite Database
 var dataset;
 
 //window.alert("Variables declared");
@@ -28,41 +31,45 @@ var dataset;
 function onDeviceReady()
 {
     window.alert("onDeviceReady() being called");
-    app.openDb();
-    app.createTable();
-    app.createCub(createCub);
-    showRecords();
-    //loadCub();
-    displayCubs();
+    cubDb.openDb();
+    cubDb.createTable();
+    //cubDb.createCub(createCub);
+    app.selectAllRecords(getAllTheData);
     
-    //WRITE APP.REFRESH
-    //app.refresh();
+   // showRecords();
+    //loadCub();
+   // displayCubs();
+    
+    //WRITE cubDb.REFRESH
+    //cubDb.refresh();
 }
 
 //opens up the database on initialisation
-app.openDb = function() 
+cubDb.openDb = function() 
 {
-   if (window.navigator.simulator === true) {
+   //if (window.navigator.simulator === true) {
+    if (window.sqlitePlugin == undefined){
         // For debugin in simulator fallback to native SQL Lite
-        console.log("Use built in SQL Lite");
-        app.db = window.openDatabase("cubDb", "1.0", "Cordova", 200000);
+        window.alert("Use built in Cordova");
+        cubDb.db = window.openDatabase("cubDb", "1.0", "Cordova", 200000);
     }
     else {
-        app.db = window.sqlitePlugin.openDatabase("cubDb");
+        window.alert("Use SQLite");
+        cubDb.db = window.sqlitePlugin.openDatabase("cubDb");
     }
 	
 	//window.alert("Database opened");
 }
 
 //creates the tables of the database if the tables don't already exist
-app.createTable = function() 
+cubDb.createTable = function() 
 {
     //window.alert("createTable() has been called");
-	var cubDb = app.db;
+	//var cubDb = cubDb.db;
     //window.alert("createTable() variables have been declared");
-	cubDb.transaction(function(tx) 
+	cubDb.db.transaction(function(tx) 
     {
-        //window.alert("transaction opened");
+        window.alert("transaction opened");
 		tx.executeSql("CREATE TABLE IF NOT EXISTS cubUser(userID INTEGER PRIMARY KEY AUTOINCREMENT, username VARCHAR(150), password VARCHAR(150), verified TINYINT DEFAULT 0, dateJoined DATETIME)", []);
         //window.alert("1 SQL command");
         tx.executeSql("CREATE TABLE IF NOT EXISTS cub(cubID INTEGER PRIMARY KEY AUTOINCREMENT, surname VARCHAR(60), firstName VARCHAR(60), phone1 VARCHAR(20), phone2 VARCHAR(20), dob DATE, dateJoined DATETIME, colourSix VARCHAR(20), headOfSix TINYINT DEFAULT 0, secondOfSix TINYINT DEFAULT 0, dateInvested DATETIME, guardian1 VARCHAR(150), guardian2 VARCHAR(150))", []);
@@ -92,38 +99,46 @@ app.createTable = function()
     	//window.alert("13 SQL command");
         
         //insert into cub table
-        tx.executeSql("INSERT INTO cub(surname, firstName) VALUES (smith, john)");
-        //window.alert("cub inserted");
+        tx.executeSql("INSERT INTO cub(surname, firstName) VALUES ('smith', 'john')");
+        window.alert("cub inserted");
     });
-	//window.alert("Tables created");
+	window.alert("Tables created");
 }
 
 
-
+/*
 //A test to add cub data straight to the database
-app.addTest = function(addTest) 
+cubDb.addTest = function(addTest) 
 {
   var db = cubDb.db;
   db.transaction(function(tx) {
-    tx.executeSql("INSERT INTO cub (surname, firstName, phone1, phone2) VALUES (john, smith, 04419333, 3993388,", [], app.onSuccess, app.onError);
+    tx.executeSql("INSERT INTO cub (surname, firstName, phone1, phone2) VALUES (john, smith, 04419333, 3993388,", [], cubDb.onSuccess, cubDb.onError);
   });
 }
-
-
-//function for the app to create a cub, inputting values into the specified columns in the cub table
-app.createCub = function(createCub) 
+*/
+/*
+//function for the cubDb to create a cub, inputting values into the specified columns in the cub table
+cubDb.createCub = function(t) 
 {
-	var cubDb = app.db;
-	cubDb.transaction(function(tx) {
+	cubDb.db.transaction(function(tx) {
+        window.alert("CC Transaction initialised")
 		//var dob = new Date();
 		tx.executeSql("INSERT INTO cub(firstName, surname, dob, guardian1, guardian2, phone1, phone2, dateJoined) VALUES (?,?,?,?,?,?,?,?)",
 					  [firstName, surname, dob, guardian1, guardian2, phone1, phone2, dateJoined],
-					  app.onSuccess,
-					  app.onError);
+					  cubDb.onSuccess,
+					  cubDb.onError);
 	});
-	//window.alert("Cub created");
+	window.alert("Cub created");
+}
+*/
+cubDb.onSuccess = function(tx, r) {
+    console.log("Your SQLite query was successful!");
 }
 
+cubDb.onError = function(tx, e) {
+    console.log("SQLite Error: " + e.message);
+}
+/*
 function showRecords() // Function For Retrive data from Database Display records as list 
 { 
     $("#results").html('') 
@@ -134,19 +149,44 @@ function showRecords() // Function For Retrive data from Database Display record
                 item = dataset.item(i); 
                 var linkeditdelete = '<li>' + item['firstName'] + ' , ' + item['surname'] + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
                                             '<a href="#" onclick="deleteRecord(' + item['id'] + ');">delete</a></li>';
-                $("#results").append(linkeditdelete); 
+                $("#results").cubDbend(linkeditdelete); 
             } 
         }); 
     }); 
 	//window.alert("Records retrieved");
 }
+*/
 
+cubDb.selectAllRecords = function(fn) {
+    window.alert("select all records called");
+    cubDb.db.transaction(function(tx) {
+        tx.executeSql("SELECT * FROM cub ORDER BY cubID", [],
+                      fn,
+                      app.onError);
+         window.alert("sql executed");
+    });
+}
+
+function getAllTheData() {
+    window.alert("getAllTheData called");
+    var render = function (tx, rs) {
+        window.alert("render called");
+        // rs contains our SQLite recordset, at this point you can do anything with it
+        // in this case we'll just loop through it and output the results to the console
+        for (var i = 0; i < rs.rows.length; i++) {
+            window.alert("rs iterated");
+            window.alert(rs.rows.item(i));
+        }
+    }
+
+    cubDb.selectAllRecords(render);
+}
+/*
 function displayCubs()
 {
     var displayCub = function(row) 
     {
-    	return "<li>" + "<div class='cub-list'></div>" + row.cub + "<a class='button delete' href='javascript:void(0);'  onclick='app.deleteCub(" + row.cubID + ");'><p class='cub-delete'></p></a>" + "<div class='clear'></div>" + "</li>";
-
+    	return "<li>" + "<div class='cub-list'></div>" + row.cub + "<a class='button delete' href='javascript:void(0);'  onclick='cubDb.deleteCub(" + row.cubID + ");'><p class='cub-delete'></p></a>" + "<div class='clear'></div>" + "</li>";
     }
     
     var disp = function (tx, rs) 
@@ -166,21 +206,15 @@ function displayCubs()
     }
     
     window.alert("displayCubs called");
-    var cubDb = app.db;
+    var cubDb = cubDb.db;
     cubDb.transaction(function(tx) { 
         tx.executeSql("SELECT firstName, surname FROM cub", [],
                       disp,
-                      app.onError)
+                      cubDb.onError)
     window.alert("cubs are displayed");
     });                       
 }
-
-app.onError = function(tx, e)
-{
-    console.log("Error: " + e.message);
-}
-
-
+*/
 
 /*
 function loadCub(i) // Function for display records which are retrived from database.
@@ -255,7 +289,7 @@ function showRecords() // Function For Retrive data from Database Display record
                 item = dataset.item(i); 
                 var linkeditdelete = '<li>' + item['firstName'] + ' , ' + item['surname'] + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
                                             '<a href="#" onclick="deleteRecord(' + item['id'] + ');">delete</a></li>';
-                $("#results").append(linkeditdelete); 
+                $("#results").cubDbend(linkeditdelete); 
             } 
         }); 
     }); 
@@ -264,7 +298,7 @@ function showRecords() // Function For Retrive data from Database Display record
 
 function displayCub()
 {
-    var cubDb = app.db;
+    var cubDb = cubDb.db;
     cubDb.transaction(function (tx) { 
         tx.executeSql() { 
             
