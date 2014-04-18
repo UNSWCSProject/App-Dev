@@ -9,13 +9,13 @@ app.openDb = function()
     if (window.sqlitePlugin !== undefined) 
     {
         app.db = window.sqlitePlugin.openDatabase("My-Database", "1.0", "SQLite Demo", 200000);
-        window.alert("Using SQLite device storage");
+        //window.alert("Using SQLite device storage");
     } 
     else 
     {
         // For debugging in simulator fallback to native SQL Lite
         app.db = window.openDatabase("My-Database", "1.0", "Cordova Demo", 200000);
-        window.alert("Using local Cordova simulator storage");
+        //window.alert("Using local Cordova simulator storage");
     }
 }
 
@@ -26,18 +26,20 @@ function init() {
     app.insertRecord("John");
     app.insertRecord("Mary");
     app.insertRecord("Lee");
-    app.selectAllRecords(getAllTheData);
+    //app.selectAllRecords(getAllTheData);
+    getAllTheData();
+    queryDb();
 }
 
 app.createTable = function() 
 {
-    window.alert("createTable() called");
+    //window.alert("createTable() called");
     app.db.transaction(function(tx) 
 		{
-            window.alert("Transaction Opened");
+            //window.alert("Transaction Opened");
         	tx.executeSql("CREATE TABLE IF NOT EXISTS MyTable (id INTEGER PRIMARY KEY ASC, text_sample TEXT)", [], 
                           app.onSuccess, app.onError);
-    		window.alert("Parsed through CREATE sql statement");
+    		//window.alert("Parsed through CREATE sql statement");
         }
 	);//For the love of everything good in this world DO NOT DELETE!!!!!!
     
@@ -49,7 +51,7 @@ app.insertRecord = function(t)
 		{
         	tx.executeSql("INSERT INTO MyTable(text_sample) VALUES (?)",
 				[t]);
-            window.alert("Record inserted");
+            //window.alert("Record inserted");
     	}
 	);//For the love of everything good in this world DO NOT DELETE!!!!!!
 }
@@ -108,18 +110,6 @@ app.clearData = function()
             tx.executeSql("DROP TABLE IF EXISTS MyTable");
    		}
 	);
-}
- 
-function querySuccess(tx,result)
-{
-	$('#SoccerPlayerList').empty();
-	$.each(result.rows,function(index)
-    {
-		var row = result.rows.item(index);
-		$('#SoccerPlayerList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['Name']+'</h3><p class="ui-li-desc">Club '+row['Club']+'</p></a></li>');
-	});
-
-	$('#SoccerPlayerList').listview();
 }
 
 function getAllTheData() 
