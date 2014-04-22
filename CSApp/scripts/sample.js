@@ -27,8 +27,7 @@ function init() {
     app.insertRecord("Mary");
     app.insertRecord("Lee");
     //app.selectAllRecords(getAllTheData);
-    getAllTheData();
-    queryDb();
+    populateCubsList();
 }
 
 app.createTable = function() 
@@ -111,6 +110,26 @@ app.clearData = function()
    		}
 	);
 }
+
+function populateCubsList(){
+	var render = function (tx, rs) 
+    {
+        $('#cubsList').empty();
+        var len = rs.rows.length;
+        window.alert("SQLite Table: " + len + " rows found.");
+        for (var i = 0; i < rs.rows.length; i++) 
+        {
+            var row = rs.rows.item(i);
+            $('#cubsList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['text_sample']+'</a></li>');
+            window.alert("Attempted to add to list: " + row['text_sample']);
+        }
+ 
+        $('#SoccerPlayerList').listview();
+        window.alert("Attempted to store the query result in an array and display in listView() style");
+	}
+    app.selectAllRecords(render);
+}
+	    
 
 function getAllTheData() 
 {
