@@ -1,3 +1,5 @@
+//Use http://jsfiddle.net/ to run code sections and tidy up the layout
+
 document.addEventListener("deviceready", init, false);
 
 var app = {};
@@ -116,16 +118,16 @@ function populateCubsList(){
     {
         $('#cubsList').empty();
         var len = rs.rows.length;
-        window.alert("SQLite Table: " + len + " rows found.");
+        //window.alert("SQLite Table: " + len + " rows found.");
         for (var i = 0; i < rs.rows.length; i++) 
         {
             var row = rs.rows.item(i);
             $('#cubsList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['text_sample']+'</a></li>');
-            window.alert("Attempted to add to list: " + row['text_sample']);
+            //window.alert("Attempted to add to list: " + row['text_sample']);
         }
  
-        $('#SoccerPlayerList').listview();
-        window.alert("Attempted to store the query result in an array and display in listView() style");
+        //$('#SoccerPlayerList').listview();
+        //window.alert("Attempted to store the query result in an array and display in listView() style");
 	}
     app.selectAllRecords(render);
 }
@@ -138,13 +140,63 @@ function getAllTheData()
         // rs contains our SQLite recordset, at this point you can do anything with it
         // in this case we'll just loop through it and output the results to the console
         var len = rs.rows.length;
-    	window.alert("SQLite Table: " + len + " rows found.");
+    	//window.alert("SQLite Table: " + len + " rows found.");
         for (var i = 0; i < rs.rows.length; i++) 
         {
             var row = rs.rows.item(i);
-            window.alert("Row = " + i + " ID = " + rs.rows.item(i).id + " Data =  " + row['text_sample']);
+            //window.alert("Row = " + i + " ID = " + rs.rows.item(i).id + " Data =  " + row['text_sample']);
         }
     }
     app.selectAllRecords(render);
 }
+
+app.buildLoginData = function() 
+{
+    //Ran ONCE ONLY to insert 
+    /*app.db.transaction(function(tx) 
+    	{
+        	tx.executeSql("DROP TABLE IF EXISTS userTable");
+            
+            tx.executeSql("CREATE TABLE IF NOT EXISTS userTable (id INTEGER PRIMARY KEY ASC, user TEXT, pass TEXT)", [], 
+                          app.onSuccess, app.onError);
+            
+            tx.executeSql("INSERT INTO userTable(user) VALUES (k.merrick)");
+            window.alert("Record inserted");
+   		}
+	);*/
+}
+
+app.getLoginData = function() 
+{
+    app.db.transaction(function(tx) 
+    	{            
+            tx.executeSql("SELECT user FROM userTable WHERE id = 0");
+   		}
+	);
+}
+
+function verifyUser(username, password) 
+{   
+    //userTable currently holds 'k.merrick' as a username, make a transaction in getLoginData() that returns this username,
+    //and compare it below to the input username (referenced as a parameter), don't worry about the password yet
+    //app.buildLoginData();	Used to create a user in the userTable 
+    
+    //Use to get the login data built into the database
+    //app.getLoginData();
+    
+    if (username == 'k.merrick')
+    {
+        $.mobile.changePage("#home", {
+            transition: "slide",
+            reverse: false
+        });
+    } 
+    else 
+    {
+        window.alert("Incorrect username or password");
+    }
+}
+
+                          
+
 
