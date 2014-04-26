@@ -11,38 +11,39 @@ app.openDb = function()
     if (window.sqlitePlugin !== undefined) 
     {
         app.db = window.sqlitePlugin.openDatabase("My-Database", "1.0", "SQLite Demo", 200000);
-        //window.alert("Using SQLite device storage");
     } 
     else 
     {
         // For debugging in simulator fallback to native SQL Lite
         app.db = window.openDatabase("My-Database", "1.0", "Cordova Demo", 200000);
-        //window.alert("Using local Cordova simulator storage");
     }
 }
 
 function init() {
+    //-----Create the database-----//
     app.openDb();
+    //-----Create the Cub Information-----//
     app.clearData();
     app.createTable();
     app.insertRecord("John");
     app.insertRecord("Mary");
     app.insertRecord("Lee");
-    //app.selectAllRecords(getAllTheData);
     populateCubsList();
+    //-----Create User Information-----//
+    //Comment out this line when you are happy to make the user data permanent
+    //app.clearUserData();
+    app.createLoginTable();
+    firstUse(); 
 }
 
 app.createTable = function() 
 {
-    //window.alert("createTable() called");
     app.db.transaction(function(tx) 
 		{
-            //window.alert("Transaction Opened");
-        	tx.executeSql("CREATE TABLE IF NOT EXISTS MyTable (id INTEGER PRIMARY KEY ASC, text_sample TEXT)", [], 
+        	tx.executeSql("CREATE TABLE IF NOT EXISTS cubTable (id INTEGER PRIMARY KEY ASC, text_sample TEXT)", [], 
                           app.onSuccess, app.onError);
-    		//window.alert("Parsed through CREATE sql statement");
         }
-	);//For the love of everything good in this world DO NOT DELETE!!!!!!
+	)
     
 }
 
@@ -50,30 +51,29 @@ app.insertRecord = function(t)
 {
     app.db.transaction(function(tx) 
 		{
-        	tx.executeSql("INSERT INTO MyTable(text_sample) VALUES (?)",
+        	tx.executeSql("INSERT INTO cubTable(text_sample) VALUES (?)",
 				[t]);
-            //window.alert("Record inserted");
     	}
-	);//For the love of everything good in this world DO NOT DELETE!!!!!!
+	)
 }
 
 app.onSuccess = function(tx, r) 
 {
     console.log("Your SQLite query was successful!");
-    window.alert("Your SQLite query was successful!");
+    //window.alert("Your SQLite query was successful!");
 }
 
 app.onError = function(tx, e) 
 {
     console.log("SQLite Error: " + e.message);
-    window.alert("SQLite Error: " + e.message);
+    //window.alert("SQLite Error: " + e.message);
 }
 
 app.updateRecord = function(id, t) 
 {
     app.db.transaction(function(tx) 
 		{
-        	tx.executeSql("UPDATE MyTable SET text_sample = ? WHERE id = ?",
+        	tx.executeSql("UPDATE cubTable SET text_sample = ? WHERE id = ?",
 				[t, id],
 				app.onSuccess,
 				app.onError);
@@ -85,7 +85,7 @@ app.deleteRecord = function(id)
 {
     app.db.transaction(function(tx) 
 		{
-        	tx.executeSql("DELETE FROM MyTable WHERE id = ?",
+        	tx.executeSql("DELETE FROM cubTable WHERE id = ?",
         		[id],
         		app.onSuccess,
         		app.onError);
@@ -97,7 +97,7 @@ app.selectAllRecords = function(fn)
 {
     app.db.transaction(function(tx) 
     	{
-            tx.executeSql("SELECT * FROM MyTable ORDER BY id", [],
+            tx.executeSql("SELECT * FROM cubTable ORDER BY id", [],
 			fn,
 			app.onError);
    		}
@@ -108,7 +108,7 @@ app.clearData = function()
 {
     app.db.transaction(function(tx) 
     	{
-            tx.executeSql("DROP TABLE IF EXISTS MyTable");
+            tx.executeSql("DROP TABLE IF EXISTS cubTable");
    		}
 	);
 }
@@ -131,72 +131,102 @@ function populateCubsList(){
 	}
     app.selectAllRecords(render);
 }
-	    
 
-function getAllTheData() 
+//------------Login Table Section-------------------------//
+
+function firstUse() 
 {
     var render = function (tx, rs) 
     {
-        // rs contains our SQLite recordset, at this point you can do anything with it
-        // in this case we'll just loop through it and output the results to the console
-        var len = rs.rows.length;
-    	//window.alert("SQLite Table: " + len + " rows found.");
-        for (var i = 0; i < rs.rows.length; i++) 
-        {
-            var row = rs.rows.item(i);
-            //window.alert("Row = " + i + " ID = " + rs.rows.item(i).id + " Data =  " + row['text_sample']);
-        }
-    }
-    app.selectAllRecords(render);
-}
-
-app.buildLoginData = function() 
-{
-    //Ran ONCE ONLY to insert 
-    /*app.db.transaction(function(tx) 
+       var len = rs.rows.length;      
+ 	   if (len == 0)
     	{
-        	tx.executeSql("DROP TABLE IF EXISTS userTable");
-            
-            tx.executeSql("CREATE TABLE IF NOT EXISTS userTable (id INTEGER PRIMARY KEY ASC, user TEXT, pass TEXT)", [], 
-                          app.onSuccess, app.onError);
-            
-            tx.executeSql("INSERT INTO userTable(user) VALUES (k.merrick)");
-            window.alert("Record inserted");
-   		}
-	);*/
+        	$.mobile.changePage("#createUser", {
+            	transition: "slide",
+            	reverse: false
+        	});
+    	}
+    }
+    app.getLoginRecords(render);
 }
 
-app.getLoginData = function() 
+function createUser(username, password, confirmPassword) 
+{
+    if (password == confirmPassword)
+    {
+        app.insertLoginNameRecord(username, password);
+        $.mobile.changePage("#login", {
+            	transition: "slide",
+            	reverse: false
+        	});
+    }
+    else
+    {
+        window.alert("Your passwords do not match. Please try again");
+    }
+}
+
+function verifyUser(username, password) 
+{
+    var render = function (tx, rs) 
+    {
+       var len = rs.rows.length;
+       var row = rs.rows.item(0);
+        
+ 	   if (username == row['userName'] && password == row['userPass'])
+    	{
+        	$.mobile.changePage("#home", {
+            	transition: "slide",
+            	reverse: false
+        	});
+    	} 
+    	else 
+    	{
+        	window.alert("Incorrect username or password");
+    	}
+    }
+    app.getLoginRecords(render);
+}
+
+app.createLoginTable = function() 
 {
     app.db.transaction(function(tx) 
-    	{            
-            tx.executeSql("SELECT user FROM userTable WHERE id = 0");
+		{
+        	tx.executeSql("CREATE TABLE IF NOT EXISTS userTable (id INTEGER PRIMARY KEY ASC, userName TEXT, userPass TEXT)", [], 
+                          app.onSuccess, app.onError);
+        }
+	);
+}
+
+app.insertLoginNameRecord = function(t, s) 
+{
+    app.db.transaction(function(tx) 
+		{
+        	tx.executeSql("INSERT INTO userTable(userName, userPass) VALUES (?, ?)",
+				[t, s]);
+    	}
+	);
+}
+
+app.getLoginRecords = function(fn) 
+{
+    app.db.transaction(function(tx) 
+    	{
+            tx.executeSql("SELECT * FROM userTable ORDER BY id", [],
+			fn,
+			app.onError);
    		}
 	);
 }
 
-function verifyUser(username, password) 
-{   
-    //userTable currently holds 'k.merrick' as a username, make a transaction in getLoginData() that returns this username,
-    //and compare it below to the input username (referenced as a parameter), don't worry about the password yet
-    //app.buildLoginData();	Used to create a user in the userTable 
-    
-    //Use to get the login data built into the database
-    //app.getLoginData();
-    
-    if (username == 'k.merrick')
-    {
-        $.mobile.changePage("#home", {
-            transition: "slide",
-            reverse: false
-        });
-    } 
-    else 
-    {
-        window.alert("Incorrect username or password");
-    }
+app.clearUserData = function() 
+{
+    app.db.transaction(function(tx) 
+    	{
+            tx.executeSql("DROP TABLE IF EXISTS userTable");
+   		}
+	);
 }
-
                           
 
 
