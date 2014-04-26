@@ -20,14 +20,15 @@ app.openDb = function()
 }
 
 function init() {
+    window.alert("Working");
     //-----Create the database-----//
     app.openDb();
     //-----Create the Cub Information-----//
     app.clearData();
     app.createTable();
-    app.insertRecord("John");
-    app.insertRecord("Mary");
-    app.insertRecord("Lee");
+    app.insertRecord("John", "Wayne");
+    app.insertRecord("Macy", "Madeline");
+    app.insertRecord("Lee", "Hooper");
     populateCubsList();
     //-----Create User Information-----//
     //Comment out this line when you are happy to make the user data permanent
@@ -40,19 +41,19 @@ app.createTable = function()
 {
     app.db.transaction(function(tx) 
 		{
-        	tx.executeSql("CREATE TABLE IF NOT EXISTS cubTable (id INTEGER PRIMARY KEY ASC, text_sample TEXT)", [], 
-                          app.onSuccess, app.onError);
+        	tx.executeSql("CREATE TABLE IF NOT EXISTS cubTable (id INTEGER PRIMARY KEY ASC, firstName TEXT, surname TEXT)", [], 
+                          	app.onSuccess, app.onError);
         }
 	)
     
 }
 
-app.insertRecord = function(t) 
+app.insertRecord = function(tFirst, tLast) 
 {
     app.db.transaction(function(tx) 
 		{
-        	tx.executeSql("INSERT INTO cubTable(text_sample) VALUES (?)",
-				[t]);
+        	tx.executeSql("INSERT INTO cubTable(firstName, surname) VALUES (?,?)",
+				[tFirst, tLast]);
     	}
 	)
 }
@@ -73,7 +74,7 @@ app.updateRecord = function(id, t)
 {
     app.db.transaction(function(tx) 
 		{
-        	tx.executeSql("UPDATE cubTable SET text_sample = ? WHERE id = ?",
+        	tx.executeSql("UPDATE cubTable SET firstName = ? WHERE id = ?",
 				[t, id],
 				app.onSuccess,
 				app.onError);
@@ -122,11 +123,11 @@ function populateCubsList(){
         for (var i = 0; i < rs.rows.length; i++) 
         {
             var row = rs.rows.item(i);
-            $('#cubsList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['text_sample']+'</a></li>');
-            //window.alert("Attempted to add to list: " + row['text_sample']);
+            $('#cubsList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['firstName']+' '+row['surname']+'</a></li>');
+            //window.alert("Attempted to add to list: " + row['firstName']);
         }
  
-        //$('#SoccerPlayerList').listview();
+        //$('#cubsList').listview();
         //window.alert("Attempted to store the query result in an array and display in listView() style");
 	}
     app.selectAllRecords(render);
