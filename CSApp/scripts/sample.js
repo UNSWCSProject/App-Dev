@@ -170,20 +170,24 @@ function verifyUser(username, password)
 {
     var render = function (tx, rs) 
     {
-       var len = rs.rows.length;
-       var row = rs.rows.item(0);
-        
- 	   if (username == row['userName'] && password == row['userPass'])
-    	{
-        	$.mobile.changePage("#home", {
-            	transition: "slide",
-            	reverse: false
-        	});
-    	} 
-    	else 
-    	{
-        	window.alert("Incorrect username or password");
+       	var len = rs.rows.length;
+       	for (var i = 0; i < len; i++)
+        {
+       		var row = rs.rows.item(i);
+ 	   		if (username == row['userName'] && password == row['userPass'])
+    		{
+        		$.mobile.changePage("#home", {
+            		transition: "slide",
+            		reverse: false
+        		});
+                break;
+    		}
+    		else if ((i + 1) == len)
+            {    
+        		window.alert("Incorrect username or password");
+            }
     	}
+
     }
     app.getLoginRecords(render);
 }
