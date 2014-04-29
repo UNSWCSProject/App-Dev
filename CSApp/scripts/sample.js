@@ -11,11 +11,13 @@ app.openDb = function()
     if (window.sqlitePlugin !== undefined) 
     {
         app.db = window.sqlitePlugin.openDatabase("My-Database", "1.0", "SQLite Demo", 200000);
+        window.alert("SQLite");
     } 
     else 
     {
         // For debugging in simulator fallback to native SQL Lite
         app.db = window.openDatabase("My-Database", "1.0", "Cordova Demo", 200000);
+        window.alert("Cordova");
     }
 }
 
@@ -57,7 +59,7 @@ app.createTable = function()
 app.insertRecord = function(tFirst, tLast, tDob, tGuardian1, tPhone1, tGuardian2, tPhone2, tAddress, 
 					tCubLevel, tcubPosition, tCubColor, tDateJoined, tDateInvested) 
 {
-    window.alert("Insert called");
+    //window.alert("Insert called");
     app.db.transaction(function(tx) 
 		{
         	tx.executeSql("INSERT INTO cubTable(firstName, surname, dob, guardian1, phone1, guardian2, phone2, address, cubLevel, cubPosition, colourSix, "+
@@ -133,7 +135,7 @@ function populateCubsList(){
         for (var i = 0; i < rs.rows.length; i++) 
         {
             var row = rs.rows.item(i);
-            $('#cubsList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['firstName']+' . '+row['surname']+'</a></li>');
+            $('#cubsList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['firstName']+' '+row['surname']+' '+row['cubID']+'</h3></a></li>');
             //window.alert("Attempted to add to list: " + row['firstName']);
         }
         //window.alert("Attempted to store the query result in an array and display in listView() style");
@@ -161,13 +163,16 @@ function firstUse()
 
 function createUser(username, password, confirmPassword) 
 {
+    window.alert("attempting to build user...");
     if (password == confirmPassword)
     {
+        window.alert("running create statement...");
         app.insertLoginNameRecord(username, password);
         $.mobile.changePage("#login", {
             	transition: "slide",
             	reverse: false
         	});
+        window.alert("user built...");
     }
     else
     {
