@@ -293,7 +293,7 @@
                 <a href="#home" data-rel="back" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
-                <ul id="cubsList" data-role="listview" data-inset="false" data-filter="true">
+                <ul id="cubsList" data-role="listview" data-inset="false" data-filter="true" data-autodividers="true">
                 </ul>
             </div>
             <!--Footer-->
@@ -311,98 +311,72 @@
             </div>
             <!--Content-->
             <div data-role="content">
-                <ul id="cubsList" data-role="listview">
-                    <li>
-                        <label>
-                            <label for="first-name">First Name</label>
-                            <input type="text" name="first-name" id="first-name" />
-                        </label>
-                    </li>
-                    <li>
-                        <label>
-                            <label for="first-name">Last Name</label>
-                            <input type="text" name="last-name" id="last-name" />
-                        </label>
-                    </li>
-                    <li>
-                        <label for="dob">Date of Birth</label>
-                        <input type="date" name="dob" id="dob" />
-                    </li>
-                    <li>
-                        <label>
+                <form method="post" data-ajax="false">
+                            <label for="firstName">First Name</label>
+                            <input type="text" name="firstName" id = firstName />
+                    
+                            <label for="lastName">Last Name</label>
+                            <input type="text" name="lastName" id="lastName" />
+                    
+                        	<label for="dob">Date of Birth</label>
+                        	<input type="date" name="dob" id="dob" />
+                    
                             <label for="guardian1">Guardian</label>
                             <input type="text" name="guardian1" id="guardian1" />
-                        </label>
-                    </li>
-                    <li>
-                        <label>
+                    
                             <label for="phone1">Phone</label>
                             <input type="tel" id="phone1" />
-                        </label>
-                    </li>
-                    <li>
-                        <label>
+                    
                             <label for="guardian2">Guardian 2</label>
                             <input type="text" name="guardian2" id="guardian2" />
-                        </label>
-                    </li>
-                    <li>
-                        <label>
+                    
                             <label for="phone2">Phone 2</label>
                             <input type="tel" id="phone2" />
-                        </label>
-                    </li>
-                    <li>
-                        <label>
+                    
                             <label for="address">Address</label>
                             <input type="text" name="address" id="address" />
-                        </label>
-                    </li>
-                    <li>
-                        <label for="cub-level" class="select">Cub Level</label>
-                        <select name="cub-level" id="cub-level">
-                            <option>Bronze</option>
-                            <option>Silver</option>
-                            <option>Gold</option>
-                        </select>
-                    </li>
-                    <li>
-                        <label for="cub-status" class="select">Cub Status</label>
-                        <select name="cub-status" id="cub-status">
-                            <option>NA</option>
+                    
+                        	<label for="cubLevel" class="select">Cub Level</label>
+                        	<select name="cubLevel" id="cubLevel">
+                            	<option>Bronze</option>
+                            	<option>Silver</option>
+                            	<option>Gold</option>
+                        	</select>
+                    
+                        	<label for="cubPosition" class="select">Cub Position</label>
+                        	<select name="cubPosition" id="cubPosition">
+                            <option>CUB</option>
                             <option>HEAD</option>
                             <option>2IC</option>
-                        </select>
-                    </li>
-                    <li>
-                        <label for="cub-color" class="select">Colour</label>
-                        <select name="cub-color" id="cub-color">
-                            <option>Red</option>
-                            <option>Green</option>
-                            <option>Blue</option>
-                            <option>White</option>
-                            <option>Black</option>
-                            <option>Yellow</option>
-                        </select>
-                    </li>
-                    <li>
-                        <label for="date-joined">Date Joined</label>
-                        <input type="date" name="date-joined" id="date-joined" />
-                    </li>
-                    <li>
-                        <label for="date-invested">Date Invested</label>
-                        <input type="date" name="date-invested" id="date-invested" />
-                    </li>
-                </ul>
+                        	</select>
+                    
+                        	<label for="cubColor" class="select">Colour</label>
+                        	<select name="cubColor" id="cubColor">
+                            	<option>Red</option>
+                            	<option>Green</option>
+                            	<option>Blue</option>
+                            	<option>White</option>
+                            	<option>Black</option>
+                            	<option>Yellow</option>
+                            </select>
+                    
+                       	 	<label for="dateJoined">Date Joined</label>
+                        	<input type="date" name="dateJoined" id="dateJoined" />
+                        	
+                    		<label for="dateInvested">Date Invested</label>
+                        	<input type="date" name="dateInvested" id="dateInvested" />
+                    
+                        	<input type="submit" onclick="app.insertRecord(this.form.firstName.value, this.form.lastName.value)" value="Submit">
+                </form>
             </div>
             <!--Footer-->
-            <div data-role="footer" data-position="fixed" data-id="oneFooter"> <a href="#confirm-add" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button">Submit</a>
+            <div data-role="footer" data-position="fixed" data-id="oneFooter"> <!--<a href="#confirm-add" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button">Submit</a>-->
 
-                <div data-role="popup" id="confirm-add" data-theme="d" data-overlay-theme="b" class="ui-content" style="max-width:340px;">
+                <!--<div data-role="popup" id="confirm-add" data-theme="d" data-overlay-theme="b" class="ui-content" style="max-width:340px;">
                     <h3>Confirm Changes</h3>
- 					<a href="index.html" data-role="button" data-rel="back" data-theme="b" data-icon="check" data-inline="true" data-mini="true">Confirm</a>
+ 					<a href="index.html" data-role="button" data-rel="back" data-theme="b" data-icon="check" data-inline="true" data-mini="true" onclick="app.testPop(cubsDetailsList.form.first-name.value)">Confirm</a>
  					<a href="index.html" data-role="button" data-rel="back" data-inline="true" data-mini="true">Cancel</a>
-                </div>
+                </div>-->
             </div>
         </div>
         <!--Page-->
