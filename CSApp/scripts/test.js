@@ -1,4 +1,4 @@
-document.addEventListener("deviceready", init, false);
+/*document.addEventListener("deviceready", init, false);
 
 var app = {};
 app.db = null;
@@ -72,4 +72,4 @@ app.onError = function(tx, e) {
 app.onSelectError = function(tx, e) {
     console.log("SQLite Error: " + e.message);
     window.alert("Select() SQLite Error: " + e.message);
-}
+}*/

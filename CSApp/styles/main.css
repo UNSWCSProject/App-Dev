@@ -1,99 +1,55 @@
-/*style for viewCub*/
-#viewcub-container{
-    overflow:hidden;
-    position: relative;
-	text-align: left;
-	margin: 0px auto;
-	padding: 0px;
-	border:0;
-    padding-left: -10%;
-	width: 100%;
-    height:100%;
-}
 
-#left{
-    position: relative;
-    float: left;
-	width: 40%;
-    height:97%;
-	background-color:green;
-    border:1% solid;
-}
-#left img{
-    padding-top:10%;
+/*THIS CSS HAS BEEN DESIGNED FOR TELERIK SIMULATED ANDROID TABLET*/
+
+
+
+/*List fix checkbox layout on activity page -holmes*/
+
+p.pushRight{
     padding-left: 10%;
-	height: 80%; }
-#right{
-    position: relative;
-    margin: 0;
-	float: left;
-	width: 56%;
-    height:97%;
-	background-color:red;
-    border: 1% solid;
 }
 
-#top-left{
-    float: left;
-	width: 98%;
-    height:100px;
-	background-color:red;
-    border:1% solid;
+p{
+    font-weight: bold;
+    font-size: .78em;
 }
+/*end fix -holmes*/
 
-#bottom-left{
-    margin: 0;
-	float: left;
-	width: 98%;
-    height:100px;
-	background-color:blue;
-    border:1% solid;
-}
-
-/*end style for viewCub*/
-
-/*List fix checkbox layout -holmes*/
-.spacer{
-    height: 28px;
-}
-
+/*List fix checkbox layout on cubs page -holmes*/
 .ui-checkbox input {
-position: absolute;
-left: 10px;
-top: 50%;
-width: 40px;
-height: 40px;
-margin: -5px 0 0 0;
-outline: 0!important;
-z-index: 1;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    outline: 0!important;
+    margin-top: -2%;
+    margin-left: -3%;
+    z-index: 1;
+    color:gold;
 }
 
 .checkBoxLeft{
-    position: absolute; 
-    left: 1px; 
-    top: 25%;
+    position: relative; 
 }
 
 h3.pushRight{
-    padding-left: 25%;
+    padding-left: 10%;
 }
 
-a.pushRight{
-    padding-left: 25%;
-}
 /*end fix -holmes*/
 
 /*login styling -holmes*/
 
 .login{
-    background-color: #FFFF00;
     height:100%;
 }
 
 /*end styling -holmes */
 
 /*Banner -holmes*/
-#banner{
+.spacer{
+    height: 40%;
+}
+.banner{
     overflow:hidden;
 	text-align: left;
 	margin: 0px auto;
@@ -101,13 +57,16 @@ a.pushRight{
 	border:0;
     padding-left: -10%;
 	width: 100%;
-    height:100px;
+    height: 200px;
+}
+h1{
+    color: gold;
 }
 .box-l{
     float: left;
 	width: 35%;
     height:100%;
-	background-color:#FFFF00;
+	
 }
 .box-l img{
     padding-top:10%;
@@ -119,7 +78,6 @@ a.pushRight{
 	float: left;
 	width: 65%;
     height:100%;
-	background-color:#FFFF00;
 }
 
 .box-r h1{
@@ -159,118 +117,4 @@ a.pushRight{
 
 .clear {
     clear: both;
-}
-
-/* MAP STYLES*/
-#page-location-content {
-    position: absolute;
-    top: 42px;
-    bottom: 30px;
-    left: 0;
-    right: 0;
-    padding: 0;
-}
-
-#page-location-content .ui-input-search,
-#page-location-content div.ui-input-text {
-    margin: 0 10px;
-    padding: 0;
-    background-image: none;
-    position: relative;
-    border: none;
-}
-
-#map-canvas {
-    width: 100%;
-    height: 100%;
-}
-
-#map-search-wrap {
-    width: 100%;
-    position: absolute;
-    z-index: 10;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 3px;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-}
-
-#map-address {
-    min-width: 200px;
-    width: 60%;
-    margin: 5px;
-    float: left;
-    background-color: #fff;
-    font-style: italic;
-    color: #000;
-    padding: 7px 10px;
-    border-radius: 3px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgb(180, 180, 180);
-    border-bottom-color: rgb(255, 255, 255);
-    box-shadow: 0 -1px 0 #3C3C3C;
-}
-
-#map-search {
-    float: left;
-    width: 40px;
-    height: 40px;
-    color: #fff;
-    border: none;
-    background: none;
-    background-image: url(../styles/images/search.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-    margin-top: 4px;
-}
-
-#map-search:active {
-    background-image: url(../styles/images/search_active.png);
-    background-repeat: no-repeat;
-}
-
-#map-navigate-home {
-    float: left;
-    width: 40px;
-    height: 40px;
-    color: #fff;
-    border: none;
-    background: none;
-    background-image: url(../styles/images/location.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-    margin-top: 4px;
-}
-
-#map-navigate-home:active {
-    background-image: url(../styles/images/location_active.png);
-    background-repeat: no-repeat;
-}
-
-/* RETINA DISPLAY STYLES*/
-@media only screen and (-webkit-min-device-pixel-ratio: 2),(min-resolution: 192dpi) {
-    #map-search {
-        background-image: url(../styles/images/search2x.png);
-        background-repeat: no-repeat;
-        background-size: 100%;
-    }
-
-    #map-search:active {
-        background-image: url(../styles/images/search_active2x.png);
-        background-repeat: no-repeat;
-        background-size: 100%;
-    }
-
-    #map-navigate-home {
-        background-image: url(../styles/images/location2x.png);
-        background-repeat: no-repeat;
-        background-size: 100%;
-    }
-
-    #map-navigate-home:active {
-        background-image: url(../styles/images/location_active2x.png);
-        background-repeat: no-repeat;
-        background-size: 100%;
-    }
 }

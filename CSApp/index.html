@@ -35,16 +35,23 @@
     
     <body>
         <!--Login-->
-        <div id="login" data-role="page" data-add-back-btn="true">
+        <div id="login" data-role="page" data-theme="e" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header" data-position="fixed">
                 <h1>Login</h1>
             </div>
             <!--Content-->
             <div data-role="content" class="login">
+              <div class="banner">
+                    <div class="box-l">
+                        <img src="styles/images/ic_launcher.png" alt="" />
+                    </div>
+                    <div class="box-r">
+                         <h1>CSMA</h1>
+                    </div>
+                </div>
                 <div id="login-wrap">
-                     <h3 id="login-text">Enter your credentials:</h3>
-
+                    
                     <form method="post" data-ajax="false">
                         <input name="username" type="text" placeholder="Username" />
                         <input name="password" type="password" placeholder="Password" />
@@ -61,7 +68,7 @@
         </div>
         <!--Page-->
         <!--createUser-->
-        <div id="createUser" data-role="page" data-add-back-btn="true">
+        <div id="createUser" data-role="page" data-theme="e" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header" data-position="fixed">
                 <h1>Create New User</h1>
@@ -69,9 +76,15 @@
             </div>
             <!--Content-->
             <div data-role="content" class="login">
+                <div class="banner">
+                    <div class="box-l">
+                        <img src="styles/images/ic_launcher.png" alt="" />
+                    </div>
+                    <div class="box-r">
+                         <h1>CSMA</h1>
+                    </div>
+                </div>
                 <div id="login-wrap">
-                     <h3 id="login-text">This is your first use!<br>Enter your new credentials:</h3>
-
                     <form method="post" data-ajax="false">
                         <input name="username" type="text" placeholder="Username" />
                         <input name="password" type="password" placeholder="Password" />
@@ -88,93 +101,50 @@
         </div>
         <!--Page-->
         <!--Home-->
-        <div id="home" data-role="page">
+        <div id="home" data-theme="e" data-role="page">
             <!--Header-->
             <div data-role="header" data-position="fixed"> <a href="#login" dara-rel="back" data-transition="slide" data-icon="minus">Logout</a>
                 <h1>CSMA</h1> 
             </div>
             <!--Content-->
             <div data-role="content" class="front-content">
-                <div id="banner">
+                <div class="banner">
                     <div class="box-l">
-                        <img src="styles/images/boomrng.png" alt="" />
+                        <img src="styles/images/ic_launcher.png" alt="" />
                     </div>
                     <div class="box-r">
                          <h1>CSMA</h1>
 
                     </div>
                 </div>
-                <div class="spacer"></div>
-                <div class="front-list">
-                    <ul data-role="listview">
-                        <li> <a href="#nominal-roll" data-transition="slide">Nominal Roll</a>
-
-                        </li>
-                        <li> <a href="#calendar" data-transition="slide">Calendar</a>
-
-                        </li>
-                        <li> <a href="#activity-list" data-transition="slide">Activities</a>
-
-                        </li>
-                        <li> <a href="#cubs-list" data-transition="slide">Cubs</a>
-
-                        </li>
-                        <li> <a href="#new-cub" data-transition="slide">Add Cub</a>
-
-                        </li>
-                        <li> <a href="#createUser" data-transition="slide">Add User</a>
-
-                        </li>
-                    </ul>
+                <div id="login-wrap">
+                    <div class="front-list">
+                        <ul data-role="listview">
+                            <li> <a href="#calendar" data-transition="slide">Calendar</a>
+    
+                            </li>
+                            <li> <a href="#activity-list-bronze" data-transition="slide">Activities</a>
+    
+                            </li>
+                            <li> <a href="#cubs-list" data-transition="slide">Cubs</a>
+    
+                            </li>
+                            <li> <a href="#new-cub" data-transition="slide">Add Cub</a>
+    
+                            </li>
+                            <li> <a href="#settings" data-transition="slide">Settings</a>
+    
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <!--Footer-->
             <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>
         </div>
         <!--page-->
-        <!--Nominal Roll-->
-        <div id="nominal-roll" data-role="page" data-add-back-btn="true">
-            <!--Header-->
-            <div data-role="header" data-position="fixed">
-                <h1>Nominal Roll</h1>
-				<a href="#home" data-rel="back" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
-            </div>
-            <!--Content-->
-            <div data-role="content">
-                <ul data-role="listview" data-theme="c" data-dividertheme="d" data-filter="true">
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="nr-01" id="nr-01" />
-                        </div> <a href="Views/cubView.html" data-transition="slide"><h3 class="pushRight">Timmy Turner</h3></a>
-
-                    </li>
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="nr-02" id="nr-02" />
-                        </div> <a href="#new-cub" data-transition="slide"><h3 class="pushRight">Joe Bloggs</h3></a>
-
-                    </li>
-                    <li>
-                        <div class="checkBoxLeft">
-                            <input type="checkbox" name="nr-03" id="nr-03" />
-                        </div> <a href="#new-cub" data-transition="slide"><h3 class="pushRight">Jack Tar</h3></a>
-
-                    </li>
-                </ul>
-            </div>
-            <!--Footer-->
-            <div data-role="footer" data-position="fixed" data-id="oneFooter"> <a href="#confirmRoll" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button">Submit</a>
-
-                <div data-role="popup" id="confirmRoll" data-theme="d" data-overlay-theme="b" class="ui-content" style="max-width:340px;">
-                     <h3>Confirm Changes</h3>
- 						<a href="index.html" data-role="button" data-rel="back" data-theme="b" data-icon="check" data-inline="true" data-mini="true">Confirm</a>
- 						<a href="index.html" data-role="button" data-rel="back" data-inline="true" data-mini="true">Cancel</a>
-                </div>
-            </div>
-        </div>
-        <!--page-->
         <!--Calendar-->
-        <div data-role="page" id="calendar" data-add-back-btn="true">
+        <div data-role="page" data-theme="e" id="calendar" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header" data-position="fixed">
             	<h1>Calendar</h1>
@@ -194,10 +164,10 @@
         </div>
         
         <!--Page-->
-        <!--Activities-->
-        
+        <!--Activities V1-->
+        <!--
         <div data-role="page" id="activity-list" data-add-back-btn="true">
-            <!--Header-->
+            <!--Header--
             <div data-role="header">
                  <h1>All Activities</h1>
                 <a href="#home" data-rel="back" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
@@ -205,6 +175,30 @@
             <div data-role="content">
                 <ul id="activityList" data-role="listview" data-inset="false" data-filter="true" data-autodividers="true">
                 </ul>
+            </div>
+            <!--Footer--
+            <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
+            </div>
+        </div>
+        
+        
+        -->
+        <!--Page-->
+        
+        
+        <!--Activities V2-->
+        <!--BRONZE-->
+        
+        <div data-role="page" data-theme="e" id="activity-list-bronze" data-add-back-btn="true">
+            <!--Header-->
+            <div data-role="header">
+                 <h1>Bronze Activities</h1>
+                <a href="#activity-list-silver" class="ui-btn-right" data-transition="slide" data-icon="next">Silver</a>
+            </div>
+            <div data-role="content">
+                <div id="activityListBronze" data-role="collapsible-set" data-inset="false">
+					
+                </div>
             </div>
             <!--Footer-->
             <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
@@ -214,15 +208,76 @@
         
         
         <!--Page-->
+        <!--SILVER-->
+        
+        <div data-role="page" data-theme="e" id="activity-list-silver" data-add-back-btn="true">
+            <!--Header-->
+            <div data-role="header">
+                 <h1>Silver Activities</h1>
+                <a href="#activity-list-gold" class="ui-btn-right" data-transition="slide" data-icon="next">Gold</a>
+            </div>
+            <div data-role="content">
+                <div id="activityListSilver" data-role="collapsible-set" data-inset="false">
+					
+                </div>
+            </div>
+            <!--Footer-->
+            <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
+            </div>
+        </div>
+        
+        
+        
+        <!--Page-->
+        <!--GOLD-->
+        
+        <div data-role="page" data-theme="e" id="activity-list-gold" data-add-back-btn="true">
+            <!--Header-->
+            <div data-role="header">
+                 <h1>Gold Activities</h1>
+                <a href="#activity-list-confirm" class="ui-btn-right" data-transition="slide" data-icon="next">Submit</a>
+            </div>
+            <div data-role="content">
+                <div id="activityListGold" data-role="collapsible-set" data-inset="false">
+					
+                </div>
+            </div>
+            <!--Footer-->
+            <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
+            </div>
+        </div>
+        
+        <!--Confirm-->
+        
+        <div data-role="page" data-theme="e" id="activity-list-confirm" data-add-back-btn="true">
+            <!--Header-->
+            <div data-role="header">
+                 <h1>Confirm Activities</h1>
+                <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="next">Confirm</a>
+            </div>
+            <div data-role="content">
+                <ul id="activityListConfirm" data-role="listview" data-inset="false" data-filter="true" data-autodividers="true">
+                    <!-- USE js to fill a categorised list view of all selected-->
+                </ul>
+            </div>
+            <!--Footer-->
+            <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
+            </div>
+        </div>
+        
+        
+        <!--End activity Pages-->
+        <!--Page-->
+        
         <!--Cubs-->
-        <div data-role="page" id="cubs-list" data-add-back-btn="true">
+        <div data-role="page" data-theme="e" id="cubs-list" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header">
                  <h1>All Cubs</h1>
                 <a href="#home" data-rel="back" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
-                <ul id="cubsList" data-role="listview" data-inset="false" data-filter="true" data-autodividers="true">
+                <ul id="cubsList" data-role="listview" data-divider-theme="e" data-filter-theme="e" data-inset="false" data-filter="true" data-autodividers="true">
                 </ul>
             </div>
             <!--Footer-->
@@ -232,7 +287,7 @@
         </div>
         <!--Page-->
         <!--New Cub-->
-        <div data-role="page" id="new-cub" data-add-back-btn="true">
+        <div data-role="page" data-theme="e" id="new-cub" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header" data-position="fixed">
                 <h1>Add Cub</h1>
@@ -310,7 +365,7 @@
         </div>
         <!--Page-->
         <!--View Cub-->
-        <div data-role="page" id="cub-view" data-add-back-btn="true">
+        <div data-role="page" data-theme="e" id="cub-view" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header" data-position="fixed">
                  <h1>Insert Name Here</h1>
@@ -330,5 +385,40 @@
             <!--Footer-->
             <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>
         </div>
+        
+        <!--Confirm-->
+        <!-- Settings Page-->
+        <div data-role="page" data-theme="e" id="settings" data-add-back-btn="true">
+            <!--Header-->
+            <div data-role="header">
+                 <h1>Settings</h1>
+                <a href="#home" class="ui-btn-right" data-rel="back" data-transition="slide" data-icon="home">Home</a>
+            </div>
+            <div data-role="content">
+               <div class="banner">
+                    <div class="box-l">
+                        <img src="styles/images/ic_launcher.png" alt="" />
+                    </div>
+                    <div class="box-r">
+                         <h1>CSMA</h1>
+
+                    </div>
+                </div>
+                <div id="login-wrap">
+                    <div class="front-list">
+                        <ul data-role="listview">
+                            <li> <a href="#createUser" data-transition="slide">Add User</a>
+    
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--Footer-->
+            <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
+                
+            </div>
+        </div>
+        
     </body>
 </html>
