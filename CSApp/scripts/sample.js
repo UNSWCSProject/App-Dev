@@ -1,23 +1,22 @@
-//Use http://jsfiddle.net/ to run code sections and tidy up the layout
-
+//Event listener to call init() once the device is ready and has loaded
 document.addEventListener("deviceready", init, false);
 
+//Global variables
 var app = {};
 app.db = null;
 
+//This function 
 app.openDb = function() 
-//If statement as defined by example, running in simulator actually calls the sqLite plug in
 {
     if (window.sqlitePlugin !== undefined) 
     {
-        app.db = window.sqlitePlugin.openDatabase("My-Database", "1.0", "SQLite Demo", 200000);
-        window.alert("SQLite");
+        app.db = window.sqlitePlugin.openDatabase("cubDb");
+        //window.alert("SQLite");
     } 
     else 
     {
-        // For debugging in simulator fallback to native SQL Lite
-        app.db = window.openDatabase("My-Database", "1.0", "Cordova Demo", 200000);
-        window.alert("Cordova");
+        app.db = window.openDatabase("cubDb", "1.0", "Cordova Demo", 200000);
+        //window.alert("Cordova");
     }
 }
 
@@ -28,10 +27,19 @@ function init() {
     //app.clearData();
     app.createTable();
     populateCubsList();
+    
     //-----Create User Information-----//
     //Comment out this line when you are happy to make the user data permanent
     //app.clearUserData();
     app.createLoginTable();
+    
+    //-----Create Activity Information-----//
+    app.clearActivityData();
+    app.createActivityTable();
+    app.insertActivityInfo();
+    populateActivityList();
+    app.insertActivityInfo();
+    
     firstUse(); 
 }
 
@@ -49,7 +57,7 @@ app.createTable = function()
             	"phone1 VARCHAR(20), phone2 VARCHAR(20), dob DATE, dateJoined DATETIME, colourSix VARCHAR(20), headOfSix TINYINT DEFAULT 0, secondOfSix "+
                 "TINYINT DEFAULT 0, dateInvested DATETIME, guardian1 VARCHAR(150), guardian2 VARCHAR(150), address VARCHAR(500), cubLevel VARCHAR(10), "+
                 "cubPosition VARCHAR(10))", [], app.onSuccess, app.onError);
-            //tx.executeSql("CREATE TABLE IF NOT EXISTS cubTable (cubID INTEGER PRIMARY KEY ASC, firstName VARCHAR(60), surname VARCHAR(60))"
+            //tx.executeSql("CREATE TABLE IF NOT EXISTS cubTable(cubID INTEGER PRIMARY KEY ASC, firstName TEXT, surname TEXT)", [], app.onSuccess, app.onError);
             //Kyle has replaced headOfSix 0/1 and secondOfSix 0/1 with cubPosition, the input is restricted by dropdown boxes in the build menu
         	//window.alert("Table built");
         }
@@ -109,7 +117,7 @@ app.selectAllRecords = function(fn)
 {
     app.db.transaction(function(tx) 
     	{
-            tx.executeSql("SELECT * FROM cubTable ORDER BY cubID", [],
+            tx.executeSql("SELECT * FROM cubTable ORDER BY firstName", [],
 			fn,
 			app.onError);
    		}
@@ -135,8 +143,10 @@ function populateCubsList(){
         for (var i = 0; i < rs.rows.length; i++) 
         {
             var row = rs.rows.item(i);
-            $('#cubsList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['firstName']+' '+row['surname']+' '+row['cubID']+'</h3></a></li>');
-            //window.alert("Attempted to add to list: " + row['firstName']);
+            /*$('#cubsList').append('<li><a href="#"><h3 class="ui-li-heading"></h3></a></li>');
+            window.alert("Attempted to add to list: " + row['firstName']);
+            */
+               $('#cubsList').append('<li><div class="checkBoxLeft"><input type="checkbox" /></div> <a href="#" data-transition="slide"><h3 class="pushRight">'+row['firstName']+' '+row['surname']+' '+row['cubID']+'</h3></a></li>');
         }
         //window.alert("Attempted to store the query result in an array and display in listView() style");
 	}
@@ -163,16 +173,16 @@ function firstUse()
 
 function createUser(username, password, confirmPassword) 
 {
-    window.alert("attempting to build user...");
+    //window.alert("attempting to build user...");
     if (password == confirmPassword)
     {
-        window.alert("running create statement...");
+        //window.alert("running create statement...");
         app.insertLoginNameRecord(username, password);
         $.mobile.changePage("#login", {
             	transition: "slide",
             	reverse: false
         	});
-        window.alert("user built...");
+        //window.alert("user built...");
     }
     else
     {
@@ -246,5 +256,115 @@ app.clearUserData = function()
 	);
 }
                           
+//------------Activity Table Section-------------------------//
 
+
+app.createActivityTable = function() 
+{
+    app.db.transaction(function(tx) 
+		{
+            window.alert("ActivityTable created");
+        	tx.executeSql("CREATE TABLE IF NOT EXISTS activityTable (id INTEGER PRIMARY KEY ASC, activityName TEXT)", [], 
+                          app.onSuccess, app.onError);
+        }
+	);
+}
+
+
+app.insertActivityInfo = function(fn)
+{
+    app.db.transaction(function(tx)
+        {            
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Health & First Aid');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Saftey');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Ropes');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Outdoor Scouting');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Our Cub Scout Traditions');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Symbols of Australia');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Promise and Law');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Fitness');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('People and Cultures');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Scientific Discovery');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('The Natural Environment');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Self Expression');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Handcraft');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Your Community');", [],
+                         app.onSuccess, app.onError);
+            window.alert("Activities inserted");
+        }
+    );
+}
+
+
+app.getActivityRecords = function(fn) 
+{
+    app.db.transaction(function(tx) 
+    	{
+            tx.executeSql("SELECT activityName FROM activityTable ORDER BY activityName", [],
+			fn,
+			app.onError);
+   		}
+	);
+}
+
+function populateActivityList(){
+    window.alert("populateActivityList function entered");
+	var render = function (tx, rs) 
+    {
+        window.alert("Activity called");                                                                                                                                                                                                                                                                                                                                                                                 
+        $('#activityList').empty();
+        var len = rs.rows.length;
+        //window.alert("SQLite Table: " + len + " rows found.");
+        for (var i = 0; i < rs.rows.length; i++) 
+        {
+            var row = rs.rows.item(i);
+            $('#activityList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['activityName']+'</h3></a></li>');
+            //window.alert("Attempted to add to list: " + row['activityName']);
+        }        
+        window.alert("Attempted to store the query result in an array and display in listView() style");
+	}
+    
+    //HOLMES FUCKING AROUND
+    /*
+    {
+        window.alert("Holmes Activity called");                                                                                                                                                                                                                                                                                                                                                                                 
+        $('#activityList').empty();
+        //window.alert("SQLite Table: " + len + " rows found.");
+        for (var i = 0; i < rs.rows.length; i++) 
+        {
+            var row = rs.rows.item(i);
+           $('#activityList').append('<li><h3>'+ row['activityName'] + '</h3><ul id = '+ row['activityName'] + '></ul></li>'); 
+           $().append('<li><a href="#"><h3 class="ui-li-heading">'+row['activityName']+'</h3></a></li>');
+            
+            window.alert("Attempted to add to list: " + row['activityName']);
+        }        
+        window.alert("Attempted to store the query result in an array and display in listView() style");
+	}
+    */
+    //END HOLMES
+    
+    app.getActivityRecords(render);
+}
+
+app.clearActivityData = function() 
+{
+    app.db.transaction(function(tx) 
+    	{
+            tx.executeSql("DELETE FROM activityTable");
+   		}
+	);
+}
 

@@ -113,7 +113,7 @@
                         <li> <a href="#calendar" data-transition="slide">Calendar</a>
 
                         </li>
-                        <li> <a href="#activities" data-transition="slide">Activities</a>
+                        <li> <a href="#activity-list" data-transition="slide">Activities</a>
 
                         </li>
                         <li> <a href="#cubs-list" data-transition="slide">Cubs</a>
@@ -192,98 +192,27 @@
             <!--Footer-->
             <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>
         </div>
+        
         <!--Page-->
         <!--Activities-->
-        <div data-role="page" id="activities" data-add-back-btn="true">
+        
+        <div data-role="page" id="activity-list" data-add-back-btn="true">
             <!--Header-->
-            <div data-role="header" data-position="fixed">
-                 <h1>Activities</h1>
-
+            <div data-role="header">
+                 <h1>All Activities</h1>
+                <a href="#home" data-rel="back" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
-            <!--Content-->
             <div data-role="content">
-                <div class="container">
-                    <div id="activity-bronze" name="activity-bronze">
-                        <ul data-role="listview" data-theme="c" data-dividertheme="d">
-                            <li>
-                                <div class="checkBoxLeft">
-                                    <input type="checkbox" name="alb-01" id="alb-01" />
-                                </div>
-                                 <h3 class="pushRight">Bronze</h3>
-
-                            </li>
-                            <li>
-                                <div class="checkBoxLeft">
-                                    <input type="checkbox" name="alb-02" id="alb-02" />
-                                </div>
-                                 <h3 class="pushRight">Bronze</h3>
-
-                            </li>
-                            <li>
-                                <div class="checkBoxLeft">
-                                    <input type="checkbox" name="alb-03" id="alb-03" />
-                                </div>
-                                 <h3 class="pushRight">Bronze2</h3>
-
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="spacer"></div>
-                    <div id="activity-silver" name="activity-silver">
-                        <ul data-role="listview" data-theme="c" data-dividertheme="d">
-                            <li>
-                                <div class="checkBoxLeft">
-                                    <input type="checkbox" name="als-01" id="als-01" />
-                                </div>
-                                 <h3 class="pushRight">Silver</h3>
-
-                            </li>
-                            <li>
-                                <div class="checkBoxLeft">
-                                    <input type="checkbox" name="als-02" id="als-02" />
-                                </div>
-                                 <h3 class="pushRight">Silver2</h3>
-
-                            </li>
-                            <li>
-                                <div class="checkBoxLeft">
-                                    <input type="checkbox" name="als-03" id="als-03" />
-                                </div>
-                                 <h3 class="pushRight">Silver3</h3>
-
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="spacer"></div>
-                    <div id="activity-gold" name="activity-gold">
-                        <ul data-role="listview" data-theme="c" data-dividertheme="d">
-                            <li>
-                                <div class="checkBoxLeft">
-                                    <input type="checkbox" name="alg-01" id="alg-01" />
-                                </div>
-                                 <h3 class="pushRight">Gold</h3>
-
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <ul id="activityList" data-role="listview" data-inset="false" data-filter="true" data-autodividers="true">
+                </ul>
             </div>
             <!--Footer-->
-            <div data-role="footer" data-position="fixed" data-id="oneFooter">
-                <!--navbar-->
-                <div id="activity-bar" class="ui-navbar" data-role="navbar" data-theme="a">
-                    <ul>
-                        <li><a href="#" class="ui-btn-active ">Bronze</a>
-                        </li>
-                        <li><a href="#">Silver</a>
-                        </li>
-                        <li><a href="#">Gold</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /navbar -->
+            <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
             </div>
         </div>
+        
+        
+        
         <!--Page-->
         <!--Cubs-->
         <div data-role="page" id="cubs-list" data-add-back-btn="true">
@@ -366,7 +295,7 @@
                     		<label for="dateInvested">Date Invested</label>
                         	<input type="date" name="dateInvested" id="dateInvested" />
                     
-                        	<input type="submit" onclick="app.insertRecord(this.form.firstName.value, this.form.lastName.value)" value="Submit">
+                        	<input type="submit" onclick="app.insertRecord(this.form.firstName.value, this.form.lastName.value, this.form.dob.value, this.form.guardian1.value, this.form.phone1.value, this.form.guardian2.value, this.form.phone2.value, this.form.address.value, this.form.cubLevel.value, this.form.cubPosition.value, this.form.cubColor.value, this.form.dateJoined.value, this.form.dateInvested.value)" value="Submit">
                 </form>
             </div>
             <!--Footer-->
