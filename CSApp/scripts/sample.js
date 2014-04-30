@@ -5,7 +5,7 @@ document.addEventListener("deviceready", init, false);
 var app = {};
 app.db = null;
 
-//This function 
+//This function creates the database
 app.openDb = function() 
 {
     if (window.sqlitePlugin !== undefined) 
@@ -20,9 +20,11 @@ app.openDb = function()
     }
 }
 
+//When the device is initialised, run these functions
 function init() {
     //-----Create the database-----//
     app.openDb();
+    
     //-----Create the Cub Information-----//
     //app.clearData();
     app.createTable();
@@ -39,15 +41,26 @@ function init() {
     app.insertActivityInfo();
     populateActivityList();
     app.insertActivityInfo();
-    
     firstUse(); 
 }
 
+app.onSuccess = function(tx, r) 
+{
+    console.log("Your SQLite query was successful!");
+    //window.alert("Your SQLite query was successful!");
+}
+
+app.onError = function(tx, e) 
+{
+    console.log("SQLite Error: " + e.message);
+    //window.alert("SQLite Error: " + e.message);
+}
 
 app.testPop = function(t)
 {
     window.alert("POP: "+t);
 }
+//------------Cub Table Section-------------------------//
 
 app.createTable = function() 
 {
@@ -75,18 +88,6 @@ app.insertRecord = function(tFirst, tLast, tDob, tGuardian1, tPhone1, tGuardian2
 				[tFirst, tLast, tDob, tGuardian1, tPhone1, tGuardian2, tPhone2, tAddress, tCubLevel, tcubPosition, tCubColor, tDateJoined, tDateInvested]);
     	}
 	)
-}
-
-app.onSuccess = function(tx, r) 
-{
-    console.log("Your SQLite query was successful!");
-    //window.alert("Your SQLite query was successful!");
-}
-
-app.onError = function(tx, e) 
-{
-    console.log("SQLite Error: " + e.message);
-    //window.alert("SQLite Error: " + e.message);
 }
 
 app.updateRecord = function(cubID, t) 
@@ -146,7 +147,7 @@ function populateCubsList(){
             /*$('#cubsList').append('<li><a href="#"><h3 class="ui-li-heading"></h3></a></li>');
             window.alert("Attempted to add to list: " + row['firstName']);
             */
-               $('#cubsList').append('<li><div class="checkBoxLeft"><input type="checkbox" /></div> <a href="#" data-transition="slide"><h3 class="pushRight">'+row['firstName']+' '+row['surname']+' '+row['cubID']+'</h3></a></li>');
+               $('#cubsList').append('<li id = "cubID' +row['cubID']+'"><div><div class="checkBoxLeft"><input type="checkbox" /></div><h3 class="pushRight">'+row['firstName']+' '+row['surname']+' '+row['cubID']+'</h3></div></li>');
         }
         //window.alert("Attempted to store the query result in an array and display in listView() style");
 	}
@@ -258,62 +259,120 @@ app.clearUserData = function()
                           
 //------------Activity Table Section-------------------------//
 
-
 app.createActivityTable = function() 
 {
     app.db.transaction(function(tx) 
-		{
-            window.alert("ActivityTable created");
-        	tx.executeSql("CREATE TABLE IF NOT EXISTS activityTable (id INTEGER PRIMARY KEY ASC, activityName TEXT)", [], 
+		{            
+            //window.alert("ActivityTable created");
+        	tx.executeSql("CREATE TABLE activityTable (activityID INTEGER PRIMARY KEY ASC, activityName TEXT, categoryName TEXT, categoryLevel TEXT)", [], 
                           app.onSuccess, app.onError);
         }
 	);
 }
 
-
 app.insertActivityInfo = function(fn)
 {
     app.db.transaction(function(tx)
-        {            
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Health & First Aid');", [],
+        {  
+            //Bronze below
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Health and First Aid', 'Health and First Aid', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Saftey');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Safety', 'Safety', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Ropes');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ropes', 'Ropes', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Outdoor Scouting');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Outdoor Scouting', 'Outdoor Scouting', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Our Cub Scout Traditions');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Our Cub Scout Traditions','Our Cub Scout Traditions', 'Bronze');", [],
+                         app.onSuccess, app.onError)
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Symbols of Australia','Symbols of Australia', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Symbols of Australia');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law','Promise and Law', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Promise and Law');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fitness','Fitness', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Fitness');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('People and Cultures','People and Cultures', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('People and Cultures');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scientific Discovery','Scientific Discovery', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Scientific Discovery');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('The Natural Environment','The Natural Environment', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('The Natural Environment');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Self Expression','Self Expression', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Self Expression');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Handcraft','Handcraft', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Handcraft');", [],
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Your Community','Your Community', 'Bronze');", [],
                          app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName) VALUES ('Your Community');", [],
+            
+            //Silver below
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Health and First Aid', 'Health and First Aid', 'Silver');", [],
                          app.onSuccess, app.onError);
-            window.alert("Activities inserted");
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Safety', 'Safety', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ropes', 'Ropes', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Outdoor Scouting', 'Outdoor Scouting', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Our Cub Scout Traditions','Our Cub Scout Traditions', 'Silver');", [],
+                         app.onSuccess, app.onError)
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Symbols of Australia','Symbols of Australia', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law','Promise and Law', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fitness','Fitness', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('People and Cultures','People and Cultures', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scientific Discovery','Scientific Discovery', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('The Natural Environment','The Natural Environment', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Self Expression','Self Expression', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Handcraft','Handcraft', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Your Community','Your Community', 'Silver');", [],
+                         app.onSuccess, app.onError);
+            
+            //Gold below
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Health and First Aid', 'Health and First Aid', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Safety', 'Safety', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ropes', 'Ropes', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Outdoor Scouting', 'Outdoor Scouting', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Our Cub Scout Traditions','Our Cub Scout Traditions', 'Gold');", [],
+                         app.onSuccess, app.onError)
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Symbols of Australia','Symbols of Australia', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law','Promise and Law', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fitness','Fitness', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('People and Cultures','People and Cultures', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scientific Discovery','Scientific Discovery', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('The Natural Environment','The Natural Environment', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Self Expression','Self Expression', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Handcraft','Handcraft', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Your Community','Your Community', 'Gold');", [],
+                         app.onSuccess, app.onError);
+            //End activity Table insert
         }
     );
 }
-
 
 app.getActivityRecords = function(fn) 
 {
     app.db.transaction(function(tx) 
     	{
-            tx.executeSql("SELECT activityName FROM activityTable ORDER BY activityName", [],
+            tx.executeSql("SELECT * FROM activityTable ORDER BY activityName", [],
 			fn,
 			app.onError);
    		}
@@ -321,9 +380,9 @@ app.getActivityRecords = function(fn)
 }
 
 function populateActivityList(){
-    window.alert("populateActivityList function entered");
+    //window.alert("populateActivityList function entered");
 	var render = function (tx, rs) 
-    {
+    /*{
         window.alert("Activity called");                                                                                                                                                                                                                                                                                                                                                                                 
         $('#activityList').empty();
         var len = rs.rows.length;
@@ -335,27 +394,62 @@ function populateActivityList(){
             //window.alert("Attempted to add to list: " + row['activityName']);
         }        
         window.alert("Attempted to store the query result in an array and display in listView() style");
-	}
+	}*/
     
-    //HOLMES FUCKING AROUND
+    //HOLMES FUCKING AROUND V1 _This works using deprecated lists-------------------------------------------
     /*
     {
-        window.alert("Holmes Activity called");                                                                                                                                                                                                                                                                                                                                                                                 
+        //window.alert("Holmes Activity called");                                                                                                                                                                                                                                                                                                                                                                                 
         $('#activityList').empty();
-        //window.alert("SQLite Table: " + len + " rows found.");
+        
+       // window.alert("SQLite Table: " + rs.rows.length + " rows found.");
+       
         for (var i = 0; i < rs.rows.length; i++) 
         {
             var row = rs.rows.item(i);
-           $('#activityList').append('<li><h3>'+ row['activityName'] + '</h3><ul id = '+ row['activityName'] + '></ul></li>'); 
-           $().append('<li><a href="#"><h3 class="ui-li-heading">'+row['activityName']+'</h3></a></li>');
+           $('#activityList').append('<li><h3>'+ row['categoryName'] + '</h3><ul id = '+ row['categoryName'] + '></ul></li>'); 
+           $('#' + row['categoryName']).append('<li><a href="#"><h3 class="ui-li-heading">'+row['activityName']+'</h3></a></li>');
             
-            window.alert("Attempted to add to list: " + row['activityName']);
-        }        
-        window.alert("Attempted to store the query result in an array and display in listView() style");
+           // window.alert("Attempted to add to list: " + row['categoryName']);
+        }
+        //window.alert("Attempted to store the query result in an array and display in activitylistView() style");
 	}
-    */
-    //END HOLMES
     
+    *///END HOLMES V1 _------------------------------------------------------------------------------------------
+    //Holmes V2
+    
+    {
+        //window.alert("Holmes Activity called");                                                                                                                                                                                                                                                                                                                                                                                 
+        $('#activityListBronze').empty();
+        $('#activityListSilver').empty();
+        $('#activityListGold').empty();
+       // window.alert("SQLite Table: " + rs.rows.length + " rows found.");
+       
+        //Fills only BRONZE ACTIVITY LIST
+        /*
+        for (var i = 0; i < rs.rows.length; i++) 
+        {
+            var row = rs.rows.item(i);
+           $('#activityListBronze').append('<div data-role="collapsible"><h3>'+ row['categoryName'] + '</h3><p id =cat1'+ row['activityID'] + '></p></div>'); 
+           $('#cat1' + row['activityID']).append('<div class="checkBoxLeft"><input type="checkbox"/></div><p class="pushRight">'+row['activityName']+'</p>');
+            
+           // window.alert("Attempted to add to list: " + row['categoryName']);
+        }
+        //window.alert("Attempted to store the query result in an array and display in activitylistView() style");
+        */
+        //FILLS all lists
+        for (var i = 0; i < rs.rows.length; i++) 
+        {
+            var row = rs.rows.item(i);
+            
+           	$('#activityList'+ row['categoryLevel']).append('<div data-role="collapsible"><h3>'+ row['categoryName'] + '</h3><p id =cat1'+ row['activityID'] + '></p></div>'); 
+           	$('#cat1' + row['activityID']).append('<div class="checkBoxLeft"><input type="checkbox"/></div><p class="pushRight">'+row['activityName']+' '+ row['categoryLevel']+'</p>');
+            
+           // window.alert("Attempted to add to list: " + row['categoryName']);
+        }
+        //window.alert("Attempted to store the query result in an array and display in activitylistView() style");   
+	}
+    //End Holmes V2
     app.getActivityRecords(render);
 }
 
@@ -367,4 +461,3 @@ app.clearActivityData = function()
    		}
 	);
 }
-
