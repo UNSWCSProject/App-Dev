@@ -8,7 +8,7 @@ app.db = null;
 //This function creates the database
 app.openDb = function() 
 {
-    if (window.sqlitePlugin !== undefined) 
+    /*if (window.sqlitePlugin !== undefined) 
     {
         app.db = window.sqlitePlugin.openDatabase("cubDb");
         //window.alert("SQLite");
@@ -17,7 +17,10 @@ app.openDb = function()
     {
         app.db = window.openDatabase("cubDb", "1.0", "Cordova Demo", 200000);
         //window.alert("Cordova");
-    }
+    */
+    
+	//Temporary fix to allow to run on device.
+    app.db = window.openDatabase("cubDb", "1.0", "Cordova Demo", 200000);
 }
 
 //When the device is initialised, run these functions
@@ -39,6 +42,8 @@ function init() {
     app.clearActivityData();
     app.createActivityTable();
     app.insertActivityInfo();
+    
+    populateCategoriesList();
     populateActivityList();
     app.insertActivityInfo();
     firstUse(); 
@@ -53,7 +58,7 @@ app.onSuccess = function(tx, r)
 app.onError = function(tx, e) 
 {
     console.log("SQLite Error: " + e.message);
-    //window.alert("SQLite Error: " + e.message);
+    window.alert("SQLite Error: " + e.message);
 }
 
 app.testPop = function(t)
@@ -139,12 +144,12 @@ function populateCubsList(){
     {
         //window.alert("Populated called");
         $('#cubsList').empty();
-        var len = rs.rows.length;
+        //var len = rs.rows.length;
         //window.alert("SQLite Table: " + len + " rows found.");
         for (var i = 0; i < rs.rows.length; i++) 
         {
             var row = rs.rows.item(i);
-            $('#cubsList').append('<li id = "cubID' +row['cubID']+'"><a id = '+ row['cubID'] +' onclick="editCub(id)"><div><div class="checkBoxLeft"><input type="checkbox" class="checkCub" /></div><h3 class="pushRight">'+row['firstName']+' '+row['surname']+' '+row['cubID']+'</h3></div></a></li>');
+            $('#cubsList').append('<li id = "cubID' +row['cubID']+'"><a id = '+ row['cubID'] +' onclick="editCub(id)"><h3 class="pushRight">'+row['firstName']+' '+row['surname']+' '+row['cubID']+'</h3><div class="select Right"></div></div></a></li>');
         }
         //window.alert("Attempted to store the query result in an array and display in listView() style");
 	}
@@ -153,42 +158,91 @@ function populateCubsList(){
 
 function editCub(id)
 {
-	//window.alert(id);
-    $.mobile.changePage("#new-cub", {
+	window.alert(id);
+    $.mobile.changePage("#edit-cub", {
             	transition: "slide",
             	reverse: false
         	});
+
+    //Change header to say 
     
-    
-    //Chnage header to say 
-    $("#heading").text("Edit Cub");
     //Fill the existing inputs
-    
-    //INSERT CODE TO MAKE IT GET THE INFO FROM THE ROWS
-    
-    $("#firstName").val(id);
-    $("#lastName").val(id);
-    $("#dob").val(id);
-    $("#guardian1").val(id);
-    $("#phone1").val(id);
-    $("#guardian2").val(id);
-    $("#phone2").val(id);
-    $("#address").val(id);
-    $("#cubLevel").val(id);
-    $("#cubPosition").val(id);
-    $("#cubColor").val(id);
-    $("#dateJoined").val(id);
-    $("#dateInvested").val(id);    
-    
+    var render = function (tx, rs)
+                {
+                	var row = rs.rows.item(0);
+                	$("#eFirstName").val(row['firstName']);
+                    $("#eLastName").val(row['surname']);
+                    $("#eDob").val(row['dob']);
+                    $("#eGuardian1").val(row['guardian1']);
+                    $("#ePhone1").val(row['phone1']);
+                    $("#eGuardian2").val(row['guardian2']);
+                    $("#ePhone2").val(row['phone2']);
+                    $("#eAddress").val(row['address']);
+                    $("#eCubLevel").val(row['cubLevel']);
+                    $("#eCubPosition").val(row['cubPosition']);
+                    $("#eCubColor").val(row['cubColor']);
+                    $("#eDateJoined").val(row['dateJoined']);
+                    $("#eDateInvested").val(row['dateInvested']);
+            	}
+    app.getThisCub(render, id);
+    $("#saveChanges").on("click", function(event){
+  		app.editRecord($("#eFirstName").val(), $("#eLastName").val(), $("#eDob").val(), $("#eGuardian1").val(), $("#ePhone1").val(), $("#eGuardian2").val(), $("#ePhone2").val(), $("#eAddress").val(), $("#eCubLevel").val(), $("#eCubPosition").val(), $("#eCubColor").val(), $("eDateJoined").val(), $("#eDateInvested").val(), id);
+	});
+    /*populateCubsList();
+    $('#cubsList').listview('refresh');*/
 }
 
-function gotoAddCub()
+
+app.getThisCub = function(fn, id)
 {
-	$("#heading").text("Add Cub");
+    //INSERT CODE TO MAKE IT GET THE INFO FROM THE ROWS
+    //APRA'S ATTEMPT
+    window.alert("Inside getThisCub(): " +id);
+    app.db.transaction(function(tx) 
+		{
+            window.alert("Inside the transaction");
+            tx.executeSql("SELECT * FROM cubTable WHERE cubID = ?", [id], 
+                         fn, app.onError);
+            window.alert("Transaction complete");
+        });
+}
+                 
+function goToAddCub()
+{
     $.mobile.changePage("#new-cub", {
             	transition: "slide",
             	reverse: false
         	});
+    
+    //null all fields
+    $("#firstName").val("");
+    $("#lastName").val("");
+    $("#dob").val("");
+    $("#guardian1").val("");
+    $("#phone1").val("");
+    $("#guardian2").val("");
+    $("#phone2").val("");
+    $("#address").val("");
+    $("#cubLevel").val("");
+    $("#cubPosition").val("");
+    $("#cubColor").val("");
+    $("#dateJoined").val("");
+    $("#dateInvested").val("");
+}
+
+//Save Changes to cubs details
+
+app.editRecord = function(eFirstName, eLastName, eDob, eGuardian1, ePhone1, eGuardian2, ePhone2, eAddress, eCubLevel, eCubPosition, eCubColor, eDateJoined, eDateInvested, id) 
+{
+    //window.alert("Insert called" + id + "" +firstName);
+    app.db.transaction(function(tx) 
+		{
+        	tx.executeSql("UPDATE cubTable SET firstName = ?, surname = ?, dob = ?, guardian1 = ?, phone1 = ?, guardian2 = ?, phone2 = ?, address = ?, cubLevel = ?, cubPosition = ?, colourSix = ?, "+
+                          "dateJoined = ?, dateInvested = ? WHERE cubID = ?",
+				[eFirstName, eLastName, eDob, eGuardian1, ePhone1, eGuardian2, ePhone2, eAddress, eCubLevel, eCubPosition, eCubColor, eDateJoined, eDateInvested, id]);
+    	}
+       		//window.alert("updated cub details" + )
+	)
 }
 
 //------------Login Table Section-------------------------//
@@ -301,7 +355,7 @@ app.createActivityTable = function()
     app.db.transaction(function(tx) 
 		{            
             //window.alert("ActivityTable created");
-        	tx.executeSql("CREATE TABLE activityTable (activityID INTEGER PRIMARY KEY ASC, activityName TEXT, categoryName TEXT, categoryLevel TEXT)", [], 
+        	tx.executeSql("CREATE TABLE IF NOT EXISTS activityTable (activityID INTEGER PRIMARY KEY ASC, activityName TEXT, categoryName TEXT, categoryLevel TEXT)", [], 
                           app.onSuccess, app.onError);
         }
 	);
@@ -311,96 +365,520 @@ app.insertActivityInfo = function(fn)
 {
     app.db.transaction(function(tx)
         {  
-            //Bronze below
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Health and First Aid', 'Health and First Aid', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Safety', 'Safety', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ropes', 'Ropes', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Outdoor Scouting', 'Outdoor Scouting', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Our Cub Scout Traditions','Our Cub Scout Traditions', 'Bronze');", [],
-                         app.onSuccess, app.onError)
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Symbols of Australia','Symbols of Australia', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law','Promise and Law', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fitness','Fitness', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('People and Cultures','People and Cultures', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scientific Discovery','Scientific Discovery', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('The Natural Environment','The Natural Environment', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Self Expression','Self Expression', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Handcraft','Handcraft', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Your Community','Your Community', 'Bronze');", [],
-                         app.onSuccess, app.onError);
-            
-            //Silver below
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Health and First Aid', 'Health and First Aid', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Safety', 'Safety', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ropes', 'Ropes', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Outdoor Scouting', 'Outdoor Scouting', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Our Cub Scout Traditions','Our Cub Scout Traditions', 'Silver');", [],
-                         app.onSuccess, app.onError)
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Symbols of Australia','Symbols of Australia', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law','Promise and Law', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fitness','Fitness', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('People and Cultures','People and Cultures', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scientific Discovery','Scientific Discovery', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('The Natural Environment','The Natural Environment', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Self Expression','Self Expression', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Handcraft','Handcraft', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Your Community','Your Community', 'Silver');", [],
-                         app.onSuccess, app.onError);
-            
-            //Gold below
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Health and First Aid', 'Health and First Aid', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Safety', 'Safety', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ropes', 'Ropes', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Outdoor Scouting', 'Outdoor Scouting', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Our Cub Scout Traditions','Our Cub Scout Traditions', 'Gold');", [],
-                         app.onSuccess, app.onError)
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Symbols of Australia','Symbols of Australia', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law','Promise and Law', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fitness','Fitness', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('People and Cultures','People and Cultures', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scientific Discovery','Scientific Discovery', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('The Natural Environment','The Natural Environment', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Self Expression','Self Expression', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Handcraft','Handcraft', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Your Community','Your Community', 'Gold');", [],
-                         app.onSuccess, app.onError);
-            //End activity Table insert
+           //Bronze below
+                //Health Below
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal Health 1', 'Health and First Aid', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal Health 2', 'Health and First Aid', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal Health 3', 'Health and First Aid', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Basic First Aid 1', 'Health and First Aid', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Basic First Aid 2', 'Health and First Aid', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Infections', 'Health and First Aid', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Adult Help 1', 'Health and First Aid', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Adult Help 2', 'Health and First Aid', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                
+                //Safety Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Buddy System', 'Safety', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Home', 'Safety', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Road', 'Safety', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Water 1', 'Safety', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Water 2', 'Safety', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Bush 1', 'Safety', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Bush 2', 'Safety', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fire 1', 'Safety', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fire 2', 'Safety', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal', 'Safety', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                //Ropes Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Tying Knots 1', 'Ropes', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Tying Knots 2', 'Ropes', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Use of Knots', 'Ropes', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Care of Ropes', 'Ropes', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                //Outdoor Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Compass and Navigation 1', 'Outdoor Scouting', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Compass and Navigation 2', 'Outdoor Scouting', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Maps and Hiking 1', 'Outdoor Scouting', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Maps and Hiking 2', 'Outdoor Scouting', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fire Lighting 1', 'Outdoor Scouting', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fire Lighting 2', 'Outdoor Scouting', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Outdoor Cooking', 'Outdoor Scouting', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                
+                //Our Cub Scout Traditions Below         
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('The Jungle Books 1','Our Cub Scout Traditions', 'Bronze');", [],
+                                         app.onSuccess, app.onError)
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('The Jungle Books 2','Our Cub Scout Traditions', 'Bronze');", [],
+                                         app.onSuccess, app.onError)
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting History 1','Our Cub Scout Traditions', 'Bronze');", [],
+                                         app.onSuccess, app.onError)
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting History 2','Our Cub Scout Traditions', 'Bronze');", [],
+                                         app.onSuccess, app.onError)
+                // Symbols Below           
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Flags','Symbols of Australia', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Emblems','Symbols of Australia', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                //Promise Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Duty to Your God','Promise and Law', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law 1','Promise and Law', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law 2','Promise and Law', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law 3','Promise and Law', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Good Turn and Service','Promise and Law', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                //Fitness Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ball Skills 1','Fitness', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ball Skills 2','Fitness', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Athletic Skills','Fitness', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Strength and Stamina','Fitness', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                //People Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Indigenous Australians','People and Cultures', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('International Cultures','People and Cultures', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting 1','People and Cultures', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting 2','People and Cultures', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                //Scientific Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Biology','Scientific Discovery', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Geology','Scientific Discovery', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Physics 1','Scientific Discovery', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Physics 2','Scientific Discovery', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Estimations 1','Scientific Discovery', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Estimations 2','Scientific Discovery', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                //Natural Environment             
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Recycling 1','The Natural Environment', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Recycling 2','The Natural Environment', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Pollution 1','The Natural Environment', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Pollution 2','The Natural Environment', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Habitat Destruction 1','The Natural Environment', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Habitat Destruction 2','The Natural Environment', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                //Self Expression Below            
+                
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Performing Arts','Self Expression', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Visual Arts','Self Expression', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Creative Writing','Self Expression', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Music','Self Expression', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                //Handcraft Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Make an Item','Handcraft', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                //Your Community Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Home 1','Your Community', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Home 2','Your Community', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Local Community 1','Your Community', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Local Community 2','Your Community', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Local Organisation','Your Community', 'Bronze');", [],
+                                         app.onSuccess, app.onError);
+                
+         //Silver Below
+                
+                //Health Below
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal Health 1', 'Health and First Aid', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal Health 2', 'Health and First Aid', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal Health 3', 'Health and First Aid', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal Health 4', 'Health and First Aid', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Basic First Aid 1', 'Health and First Aid', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Basic First Aid 2', 'Health and First Aid', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Basic First Aid 3', 'Health and First Aid', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Infections', 'Health and First Aid', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Adult Help 1', 'Health and First Aid', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Adult Help 2', 'Health and First Aid', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                
+                //Safety Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Buddy System', 'Safety', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Home', 'Safety', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Road', 'Safety', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Water 1', 'Safety', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Water 2', 'Safety', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Bush 1', 'Safety', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Bush 2', 'Safety', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fire 1', 'Safety', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fire 2', 'Safety', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal', 'Safety', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                //Ropes Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Tying Knots 1', 'Ropes', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Tying Knots 2', 'Ropes', 'Silver');", [],
+                                         app.onSuccess, app.onError);      
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Tying Knots 3', 'Ropes', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Use of Knots', 'Ropes', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Care of Ropes', 'Ropes', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                //Outdoor Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Compass and Navigation 1', 'Outdoor Scouting', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Compass and Navigation 2', 'Outdoor Scouting', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Maps and Hiking', 'Outdoor Scouting', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fire Lighting', 'Outdoor Scouting', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Outdoor Cooking', 'Outdoor Scouting', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                
+                //Our Cub Scout Traditions Below         
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('The Jungle Books 1','Our Cub Scout Traditions', 'Silver');", [],
+                                         app.onSuccess, app.onError)
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('The Jungle Books 2','Our Cub Scout Traditions', 'Silver');", [],
+                                         app.onSuccess, app.onError)
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting History 1','Our Cub Scout Traditions', 'Silver');", [],
+                                         app.onSuccess, app.onError)
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting History 2','Our Cub Scout Traditions', 'Silver');", [],
+                                         app.onSuccess, app.onError)
+                // Symbols Below           
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Flags','Symbols of Australia', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Emblems','Symbols of Australia', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Flora and Fauna','Symbols of Australia', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                //Promise Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Duty to Your God','Promise and Law', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law','Promise and Law', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Good Turn and Service','Promise and Law', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                //Fitness Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ball Skills 1','Fitness', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ball Skills 2','Fitness', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Athletic Skills','Fitness', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Strength and Stamina','Fitness', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                //People Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Indigenous Australians','People and Cultures', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('International Cultures','People and Cultures', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting 1','People and Cultures', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting 2','People and Cultures', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                //Scientific Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Biology 1','Scientific Discovery', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Biology 2','Scientific Discovery', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Geology','Scientific Discovery', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Physics 1','Scientific Discovery', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Physics 2','Scientific Discovery', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Estimations 1','Scientific Discovery', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Estimations 2','Scientific Discovery', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Estimations 3','Scientific Discovery', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                //Natural Environment             
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Recycling 1','The Natural Environment', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Recycling 2','The Natural Environment', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Pollution 1','The Natural Environment', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Pollution 2','The Natural Environment', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Pollution 3','The Natural Environment', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Habitat Destruction 1','The Natural Environment', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                //Self Expression Below            
+                
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Performing Arts','Self Expression', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Visual Arts','Self Expression', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Creative Writing','Self Expression', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Music','Self Expression', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                //Handcraft Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Make an Item 1','Handcraft', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Make an Item 2','Handcraft', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                //Your Community Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Home 1','Your Community', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Home 2','Your Community', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Local Community 1','Your Community', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Local Community 2','Your Community', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Local Organisation','Your Community', 'Silver');", [],
+                                         app.onSuccess, app.onError);
+                
+         //Gold Below
+                //Health Below
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal Health 1', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal Health 2', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Basic First Aid 1', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Basic First Aid 2', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Basic First Aid 3', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Basic First Aid 4', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Basic First Aid 5', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Infections 1', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Infections 2', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Adult Help 1', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Adult Help 2', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Adult Help 3', 'Health and First Aid', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                
+                //Safety Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Buddy System', 'Safety', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Home 1', 'Safety', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Home 2', 'Safety', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Road', 'Safety', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Water', 'Safety', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Bush 1', 'Safety', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Bush 2', 'Safety', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fire', 'Safety', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Personal', 'Safety', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                //Ropes Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Tying Knots 1', 'Ropes', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Tying Knots 2', 'Ropes', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Tying Knots 3', 'Ropes', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Tying Knots 4', 'Ropes', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Tying Knots Gadget', 'Ropes', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Tying Knots Teach Reef Knot', 'Ropes', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Use of Knots', 'Ropes', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Care of Ropes', 'Ropes', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                //Outdoor Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Compass and Navigation 1', 'Outdoor Scouting', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Compass and Navigation 2', 'Outdoor Scouting', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Compass and Navigation 3', 'Outdoor Scouting', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Maps and Hiking 1', 'Outdoor Scouting', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Maps and Hiking 2', 'Outdoor Scouting', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Maps and Hiking 3', 'Outdoor Scouting', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Fire Lighting', 'Outdoor Scouting', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Outdoor Cooking', 'Outdoor Scouting', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                
+                //Our Cub Scout Traditions Below         
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('The Jungle Books','Our Cub Scout Traditions', 'Gold');", [],
+                                         app.onSuccess, app.onError)
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting History 1','Our Cub Scout Traditions', 'Gold');", [],
+                                         app.onSuccess, app.onError)
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting History 2','Our Cub Scout Traditions', 'Gold');", [],
+                                         app.onSuccess, app.onError)
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting History 3','Our Cub Scout Traditions', 'Gold');", [],
+                                         app.onSuccess, app.onError)
+                // Symbols Below           
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Flags 1','Symbols of Australia', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Flags 2','Symbols of Australia', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Emblems','Symbols of Australia', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Flora and Fauna','Symbols of Australia', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                //Promise Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Duty to Your God','Promise and Law', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law 1','Promise and Law', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Promise and Law 2','Promise and Law', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Good Turn and Service','Promise and Law', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                //Fitness Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ball Skills 1','Fitness', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Ball Skills 2','Fitness', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Athletic Skills','Fitness', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Strength and Stamina','Fitness', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                //People Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Indigenous Australians','People and Cultures', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('International Cultures 1','People and Cultures', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('International Cultures 2','People and Cultures', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting 1','People and Cultures', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Scouting 2','People and Cultures', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                //Scientific Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Biology','Scientific Discovery', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Chemistry 1','Scientific Discovery', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Chemistry 2','Scientific Discovery', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Geology 1','Scientific Discovery', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Geology 2','Scientific Discovery', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Physics','Scientific Discovery', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Estimations 1','Scientific Discovery', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Estimations 2','Scientific Discovery', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Estimations 3','Scientific Discovery', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                //Natural Environment             
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Recycling 1','The Natural Environment', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Recycling 2','The Natural Environment', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Pollution 1','The Natural Environment', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Pollution 2','The Natural Environment', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Pollution 3','The Natural Environment', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Habitat Destruction','The Natural Environment', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                //Self Expression Below            
+                
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Performing Arts','Self Expression', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Visual Arts','Self Expression', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Creative Writing','Self Expression', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Music','Self Expression', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                //Handcraft Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Make an Item 1','Handcraft', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Make an Item 2','Handcraft', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                //Your Community Below            
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Home','Your Community', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Local Community','Your Community', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                tx.executeSql("INSERT INTO activityTable (activityName, categoryName, categoryLevel) VALUES ('Local Organisation','Your Community', 'Gold');", [],
+                                         app.onSuccess, app.onError);
+                //END LIST
         }
     );
 }
@@ -416,23 +894,70 @@ app.getActivityRecords = function(fn)
 	);
 }
 
+app.getCategories = function(fn)
+{
+    app.db.transaction(function(tx)
+        {
+         	tx.executeSql("SELECT DISTINCT categoryName FROM activityTable ORDER By categoryName",[],
+                         fn,
+                         app.onError);                  
+        }
+    );
+}
+//This now makes the categories in the activitylists
+function populateCategoriesList(){
+    var render = function (tx,rs)
+    {
+        $('#activityListBronze').empty();
+        $('#activityListSilver').empty();
+        $('#activityListGold').empty();
+    
+    
+    //Fills all Lists with Categories
+    for (var i = 0; i < rs.rows.length; i++) 
+        {
+            var row = rs.rows.item(i);
+            //id must not contain spaces
+            var long = row['categoryName'];
+            var shortcat = long.substring(0,3);
+            
+            //Hardcoded due to using single table
+            $('#activityListBronze').append('<div data-role="collapsible"><h2>'+row['categoryName']+'</h2><ul id="catB'+shortcat+'" data-role="listview"></ul></div>');
+       		$('#activityListSilver').append('<div data-role="collapsible"><h2>'+row['categoryName']+'</h2><ul id="catS'+shortcat+'" data-role="listview"></ul></div>');
+			$('#activityListGold').append('<div data-role="collapsible"><h2>'+row['categoryName']+'</h2><ul id="catG'+shortcat+'" data-role="listview"></ul></div>');
+
+        }
+    }
+    app.getCategories(render);
+}
+//This now fills after the categories have been made
 function populateActivityList(){
     //window.alert("populateActivityList function entered");
 	var render = function (tx, rs)       
     {
-        //window.alert("Holmes Activity called");                                                                                                                                                                                                                                                                                                                                                                                 
-        $('#activityListBronze').empty();
-        $('#activityListSilver').empty();
-        $('#activityListGold').empty();
-       // window.alert("SQLite Table: " + rs.rows.length + " rows found.");
+        //window.alert("SQLite Table: " + rs.rows.length + " rows found.");
        
         //FILLS all lists
         for (var i = 0; i < rs.rows.length; i++) 
         {
             var row = rs.rows.item(i);
+            //id must not contain spaces
+            var long = row['categoryName'];
+            var shortcat = long.substring(0,3);
             
-           	$('#activityList'+ row['categoryLevel']).append('<div data-role="collapsible"><h3>'+ row['categoryName'] + '</h3><p id =cat1'+ row['activityID'] + '></p></div>'); 
-           	$('#cat1' + row['activityID']).append('<div class="checkBoxLeft"><input type="checkbox" class = "checkAct" id = '+row['activityID']+'/></div><p class="pushRight">'+row['activityName']+' '+ row['categoryLevel']+'</p>');
+            //needs an if statement to filter between bronze/silver/gold
+            if(row['categoryLevel']=='Bronze')
+            {
+            $('#catB' + shortcat).append('<li><div class="checkBoxLeft"><input type="checkbox" class = "checkAct" id = '+row['activityID']+'/></div><p class="pushRight">'+row['activityName']+'</p></li>');
+            }
+            else if(row['categoryLevel']=='Silver')
+            {
+            $('#catS' + shortcat).append('<li><div class="checkBoxLeft"><input type="checkbox" class = "checkAct" id = '+row['activityID']+'/></div><p class="pushRight">'+row['activityName']+'</p></li>');
+            }
+            else if(row['categoryLevel']=='Gold')
+            {
+            $('#catG' + shortcat).append('<li><div class="checkBoxLeft"><input type="checkbox" class = "checkAct" id = '+row['activityID']+'/></div><h3 class="pushRight">'+row['activityName']+'</h3></li>');
+            }
             
            // window.alert("Attempted to add to list: " + row['categoryName']);
         }

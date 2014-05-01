@@ -58,9 +58,6 @@
                         <!--<input type="submit" href="#home" onclick="check(this.form)" value="Login">-->
                         <input type="submit" onclick="verifyUser(this.form.username.value, this.form.password.value)" value="Login">
                     </form>
-                    <script>
-                        //Find the login code under verifyUser() in sample.js
-                    </script>
                 </div>
             </div>
             <!--Footer-->
@@ -129,7 +126,7 @@
                             <li> <a href="#cubs-list" data-transition="slide">Cubs</a>
     
                             </li>
-                            <li> <a onclick="gotoAddCub()" data-transition="slide">Add Cub</a>
+                            <li> <a onclick="goToAddCub()" data-transition="slide">Add Cub</a>
     
                             </li>
                             <li> <a href="#settings" data-transition="slide">Settings</a>
@@ -191,8 +188,8 @@
                             <li><a href="#activity-list-gold">Gold</a></li>
                         </ul>
 					</div>
-                <div id="activityListBronze" data-role="collapsible-set" data-inset="false">
-					
+                <div id="activityListBronze" data-role="collapsible-set" data-theme="e" data-content-theme="e" data-inset="false">
+                    //Stuff will get inserted here
                 </div>
             </div>
             <!--Footer-->
@@ -316,7 +313,7 @@
                 <!-- <a href="#new-cub" data-transition="slide" data-role="button">Add Cub</a> -->
                 <div data-role="navbar">
 					<ul>
-						<li><a href="#new-cub" data-transition="slide" data-theme= "e" data-icon="next">Add Cub</a></li>
+						<li><a onclick="goToAddCub()" data-transition="slide" data-theme= "e" data-icon="next">Add Cub</a></li>
 					</ul>
 				</div>
             </div>
@@ -334,7 +331,7 @@
             <div data-role="content">
                 <form method="post" data-ajax="false">
                             <label for="firstName">First Name</label>
-                            <input type="text" name="firstName" id = firstName />
+                            <input type="text" name="firstName" id ="firstName" />
                     
                             <label for="lastName">Last Name</label>
                             <input type="text" name="lastName" id="lastName" />
@@ -387,7 +384,7 @@
                     		<label for="dateInvested">Date Invested</label>
                         	<input type="date" name="dateInvested" id="dateInvested" />
                     
-                        	<input type="submit" onclick="app.insertRecord(this.form.firstName.value, this.form.lastName.value, this.form.dob.value, this.form.guardian1.value, this.form.phone1.value, this.form.guardian2.value, this.form.phone2.value, this.form.address.value, this.form.cubLevel.value, this.form.cubPosition.value, this.form.cubColor.value, this.form.dateJoined.value, this.form.dateInvested.value)" value="Submit">
+                        	<input type="submit" onclick="app.insertRecord(this.form.firstName.value, this.form.lastName.value, this.form.dob.value, this.form.guardian1.value, this.form.phone1.value, this.form.guardian2.value, this.form.phone2.value, this.form.address.value, this.form.cubLevel.value, this.form.cubPosition.value, this.form.cubColor.value, this.form.dateJoined.value, this.form.dateInvested.value)" value="Save Changes">
                 </form>
             </div>
             <!--Footer-->
@@ -402,6 +399,83 @@
         </div>
         <!--Page-->
        
+         <!--Edit Cub-->
+        <div data-role="page" data-theme="e" id="edit-cub" data-add-back-btn="true">
+            <!--Header-->
+            <div data-role="header" data-position="fixed">
+                <h1 id="heading">Edit Cub</h1>
+				<a href="#home" data-rel="back" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
+            </div>
+            <!--Content-->
+            <div data-role="content">
+                <form method="post" data-ajax="false">
+                            <label for="eFirstName">First Name</label>
+                            <input type="text" name="eFirstName" id ="eFirstName" />
+                    
+                            <label for="eLastName">Last Name</label>
+                            <input type="text" name="eLastName" id="eLastName" />
+                    
+                        	<label for="eDob">Date of Birth</label>
+                        	<input type="date" name="eDob" id="eDob" />
+                    
+                            <label for="eGuardian1">Guardian</label>
+                            <input type="text" name="eGuardian1" id="eGuardian1" />
+                    
+                            <label for="ePhone1">Phone</label>
+                            <input type="tel" id="ePhone1" />
+                    
+                            <label for="eGuardian2">Guardian 2</label>
+                            <input type="text" name="eGuardian2" id="eGuardian2" />
+                    
+                            <label for="ePhone2">Phone 2</label>
+                            <input type="tel" id="ePhone2" />
+                    
+                            <label for="eAddress">Address</label>
+                            <input type="text" name="eAddress" id="eAddress" />
+                    
+                        	<label for="eCubLevel" class="select">Cub Level</label>
+                        	<select name="eCubLevel" id="eCubLevel">
+                            	<option>Bronze</option>
+                            	<option>Silver</option>
+                            	<option>Gold</option>
+                        	</select>
+                    
+                        	<label for="eCubPosition" class="select">Cub Position</label>
+                        	<select name="eCubPosition" id="eCubPosition">
+                            <option>CUB</option>
+                            <option>HEAD</option>
+                            <option>2IC</option>
+                        	</select>
+                    
+                        	<label for="eCubColor" class="select">Colour</label>
+                        	<select name="eCubColor" id="eCubColor">
+                            	<option>Red</option>
+                            	<option>Green</option>
+                            	<option>Blue</option>
+                            	<option>White</option>
+                            	<option>Black</option>
+                            	<option>Yellow</option>
+                            </select>
+                    
+                       	 	<label for="eDateJoined">Date Joined</label>
+                        	<input type="date" name="eDateJoined" id="eDateJoined" />
+                        	
+                    		<label for="eDateInvested">Date Invested</label>
+                        	<input type="date" name="eDateInvested" id="eDateInvested" />
+                    
+                        	<input type="submit" id="saveChanges" value="Submit">
+                </form>
+            </div>
+            <!--Footer-->
+            <div data-role="footer" data-position="fixed" data-id="oneFooter"> <!--<a href="#confirm-add" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button">Submit</a>-->
+
+                <!--<div data-role="popup" id="confirm-add" data-theme="d" data-overlay-theme="b" class="ui-content" style="max-width:340px;">
+                    <h3>Confirm Changes</h3>
+ 					<a href="index.html" data-role="button" data-rel="back" data-theme="b" data-icon="check" data-inline="true" data-mini="true" onclick="app.testPop(cubsDetailsList.form.first-name.value)">Confirm</a>
+ 					<a href="index.html" data-role="button" data-rel="back" data-inline="true" data-mini="true">Cancel</a>
+                </div>-->
+            </div>
+        </div>
 
         <!-- Settings Page-->
         <div data-role="page" data-theme="e" id="settings" data-add-back-btn="true">
