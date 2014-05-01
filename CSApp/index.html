@@ -72,7 +72,7 @@
             <!--Header-->
             <div data-role="header" data-position="fixed">
                 <h1>Create New User</h1>
-            	<a href="#home" data-rel="back" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
+            	<a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <!--Content-->
             <div data-role="content" class="login">
@@ -129,7 +129,7 @@
                             <li> <a href="#cubs-list" data-transition="slide">Cubs</a>
     
                             </li>
-                            <li> <a href="#new-cub" data-transition="slide">Add Cub</a>
+                            <li> <a onclick="gotoAddCub()" data-transition="slide">Add Cub</a>
     
                             </li>
                             <li> <a href="#settings" data-transition="slide">Settings</a>
@@ -143,69 +143,67 @@
             <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>
         </div>
         <!--page-->
+        
         <!--Calendar-->
         <div data-role="page" data-theme="e" id="calendar" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header" data-position="fixed">
             	<h1>Calendar</h1>
-                <a href="#home" data-rel="back" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
+                <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <!--Content-->
             <div data-role="content">
+                <div class="banner">
+                    <div class="box-l">
+                        <img src="styles/images/ic_launcher.png" alt="" />
+                    </div>
+                    <div class="box-r">
+                         <h1>CSMA</h1>
+                    </div>
+                </div>
                 <div class="container">
-                    <label for="targetDate">Select a Date: </label>
+                    <label for="targetDate"><h3>Select a Date:</h3></label>
                     <input id = "targetDate" name = "targetDate" type = "date"/>
-                    <input type="submit" onclick="METHOD_NAME(this.form.targetDate)" value="Edit Activities">
-                    <input type="submit" onclick="METHOD_NAME(this.form.targetDate)" value="Roll Call">
+                    <input type="submit" onclick="editAct()" value="Edit Activities">
+                    <input type="submit" onclick="rollCall()" value="Roll Call">
                 </div>
             </div>
             <!--Footer-->
             <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>
         </div>
         
-        <!--Page-->
-        <!--Activities V1-->
-        <!--
-        <div data-role="page" id="activity-list" data-add-back-btn="true">
-            <!--Header--
-            <div data-role="header">
-                 <h1>All Activities</h1>
-                <a href="#home" data-rel="back" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
-            </div>
-            <div data-role="content">
-                <ul id="activityList" data-role="listview" data-inset="false" data-filter="true" data-autodividers="true">
-                </ul>
-            </div>
-            <!--Footer--
-            <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
-            </div>
-        </div>
-        
-        
-        -->
-        <!--Page-->
-        
-        
-        <!--Activities V2-->
+        <!--Page-->        
+        <!--Activities-->
         <!--BRONZE-->
         
         <div data-role="page" data-theme="e" id="activity-list-bronze" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header">
                  <h1>Bronze Activities</h1>
-                <a href="#activity-list-silver" class="ui-btn-right" data-transition="slide" data-icon="next">Silver</a>
+                <a href="#home"  class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
+                <!--bronze nav-->
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#" class="ui-btn-active ui-state-persist">Bronze</a></li>
+                            <li><a href="#activity-list-silver">Silver</a></li>
+                            <li><a href="#activity-list-gold">Gold</a></li>
+                        </ul>
+					</div>
                 <div id="activityListBronze" data-role="collapsible-set" data-inset="false">
 					
                 </div>
             </div>
             <!--Footer-->
             <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
+                <div data-role="navbar">
+					<ul>
+						<li><a href="#activity-list-confirm" data-transition="slide" data-theme= "e" data-icon="next">Submit</a></li>
+					</ul>
+				</div>
             </div>
         </div>
-        
-        
         
         <!--Page-->
         <!--SILVER-->
@@ -214,15 +212,29 @@
             <!--Header-->
             <div data-role="header">
                  <h1>Silver Activities</h1>
-                <a href="#activity-list-gold" class="ui-btn-right" data-transition="slide" data-icon="next">Gold</a>
+                <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
+                <!--silver nav-->
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#activity-list-bronze">Bronze</a></li>
+                            <li><a href="#" class="ui-btn-active ui-state-persist">Silver</a></li>
+                            <li><a href="#activity-list-gold">Gold</a></li>
+                        </ul>
+					</div>
                 <div id="activityListSilver" data-role="collapsible-set" data-inset="false">
 					
                 </div>
+                
             </div>
             <!--Footer-->
             <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
+                <div data-role="navbar">
+					<ul>
+						<li><a href="#activity-list-confirm" data-transition="slide" data-theme= "e" data-icon="next">Submit</a></li>
+					</ul>
+				</div>
             </div>
         </div>
         
@@ -235,15 +247,28 @@
             <!--Header-->
             <div data-role="header">
                  <h1>Gold Activities</h1>
-                <a href="#activity-list-confirm" class="ui-btn-right" data-transition="slide" data-icon="next">Submit</a>
+                 <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
+                <!--gold nav-->
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#activity-list-bronze">Bronze</a></li>
+                            <li><a href="#activity-list-silver">Silver</a></li>
+                            <li><a href="#" class="ui-btn-active ui-state-persist">Gold</a></li>
+                        </ul>
+					</div>
                 <div id="activityListGold" data-role="collapsible-set" data-inset="false">
-					
                 </div>
+                
             </div>
             <!--Footer-->
             <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
+                <div data-role="navbar">
+					<ul>
+						<li><a href="#activity-list-confirm" data-transition="slide" data-theme= "e" data-icon="next">Submit</a></li>
+					</ul>
+				</div>
             </div>
         </div>
         
@@ -252,16 +277,22 @@
         <div data-role="page" data-theme="e" id="activity-list-confirm" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header">
-                 <h1>Confirm Activities</h1>
-                <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="next">Confirm</a>
+                <h1>Confirm Activities</h1>
+                <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
+                
                 <ul id="activityListConfirm" data-role="listview" data-inset="false" data-filter="true" data-autodividers="true">
                     <!-- USE js to fill a categorised list view of all selected-->
                 </ul>
             </div>
             <!--Footer-->
             <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
+                <div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-transition="slide" data-theme= "e" data-icon="next">Confirm</a></li>
+					</ul>
+				</div>
             </div>
         </div>
         
@@ -274,7 +305,7 @@
             <!--Header-->
             <div data-role="header">
                  <h1>All Cubs</h1>
-                <a href="#home" data-rel="back" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
+                <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
                 <ul id="cubsList" data-role="listview" data-divider-theme="e" data-filter-theme="e" data-inset="false" data-filter="true" data-autodividers="true">
@@ -282,15 +313,21 @@
             </div>
             <!--Footer-->
             <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
-                <a href="#new-cub" data-transition="slide" data-role="button">Add Cub</a>
+                <!-- <a href="#new-cub" data-transition="slide" data-role="button">Add Cub</a> -->
+                <div data-role="navbar">
+					<ul>
+						<li><a href="#new-cub" data-transition="slide" data-theme= "e" data-icon="next">Add Cub</a></li>
+					</ul>
+				</div>
             </div>
         </div>
         <!--Page-->
+        
         <!--New Cub-->
         <div data-role="page" data-theme="e" id="new-cub" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header" data-position="fixed">
-                <h1>Add Cub</h1>
+                <h1 id="heading">Add Cub</h1>
 				<a href="#home" data-rel="back" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <!--Content-->
@@ -364,35 +401,14 @@
             </div>
         </div>
         <!--Page-->
-        <!--View Cub-->
-        <div data-role="page" data-theme="e" id="cub-view" data-add-back-btn="true">
-            <!--Header-->
-            <div data-role="header" data-position="fixed">
-                 <h1>Insert Name Here</h1>
-            </div>
-            <!--Content-->
-            <div data-role="content">
-                <div id="viewcub-container">
-                    <div id="left">
-                        <div id="top-left">
-                            <img src="../styles/images/boomrng.png" alt="" />
-                        </div>
-                        <div id="bottom-left"></div>
-                    </div>
-                    <div id="right"></div>
-                </div>
-            </div>
-            <!--Footer-->
-            <div data-role="footer" data-position="fixed" data-id="oneFooter"></div>
-        </div>
-        
-        <!--Confirm-->
+       
+
         <!-- Settings Page-->
         <div data-role="page" data-theme="e" id="settings" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header">
                  <h1>Settings</h1>
-                <a href="#home" class="ui-btn-right" data-rel="back" data-transition="slide" data-icon="home">Home</a>
+                <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
                <div class="banner">

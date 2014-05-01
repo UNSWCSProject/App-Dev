@@ -144,14 +144,51 @@ function populateCubsList(){
         for (var i = 0; i < rs.rows.length; i++) 
         {
             var row = rs.rows.item(i);
-            /*$('#cubsList').append('<li><a href="#"><h3 class="ui-li-heading"></h3></a></li>');
-            window.alert("Attempted to add to list: " + row['firstName']);
-            */
-               $('#cubsList').append('<li id = "cubID' +row['cubID']+'"><div><div class="checkBoxLeft"><input type="checkbox" /></div><h3 class="pushRight">'+row['firstName']+' '+row['surname']+' '+row['cubID']+'</h3></div></li>');
+            $('#cubsList').append('<li id = "cubID' +row['cubID']+'"><a id = '+ row['cubID'] +' onclick="editCub(id)"><div><div class="checkBoxLeft"><input type="checkbox" class="checkCub" /></div><h3 class="pushRight">'+row['firstName']+' '+row['surname']+' '+row['cubID']+'</h3></div></a></li>');
         }
         //window.alert("Attempted to store the query result in an array and display in listView() style");
 	}
     app.selectAllRecords(render);
+}
+
+function editCub(id)
+{
+	//window.alert(id);
+    $.mobile.changePage("#new-cub", {
+            	transition: "slide",
+            	reverse: false
+        	});
+    
+    
+    //Chnage header to say 
+    $("#heading").text("Edit Cub");
+    //Fill the existing inputs
+    
+    //INSERT CODE TO MAKE IT GET THE INFO FROM THE ROWS
+    
+    $("#firstName").val(id);
+    $("#lastName").val(id);
+    $("#dob").val(id);
+    $("#guardian1").val(id);
+    $("#phone1").val(id);
+    $("#guardian2").val(id);
+    $("#phone2").val(id);
+    $("#address").val(id);
+    $("#cubLevel").val(id);
+    $("#cubPosition").val(id);
+    $("#cubColor").val(id);
+    $("#dateJoined").val(id);
+    $("#dateInvested").val(id);    
+    
+}
+
+function gotoAddCub()
+{
+	$("#heading").text("Add Cub");
+    $.mobile.changePage("#new-cub", {
+            	transition: "slide",
+            	reverse: false
+        	});
 }
 
 //------------Login Table Section-------------------------//
@@ -381,43 +418,7 @@ app.getActivityRecords = function(fn)
 
 function populateActivityList(){
     //window.alert("populateActivityList function entered");
-	var render = function (tx, rs) 
-    /*{
-        window.alert("Activity called");                                                                                                                                                                                                                                                                                                                                                                                 
-        $('#activityList').empty();
-        var len = rs.rows.length;
-        //window.alert("SQLite Table: " + len + " rows found.");
-        for (var i = 0; i < rs.rows.length; i++) 
-        {
-            var row = rs.rows.item(i);
-            $('#activityList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['activityName']+'</h3></a></li>');
-            //window.alert("Attempted to add to list: " + row['activityName']);
-        }        
-        window.alert("Attempted to store the query result in an array and display in listView() style");
-	}*/
-    
-    //HOLMES FUCKING AROUND V1 _This works using deprecated lists-------------------------------------------
-    /*
-    {
-        //window.alert("Holmes Activity called");                                                                                                                                                                                                                                                                                                                                                                                 
-        $('#activityList').empty();
-        
-       // window.alert("SQLite Table: " + rs.rows.length + " rows found.");
-       
-        for (var i = 0; i < rs.rows.length; i++) 
-        {
-            var row = rs.rows.item(i);
-           $('#activityList').append('<li><h3>'+ row['categoryName'] + '</h3><ul id = '+ row['categoryName'] + '></ul></li>'); 
-           $('#' + row['categoryName']).append('<li><a href="#"><h3 class="ui-li-heading">'+row['activityName']+'</h3></a></li>');
-            
-           // window.alert("Attempted to add to list: " + row['categoryName']);
-        }
-        //window.alert("Attempted to store the query result in an array and display in activitylistView() style");
-	}
-    
-    *///END HOLMES V1 _------------------------------------------------------------------------------------------
-    //Holmes V2
-    
+	var render = function (tx, rs)       
     {
         //window.alert("Holmes Activity called");                                                                                                                                                                                                                                                                                                                                                                                 
         $('#activityListBronze').empty();
@@ -425,31 +426,18 @@ function populateActivityList(){
         $('#activityListGold').empty();
        // window.alert("SQLite Table: " + rs.rows.length + " rows found.");
        
-        //Fills only BRONZE ACTIVITY LIST
-        /*
-        for (var i = 0; i < rs.rows.length; i++) 
-        {
-            var row = rs.rows.item(i);
-           $('#activityListBronze').append('<div data-role="collapsible"><h3>'+ row['categoryName'] + '</h3><p id =cat1'+ row['activityID'] + '></p></div>'); 
-           $('#cat1' + row['activityID']).append('<div class="checkBoxLeft"><input type="checkbox"/></div><p class="pushRight">'+row['activityName']+'</p>');
-            
-           // window.alert("Attempted to add to list: " + row['categoryName']);
-        }
-        //window.alert("Attempted to store the query result in an array and display in activitylistView() style");
-        */
         //FILLS all lists
         for (var i = 0; i < rs.rows.length; i++) 
         {
             var row = rs.rows.item(i);
             
            	$('#activityList'+ row['categoryLevel']).append('<div data-role="collapsible"><h3>'+ row['categoryName'] + '</h3><p id =cat1'+ row['activityID'] + '></p></div>'); 
-           	$('#cat1' + row['activityID']).append('<div class="checkBoxLeft"><input type="checkbox"/></div><p class="pushRight">'+row['activityName']+' '+ row['categoryLevel']+'</p>');
+           	$('#cat1' + row['activityID']).append('<div class="checkBoxLeft"><input type="checkbox" class = "checkAct" id = '+row['activityID']+'/></div><p class="pushRight">'+row['activityName']+' '+ row['categoryLevel']+'</p>');
             
            // window.alert("Attempted to add to list: " + row['categoryName']);
         }
         //window.alert("Attempted to store the query result in an array and display in activitylistView() style");   
 	}
-    //End Holmes V2
     app.getActivityRecords(render);
 }
 
@@ -461,3 +449,81 @@ app.clearActivityData = function()
    		}
 	);
 }
+
+//-----------------------------Calendar-------------------------------//
+
+function editAct()
+{
+	var dateString = $("#targetDate").val();
+    
+    //Purely for the Window Alert - use the datestring for any work
+    var date = new Date(dateString);
+    var bob = date.toString();	
+    window.alert(bob);
+    
+    //Plan - changepage to bronze activities
+    // deselect all actvities in lists
+    /*
+            $('.checkAct').each(function() { //loop through each checkbox
+                this.checked = false; //deselect all checkboxes with class "checkAct"                       
+            });
+            */
+    /*
+    //Insert code to select all actvities that are already in the table
+    
+    $("#SUBMISSION BUTTON ID").click( function() {
+ 
+        $("# input:checked").each(function() {
+ 
+            window.alert( $(this).attr('id') );
+            
+            tx.executeSql("SELECT * FROM activityTable WHERE activityID = ?", [checkboxID],
+				app.onSuccess,
+				app.onError);
+                
+           	$('#activityListConfirm').append(<p>activityName</p>); 
+ 
+        });
+ 
+    });
+*/
+    //Submit/BRONZE?SILVER/GOLD Button Code
+    //Needs the wrapping app.function code
+    /* tx.executeSql("INSERT INTO meetActivityJoin (date,activityID) VALUES (?,?)", [dateString, checkboxID],
+				app.onSuccess,
+				app.onError);
+    */
+}    
+
+function rollCall()
+{
+	var dateString = $("#targetDate").val();
+    
+    //Purely for the Window Alert - use the datestring for any work
+    var date = new Date(dateString);
+    var bob = date.toString();	
+    window.alert(bob);
+
+    //Plan - changepage to cub-list
+    // deselect all cubs in list
+     /*
+            $('.checkCub').each(function() { //loop through each checkbox
+                this.checked = false; //deselect all checkboxes with class "checkCub"                       
+            });
+            */
+    //Insert code which selects cub if exists in table where date = dateString
+    
+    // on checkbox select, insert cubID into table
+    /* tx.executeSql("INSERT INTO cubMeetJoin (date, cubID) VALUES (?,?)", [dateString, checkboxID],
+				app.onSuccess,
+				app.onError);
+    */ 
+    // on checkbox deselect, delete cubID from table
+    /* tx.executeSql("DELETE * FROM cubMeetJoin WHERE date = ? AND cubID = ?", [dateString, checkboxID],
+				app.onSuccess,
+				app.onError);
+    */
+}    
+    
+    
+    
