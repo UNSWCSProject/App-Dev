@@ -118,3 +118,11 @@ h1{
 .clear {
     clear: both;
 }
+/*
+ * fix footer button alignment
+ */
+.ui-footer
+{
+    padding-left: 0px;
+}
+}
