@@ -35,7 +35,7 @@
     
     <body>
         <!--Login-->
-        <div id="login" data-role="page" data-theme="e" data-add-back-btn="true">
+        <div id="login" data-role="page" data-theme="e">
             <!--Header-->
             <div data-role="header" data-position="fixed">
                 <h1>Login</h1>
@@ -69,7 +69,6 @@
             <!--Header-->
             <div data-role="header" data-position="fixed">
                 <h1>Create New User</h1>
-            	<a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <!--Content-->
             <div data-role="content" class="login">
@@ -118,9 +117,6 @@
                     <div class="front-list">
                         <ul data-role="listview">
                             <li> <a href="#calendar" data-transition="slide">Calendar</a>
-    
-                            </li>
-                            <li> <a href="#activity-list-bronze" data-transition="slide">Activities</a>
     
                             </li>
                             <li> <a href="#cubs-list" data-transition="slide">Cubs</a>
@@ -176,7 +172,7 @@
         <div data-role="page" data-theme="e" id="activity-list-bronze" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header">
-                 <h1>Bronze Activities</h1>
+                 <h1 id="bronzeHead">Bronze Activities</h1>
                 <a href="#home"  class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
@@ -208,7 +204,7 @@
         <div data-role="page" data-theme="e" id="activity-list-silver" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header">
-                 <h1>Silver Activities</h1>
+                 <h1 id="silverHead">Silver Activities</h1>
                 <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
@@ -243,7 +239,7 @@
         <div data-role="page" data-theme="e" id="activity-list-gold" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header">
-                 <h1>Gold Activities</h1>
+                 <h1 id="goldHead">Gold Activities</h1>
                  <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
@@ -274,7 +270,7 @@
         <div data-role="page" data-theme="e" id="activity-list-confirm" data-add-back-btn="true">
             <!--Header-->
             <div data-role="header">
-                <h1>Confirm Activities</h1>
+                <h1 id="confirmHead">Confirm Activities</h1>
                 <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
             </div>
             <div data-role="content">
@@ -295,6 +291,7 @@
         
         
         <!--End activity Pages-->
+        
         <!--Page-->
         
         <!--Cubs-->
@@ -509,6 +506,25 @@
                 
             </div>
         </div>
+        <!--Page-->
+        
+        <!--Roll Call-->
+        <div data-role="page" data-theme="e" id="rollCall" data-add-back-btn="true">
+        <!--Header-->
+            <div data-role="header">
+                 <h1 id="rollHead">Roll Call</h1>
+                 <a href="#home" class="ui-btn-right" data-transition="slide" data-icon="home">Home</a>
+            </div>
+            <div data-role="content">
+                <ul id="cubsRoll" data-role="listview" data-divider-theme="e" data-filter-theme="e" data-inset="false" data-filter="true" data-autodividers="true">
+                </ul>
+            </div>
+            <!--Footer-->
+            <div data-role="footer" data-position="fixed" data-id="oneFooter"> 
+                
+            </div>
+        </div>
+        <!--Page-->
         
     </body>
 </html>

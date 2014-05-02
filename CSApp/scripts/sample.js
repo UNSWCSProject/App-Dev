@@ -20,7 +20,7 @@ app.openDb = function()
     */
     
 	//Temporary fix to allow to run on device.
-    app.db = window.openDatabase("cubDb", "1.0", "Cordova Demo", 200000);
+    app.db = window.openDatabase("cubDb2", "1.0", "Cordova", 200000);
 }
 
 //When the device is initialised, run these functions
@@ -32,7 +32,8 @@ function init() {
     //app.clearData();
     app.createTable();
     populateCubsList();
-    
+    populateRollCall();
+
     //-----Create User Information-----//
     //Comment out this line when you are happy to make the user data permanent
     //app.clearUserData();
@@ -139,6 +140,24 @@ app.clearData = function()
 	);
 }
 
+function populateRollCall(){
+	var render = function (tx, rs) 
+    {
+        //window.alert("Populated called");
+        $('#cubsRoll').empty();
+        //var len = rs.rows.length;
+        //window.alert("SQLite Table: " + len + " rows found.");
+        for (var i = 0; i < rs.rows.length; i++) 
+        {
+            var row = rs.rows.item(i);
+            $('#cubsRoll').append('<li id = "cubID' +row['cubID']+'"><div class="checkboxleft"><input type="checkbox" id="rollCheck" class="checkbox"/></div><h3 class="pushRight">'+row['firstName']+' '+row['surname']+' '+row['cubID']+'</h3><div class="select Right"></div></div></li>');
+        }
+        //window.alert("Attempted to store the query result in an array and display in listView() style");
+	}
+    app.selectAllRecords(render);
+}
+
+
 function populateCubsList(){
 	var render = function (tx, rs) 
     {
@@ -158,7 +177,7 @@ function populateCubsList(){
 
 function editCub(id)
 {
-	window.alert(id);
+	//window.alert(id);
     $.mobile.changePage("#edit-cub", {
             	transition: "slide",
             	reverse: false
@@ -197,13 +216,13 @@ app.getThisCub = function(fn, id)
 {
     //INSERT CODE TO MAKE IT GET THE INFO FROM THE ROWS
     //APRA'S ATTEMPT
-    window.alert("Inside getThisCub(): " +id);
+    //window.alert("Inside getThisCub(): " +id);
     app.db.transaction(function(tx) 
 		{
-            window.alert("Inside the transaction");
+            //window.alert("Inside the transaction");
             tx.executeSql("SELECT * FROM cubTable WHERE cubID = ?", [id], 
                          fn, app.onError);
-            window.alert("Transaction complete");
+            //window.alert("Transaction complete");
         });
 }
                  
@@ -948,11 +967,11 @@ function populateActivityList(){
             //needs an if statement to filter between bronze/silver/gold
             if(row['categoryLevel']=='Bronze')
             {
-            $('#catB' + shortcat).append('<li><div class="checkBoxLeft"><input type="checkbox" class = "checkAct" id = '+row['activityID']+'/></div><p class="pushRight">'+row['activityName']+'</p></li>');
+            $('#catB' + shortcat).append('<li><div class="checkBoxLeft"><input type="checkbox" class = "checkAct" id = '+row['activityID']+'/></div><h3 class="pushRight">'+row['activityName']+'</h3></li>');
             }
             else if(row['categoryLevel']=='Silver')
             {
-            $('#catS' + shortcat).append('<li><div class="checkBoxLeft"><input type="checkbox" class = "checkAct" id = '+row['activityID']+'/></div><p class="pushRight">'+row['activityName']+'</p></li>');
+            $('#catS' + shortcat).append('<li><div class="checkBoxLeft"><input type="checkbox" class = "checkAct" id = '+row['activityID']+'/></div><h3 class="pushRight">'+row['activityName']+'</h3></li>');
             }
             else if(row['categoryLevel']=='Gold')
             {
@@ -984,7 +1003,18 @@ function editAct()
     //Purely for the Window Alert - use the datestring for any work
     var date = new Date(dateString);
     var bob = date.toString();	
-    window.alert(bob);
+    var shortbob = bob.substring(0,15);
+    //window.alert(bob);
+    
+   $.mobile.changePage("#activity-list-bronze", {
+            	transition: "slide",
+            	reverse: false
+        	});
+    
+    $("#bronzeHead").text("Bronze Activities " + shortbob);
+    $("#silverHead").text("Silver Activities " + shortbob);
+    $("#goldHead").text("Gold Activities " + shortbob);
+    $("#confirmHead").text("Gold Activities " + shortbob);
     
     //Plan - changepage to bronze activities
     // deselect all actvities in lists
@@ -1022,12 +1052,24 @@ function editAct()
 
 function rollCall()
 {
-	var dateString = $("#targetDate").val();
+    var dateString = $("#targetDate").val();
     
     //Purely for the Window Alert - use the datestring for any work
     var date = new Date(dateString);
     var bob = date.toString();	
-    window.alert(bob);
+    var shortbob = bob.substring(0,15);
+  
+    //window.alert(bob);
+    //populateRollCall();
+    
+    $.mobile.changePage("#rollCall", {
+            	transition: "slide",
+            	reverse: false
+        	});
+    
+    
+    $("#rollHead").text("Roll Call " + shortbob);
+    //$('#rollCall').listview('refresh');
 
     //Plan - changepage to cub-list
     // deselect all cubs in list
@@ -1049,6 +1091,7 @@ function rollCall()
 				app.onError);
     */
 }    
+     
     
     
     
